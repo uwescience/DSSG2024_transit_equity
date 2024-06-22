@@ -17,6 +17,7 @@ class Base(DeclarativeBase):
     pass
 
 agencies = Table('agencies', Base.metadata, schema='trac', autoload_with=engine)
+print(type(agencies))
 print(agencies.columns)
 
 stmt = select(agencies).where(agencies.columns.orca_agency_id == 2)
