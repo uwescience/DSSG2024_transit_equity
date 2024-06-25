@@ -24,8 +24,8 @@ Base_dssg.prepare()
 print(metadata_dssg.tables.keys())
 
 # print(type(Base_dssg.metadata.tables['dssg.v_transactions_apr2023']))
-# print(type(Base_dssg.metadata.tables['dssg.mv_transactions_apr2023']))
-mv_transactions = Base_dssg.metadata.tables['dssg.mv_transactions_apr2023']
+# print(type(Base_dssg.metadata.tables['dssg.m_transactions_apr2023']))
+mv_transactions = Base_dssg.metadata.tables['dssg.m_transactions_apr2023']
 
 Base_trac: AutomapBase = automap_base()
 Base_trac.prepare(engine, reflect=True, schema='trac')
