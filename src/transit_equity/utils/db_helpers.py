@@ -1,5 +1,14 @@
+import os
+from dotenv import load_dotenv
+
+from sqlalchemy import create_engine
 from sqlalchemy import MetaData, Engine
 from sqlalchemy.ext.automap import automap_base, AutomapBase
+
+def get_engine_from_env(path_env: str, postgres_url_key: str = 'POSTGRES_URL') -> Engine:
+    load_dotenv(dotenv_path=path_env)
+    engine: Engine = create_engine(os.getenv(postgres_url_key))
+    return engine
 
 
 def get_automap_base_with_views(engine: Engine, schema: str) -> AutomapBase:
@@ -20,9 +29,15 @@ def get_automap_base_with_views(engine: Engine, schema: str) -> AutomapBase:
 
     Examples
     --------
+    Example 1:
     >>> from sqlalchemy import create_engine
     >>> engine = create_engine('postgresql://user:password@localhost:5432/dbname'))
     >>> Base = get_automap_base_with_views(engine=engine, schema='orca')
+    >>> print(type(Base))
+    <class 'sqlalchemy.ext.automap.AutomapBase'>
+
+    Example 2:
+    >>> Base = get_automap_base_with_views(engine=get_engine_from_env('.env'), schema='orca')
     >>> print(type(Base))
     <class 'sqlalchemy.ext.automap.AutomapBase'>
     '''
@@ -34,11 +49,6 @@ def get_automap_base_with_views(engine: Engine, schema: str) -> AutomapBase:
 
 # Run this from the root to test it
 if __name__=='__main__':
-    import os
-
-    from dotenv import load_dotenv
-    from sqlalchemy import create_engine
-
     path_env = os.path.join(os.getcwd(), '.env')
     print(path_env)
     load_dotenv(dotenv_path=path_env)
