@@ -8,6 +8,7 @@ from sqlalchemy.ext.automap import automap_base, AutomapBase
 def get_engine_from_env(path_env: str, postgres_url_key: str = 'POSTGRES_URL') -> Engine:
     '''
     Returns a sqlalchemy Engine object using the environment variables
+    Note: This will overwrite the environment variables if they are already set by some other means
 
     Parameters
     ----------
@@ -72,8 +73,8 @@ def get_automap_base_with_views(engine: Engine, schema: str) -> AutomapBase:
 # Run this from the root to test it
 if __name__=='__main__':
     path_env = os.path.join(os.getcwd(), '.env')
-    print(path_env)
     engine = get_engine_from_env(path_env)
+    print(os.getenv('POSTGRES_URL'))
 
     SCHEMA = 'orca'
     Base = get_automap_base_with_views(engine=engine, schema=SCHEMA)
