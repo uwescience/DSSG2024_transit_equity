@@ -32,13 +32,15 @@ def get_automap_base_with_views(engine: Engine, schema: str) -> AutomapBase:
     Base.prepare()
     return Base
 
+# Run this from the root to test it
 if __name__=='__main__':
     import os
 
     from dotenv import load_dotenv
     from sqlalchemy import create_engine
 
-    path_env = os.path.join(os.path.dirname(os.getcwd()), '.env')
+    path_env = os.path.join(os.getcwd(), '.env')
+    print(path_env)
     load_dotenv(dotenv_path=path_env)
     POSTGRES_URL = 'POSTGRES_URL'
     SCHEMA = 'orca'
