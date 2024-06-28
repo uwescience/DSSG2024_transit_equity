@@ -6,6 +6,28 @@ from sqlalchemy import MetaData, Engine
 from sqlalchemy.ext.automap import automap_base, AutomapBase
 
 def get_engine_from_env(path_env: str, postgres_url_key: str = 'POSTGRES_URL') -> Engine:
+    '''
+    Returns a sqlalchemy Engine object using the environment variables
+
+    Parameters
+    ----------
+    path_env : str
+        Path to the .env file that contains the environment variables
+    postgres_url_key : str
+        Key in the .env file that contains the postgres url
+    
+    Returns
+    -------
+    Engine
+        A sqlalchemy Engine object that is connected to the database
+    
+    Examples
+    --------
+    Example 1:
+    >>> engine = get_engine_from_env('.env')
+    >>> print(type(engine))
+    <class 'sqlalchemy.engine.base.Engine'>
+    '''
     load_dotenv(dotenv_path=path_env)
     engine: Engine = create_engine(os.getenv(postgres_url_key))
     return engine
@@ -51,11 +73,9 @@ def get_automap_base_with_views(engine: Engine, schema: str) -> AutomapBase:
 if __name__=='__main__':
     path_env = os.path.join(os.getcwd(), '.env')
     print(path_env)
-    load_dotenv(dotenv_path=path_env)
-    POSTGRES_URL = 'POSTGRES_URL'
-    SCHEMA = 'orca'
+    engine = get_engine_from_env(path_env)
 
-    engine = create_engine(os.getenv(POSTGRES_URL))
+    SCHEMA = 'orca'
     Base = get_automap_base_with_views(engine=engine, schema=SCHEMA)
     print(type(Base))
     print(Base.classes.keys())
