@@ -73,7 +73,7 @@ def get_automap_base_with_views(engine: Engine, schema: str) -> AutomapBase:
 # Run this from the root to test it
 if __name__=='__main__':
     path_env = os.path.join(os.getcwd(), '.env')
-    engine = get_engine_from_env(path_env)
+    engine = get_engine_from_env(path_env) 
     print(os.getenv('POSTGRES_URL'))
 
     SCHEMA = 'orca'
