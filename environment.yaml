@@ -1,0 +1,19 @@
+name: orca
+channels:
+  - conda-forge
+dependencies:
+  - ipython
+  - jupyter
+  - jupyterlab
+  - matplotlib
+  - numpy
+  - pandas
+  - pgcli
+  - psycopg2
+  - pytest
+  - scipy
+  - sqlalchemy
+  - sphinx>=6.2
+  - pip
+  - pip:
+      - python-dotenv==1.0.1
