@@ -8,23 +8,23 @@ name = "transit_equity"
 version = "0.0.0"
 authors = [
     {name = "Himanshu Naidu", email = "hnaidu36@uw.edu"},
-    {name = "Rebecca Hayes", email = "<email>"},
-    {name = "Siman Ning", email = "<email>"},
-    {name = "Ishan Saksena", email = "<email>"},
-    {name = "Bryna Hazelton", email = "brynah@phys.washington.edu"},
-    {name = "Ryan Avery", email = "<email>"}
+    {name = "Rebecca Hayes", email = "rhayes7@uw.edu"},
+    {name = "Siman Ning", email = "tatasky@uw.edu"},
+    {name = "Ishan Saksena", email = "saksena7@uw.edu"},
+    {name = "Bryna Hazelton", email = "brynah@uw.edu"},
+    {name = "Ryan Avery", email = "rpavery@uw.edu"}
 ]
 description = "Python Package for Transit Equity on ORCA Fare Card Data"
 readme = "README.md"
 dependencies = [
     "numpy>=2.0.0",
-    "pandas">="2.2.2"
+    "pandas>=2.2.2",
     "matplotlib>=3.8.4",
     "pgcli>=4.1.0",
     "psycopg2>=2.9.9",
     "scipy>=1.13.1",
     "sqlalchemy>=2.0.30",
-    "python-dotenv">=1.0.1,
+    "python-dotenv>=1.0.1",
     "setuptools>=70"
 ]
 requires-python = ">=3.12"
