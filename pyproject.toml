@@ -1,0 +1,18 @@
+# Choosing a build backend:
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "transit_equity"
+version = "0.0.0"
+authors = [
+    {name = "Himanshu Naidu", email = "hnaidu36@uw.edu"},
+    {name = "Rebecca Hayes", email = "<email>"},
+    {name = "Siman Ning", email = "<email>"},
+    {name = "Ishan Saksena", email = "<email>"},
+    {name = "Bryna Hazelton", email = "brynah@phys.washington.edu"},
+    {name = "Ryan Avery", email = "<email>"}
+]
+description = "Python Package for Transit Equity on ORCA Fare Card Data"
+readme = "README.md"
