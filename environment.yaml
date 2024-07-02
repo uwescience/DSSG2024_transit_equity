@@ -12,6 +12,8 @@ dependencies:
   - psycopg2
   - pytest
   - scipy
+  - geopandas
+  - contextily
   - sqlalchemy
   - sphinx>=6.2
   - pip
