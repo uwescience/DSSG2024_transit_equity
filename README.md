@@ -31,7 +31,7 @@ Remember to deactivate the environment when you're done by running `conda deacti
 
 (This section assumes that the conda environmet has been set up in the way given in [here](#environment-setup))
 
-1. Activate the environment [here]
+1. Activate the environment set up in [here](#environment-setup))
 
 2. Navigate to the root.
 
@@ -41,7 +41,7 @@ Remember to deactivate the environment when you're done by running `conda deacti
     pip install --no-deps -e .
     ```
 
-Extra context given in the discussion thread of the [Pull Request](https://github.com/uwescience/DSSG2024_transit_equity/pull/4)
+Extra context given in the discussion thread of the [Pull Request 4](https://github.com/uwescience/DSSG2024_transit_equity/pull/4)
 
 
 ## Using dotenv
