@@ -1,7 +1,7 @@
 # DSSG2024_transit_equity
 Transit equity public code and documentation
 
-## Setup
+## Environment Setup
 
 To set up a Conda environment using the environment.yaml file, follow these steps:
 
@@ -25,6 +25,24 @@ To set up a Conda environment using the environment.yaml file, follow these step
 5. You can now proceed with running your notebooks or any other tasks within the activated Conda environment.
 
 Remember to deactivate the environment when you're done by running `conda deactivate`.
+
+
+## Installing Package Locally
+
+(This section assumes that the conda environmet has been set up in the way given in [here](#environment-setup))
+
+1. Activate the environment [here]
+
+2. Navigate to the root.
+
+3. Run the following command to install the `transit-equity` package in interactive mode without dependencies:
+
+    ```
+    pip install --no-deps -e .
+    ```
+
+Extra context given in the discussion thread of the [Pull Request](https://github.com/uwescience/DSSG2024_transit_equity/pull/4)
+
 
 ## Using dotenv
 
