@@ -9,9 +9,10 @@ def add_schema_to_tables(table_dict: dict, schema_name: str):
     return {table_key: schema_name+'.'+table_name for table_key, table_name in table_dict.items()}
 
 DSSG_TABLES = {
-    'TRANSACTIONS_MAT_VIEW': 'm_transactions_apr2023',
     'BOARDINGS_VIEW': 'v_boardings_apr2023',
-    'LINKED_TRANSACTIONS_VIEW': 'v_linked_transactions_apr2023'
+    'LINKED_TRANSACTIONS_VIEW': 'v_linked_transactions_apr2023',
+
+    'TRANSACTIONS_MAT_VIEW': 'm_transactions_apr2023'
 }
 DSSG_SCHEMA_TABLES = add_schema_to_tables(DSSG_TABLES, DSSG_SCHEMA)
 
