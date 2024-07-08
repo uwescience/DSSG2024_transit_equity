@@ -22,3 +22,5 @@ class TRAC_SCHEMA_TABLES(Enum):
 
 class GTFS_SCHEMA_TABLES(Enum):
     FEED_INFO_TABLE: str = f'{GTFS_SCHEMA}.tl_feed_info'
+    STOPS_TABLE: str = f'{GTFS_SCHEMA}.tl_stops'
+    AGENCY_TABLE: str = f'{GTFS_SCHEMA}.tl_agency'

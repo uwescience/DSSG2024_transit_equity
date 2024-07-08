@@ -19,3 +19,5 @@ class TRAC_TABLES(Enum):
 
 class GTFS_TABLES(Enum):
     FEED_INFO_TABLE: str = 'tl_feed_info'
+    STOPS_TABLE: str = 'tl_stops'
+    AGENCY_TABLE: str = 'tl_agency'
