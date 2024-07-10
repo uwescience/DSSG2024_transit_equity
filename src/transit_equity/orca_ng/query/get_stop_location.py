@@ -4,8 +4,8 @@ from sqlalchemy import Table, Select, func, select, not_, or_, and_, case
 from sqlalchemy.ext.automap import AutomapBase
 
 from . import get_schema_key
-from ..schemas import DSSG_SCHEMA, ORCA_SCHEMA, TRAC_SCHEMA, GTFS_SCHEMA
-from ..schema_tables import DSSG_SCHEMA_TABLES, ORCA_SCHEMA_TABLES, TRAC_SCHEMA_TABLES, GTFS_SCHEMA_TABLES
+from ..constants.schemas import DSSG_SCHEMA, ORCA_SCHEMA, TRAC_SCHEMA, GTFS_SCHEMA
+from ..constants.schema_tables import DSSG_SCHEMA_TABLES, ORCA_SCHEMA_TABLES, TRAC_SCHEMA_TABLES, GTFS_SCHEMA_TABLES
 
 def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, end_date: datetime, 
     automap_base_dict: dict, transactions_t: Table | None = None) -> Select:
