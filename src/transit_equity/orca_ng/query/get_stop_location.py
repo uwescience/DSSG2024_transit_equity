@@ -72,7 +72,7 @@ def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, e
                         feed_info.c.feed_end_date <= end_date)))
     # print(stmt_gtfs_feed)
 
-    stmt_gtfs_feed_alias = stmt_gtfs_feed.subquery('feed_april')
+    stmt_gtfs_feed_alias = stmt_gtfs_feed.subquery('feed')
 
     # Rank the feeds for the given date range
     stmt_gtfs_feed_ranked = \
@@ -81,15 +81,15 @@ def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, e
         order_by=stmt_gtfs_feed_alias.c.feed_id.desc()).label('feed_rank'))
     # print(stmt_gtfs_feed_ranked)
 
-    stmt_gtfs_feed_ranked_alias = stmt_gtfs_feed_ranked.subquery('feed_april_ranked')
+    stmt_gtfs_feed_ranked_alias = stmt_gtfs_feed_ranked.subquery('feed_ranked')
 
-    # Finally, get latest feed within the April 2023 range, for each transit agency
+    # Finally, get latest feed within the date range, for each transit agency
     stmt_gtfs_feed_latest = \
         select(stmt_gtfs_feed_ranked_alias)\
         .where(stmt_gtfs_feed_ranked_alias.c.feed_rank == 1)
     # print(stmt_gtfs_feed_latest)
 
-    stmt_gtfs_feed_latest_alias = stmt_gtfs_feed_latest.cte('feed_april_latest')
+    stmt_gtfs_feed_latest_alias = stmt_gtfs_feed_latest.cte('feed_latest')
 
     stmt_stop_latest = \
         select(stops, agencies_gtfs.c.agency_id, agencies_gtfs.c.agency_name)\
@@ -97,30 +97,30 @@ def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, e
         .join(agencies_gtfs, stmt_gtfs_feed_latest_alias.c.feed_id == agencies_gtfs.c.feed_id)
     # print(stmt_stop_latest)
 
-    stmt_boardings_with_agency = \
+    stmt_transactions_with_agency = \
         select(transactions_t, agencies.c.agency_id, agencies.c.orca_agency_id, agencies.c.gtfs_agency_id, agencies.c.agency_name)\
         .join(agencies, transactions_t.c.source_agency_id == agencies.c.orca_agency_id)\
         .where(not_(and_(transactions_t.c.stop_id.is_(None), transactions_t.c.device_location.is_(None))))
-    # print(stmt_boardings_with_agency)
+    # print(stmt_transactions_with_agency)
 
-    stmt_stop_latest_alias = stmt_stop_latest.cte('stop_april_latest')
-    stmt_boardings_with_agency_alias = stmt_boardings_with_agency.cte('boardings_april_with_agency')
+    stmt_stop_latest_alias = stmt_stop_latest.cte('stop_latest')
+    stmt_transactions_with_agency_alias = stmt_transactions_with_agency.cte('transactions_with_agency')
 
-    stmt_boardings_with_location = \
-    select(stmt_boardings_with_agency_alias,
+    stmt_transactions_with_location = \
+    select(stmt_transactions_with_agency_alias,
         case((stmt_stop_latest_alias.c.stop_location.is_not(None), stmt_stop_latest_alias.c.stop_location),
-            else_=stmt_boardings_with_agency_alias.c.device_location).label('boarding_location'))\
+            else_=stmt_transactions_with_agency_alias.c.device_location).label('boarding_location'))\
         .join(stmt_stop_latest_alias,
-            and_(stmt_boardings_with_agency_alias.c.stop_code == stmt_stop_latest_alias.c.stop_id,
-                stmt_boardings_with_agency_alias.c.gtfs_agency_id == stmt_stop_latest_alias.c.agency_id),
+            and_(stmt_transactions_with_agency_alias.c.stop_code == stmt_stop_latest_alias.c.stop_id,
+                stmt_transactions_with_agency_alias.c.gtfs_agency_id == stmt_stop_latest_alias.c.agency_id),
                 isouter=True)
-    # print(stmt_boardings_with_location)
+    # print(stmt_transactions_with_location)
 
-    stmt_boardings_with_location_alias = stmt_boardings_with_location.subquery('boardings_april_with_location')
+    stmt_transactions_with_location_alias = stmt_transactions_with_location.subquery('transactions_with_location')
 
-    stmt_boardings_with_location_not_null = \
-        select(stmt_boardings_with_location_alias)\
-        .where(stmt_boardings_with_location_alias.c.boarding_location.is_(None))
-    # print(stmt_boardings_with_location_alias_not_null)
+    stmt_transactions_with_location_not_null = \
+        select(stmt_transactions_with_location_alias)\
+        .where(stmt_transactions_with_location_alias.c.boarding_location.is_(None))
+    # print(stmt_transactions_with_location_alias_not_null)
 
-    return stmt_boardings_with_location_not_null
+    return stmt_transactions_with_location_not_null
