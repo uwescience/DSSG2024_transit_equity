@@ -120,7 +120,7 @@ def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, e
 
     stmt_transactions_with_location_not_null = \
         select(stmt_transactions_with_location_alias)\
-        .where(stmt_transactions_with_location_alias.c.boarding_location.is_(None))
+        .where(stmt_transactions_with_location_alias.c.boarding_location.is_not(None))
     # print(stmt_transactions_with_location_alias_not_null)
 
     return stmt_transactions_with_location_not_null
