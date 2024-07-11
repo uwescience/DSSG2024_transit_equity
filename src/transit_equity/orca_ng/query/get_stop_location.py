@@ -109,7 +109,7 @@ def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, e
     stmt_transactions_with_location = \
     select(stmt_transactions_with_agency_alias,
         case((stmt_stop_latest_alias.c.stop_location.is_not(None), stmt_stop_latest_alias.c.stop_location),
-            else_=stmt_transactions_with_agency_alias.c.device_location).label('boarding_location'))\
+            else_=stmt_transactions_with_agency_alias.c.device_location).label('transaction_location'))\
         .join(stmt_stop_latest_alias,
             and_(stmt_transactions_with_agency_alias.c.stop_code == stmt_stop_latest_alias.c.stop_id,
                 stmt_transactions_with_agency_alias.c.gtfs_agency_id == stmt_stop_latest_alias.c.agency_id),
@@ -120,7 +120,7 @@ def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, e
 
     stmt_transactions_with_location_not_null = \
         select(stmt_transactions_with_location_alias)\
-        .where(stmt_transactions_with_location_alias.c.boarding_location.is_not(None))
+        .where(stmt_transactions_with_location_alias.c.transaction_location.is_not(None))
     # print(stmt_transactions_with_location_alias_not_null)
 
     return stmt_transactions_with_location_not_null
