@@ -83,7 +83,7 @@ def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, e
 
     stmt_gtfs_feed_ranked_alias = stmt_gtfs_feed_ranked.subquery('feed_ranked')
 
-    # Finally, get latest feed within the date range, for each transit agency
+    # Finally, get latest feed within the date range, for each transit agency, to get the feed_latest CTE
     stmt_gtfs_feed_latest = \
         select(stmt_gtfs_feed_ranked_alias)\
         .where(stmt_gtfs_feed_ranked_alias.c.feed_rank == 1)
@@ -91,12 +91,14 @@ def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, e
 
     stmt_gtfs_feed_latest_alias = stmt_gtfs_feed_latest.cte('feed_latest')
 
+    # Use the feed_latest CTE to get all the stop details based on the latest feed, to get the stop_latest CTE
     stmt_stop_latest = \
         select(stops, agencies_gtfs.c.agency_id, agencies_gtfs.c.agency_name)\
         .join(stmt_gtfs_feed_latest_alias, stops.c.feed_id == stmt_gtfs_feed_latest_alias.c.feed_id)\
         .join(agencies_gtfs, stmt_gtfs_feed_latest_alias.c.feed_id == agencies_gtfs.c.feed_id)
     # print(stmt_stop_latest)
 
+    # Get all the transactions that have either the device location or the stop code, to get the transactions_with_agency CTE
     stmt_transactions_with_agency = \
         select(transactions_t, agencies.c.agency_id, agencies.c.orca_agency_id, agencies.c.gtfs_agency_id, agencies.c.agency_name)\
         .join(agencies, transactions_t.c.source_agency_id == agencies.c.orca_agency_id)\
@@ -106,6 +108,7 @@ def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, e
     stmt_stop_latest_alias = stmt_stop_latest.cte('stop_latest')
     stmt_transactions_with_agency_alias = stmt_transactions_with_agency.cte('transactions_with_agency')
 
+    # Combine the transactions_with_agency CTE data with stop_latest CTE data to get the locations of each transaction
     stmt_transactions_with_location = \
     select(stmt_transactions_with_agency_alias,
         case((stmt_stop_latest_alias.c.stop_location.is_not(None), stmt_stop_latest_alias.c.stop_location),
@@ -118,6 +121,7 @@ def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, e
 
     stmt_transactions_with_location_alias = stmt_transactions_with_location.subquery('transactions_with_location')
 
+    # Remove all the null entries (these would mostly come from any ORCA stop code that does not match with a GTFS stop id.)
     stmt_transactions_with_location_not_null = \
         select(stmt_transactions_with_location_alias)\
         .where(stmt_transactions_with_location_alias.c.transaction_location.is_not(None))
