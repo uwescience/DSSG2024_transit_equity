@@ -5,14 +5,22 @@ layout: default
 <img src="{{ site.url }}{{ site.baseurl }}/assets/img/eScience.png">
 
 
-# Project Name
+# Transit Equity
 
 ## The Team
 
-**Project Lead/s:**
+**Project Lead/s:**  
+Ryan Avery  
+Mark Hallenback
 
-**Data Science Lead/s:** 
+**Data Science Lead/s:**   
+Bryna Hazelton
 
-**DSSG Fellows:** 
+**DSSG Fellows:**  
+Rebecca Hayes  
+Himanshu Jaikumar Naidu  
+Siman Ning  
+Ishan Saksena  
+
 
 # Abstract or executive summary
