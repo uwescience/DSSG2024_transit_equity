@@ -1,6 +1,8 @@
 # DSSG2024_transit_equity
 Transit equity public code and documentation
 
+Website Link: [DSSG2024_transit_equity](https://uwescience.github.io/DSSG2024_transit_equity/)
+
 ## Environment Setup
 
 To set up a Conda environment using the environment.yaml file, follow these steps:
@@ -31,7 +33,7 @@ Remember to deactivate the environment when you're done by running `conda deacti
 
 (This section assumes that the conda environmet has been set up in the way given in [here](#environment-setup))
 
-1. Activate the environment set up in [here](#environment-setup))
+1. Activate the environment set up in [here](#environment-setup)
 
 2. Navigate to the root.
 
