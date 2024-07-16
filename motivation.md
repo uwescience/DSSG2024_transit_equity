@@ -6,10 +6,14 @@ title: Motivation
 **Questions**
 
 What question(s) are you answering?  
-We are interested broadly in identifying patterns in transit use between ORCA card user demographics that will enable us assess quality of service across all types of ORCA card users. More specifically, our analyses seek to answer several questions: 
-1) Are low-income riders receiving the same quality of service compared to the general population of riders? 
-2) Are we equitably predicting home location for low-income riders? 
-3) Are stops that are central in transit ridership networks shared across all card demographics? How do the networks vary in structure between card demographics? Is the structure of these networks reflected by the geographic layout of the transportation network? 
+We are interested broadly in identifying patterns in transit use between ORCA card user demographics that will enable us assess quality of service across all types of ORCA card users. More specifically, our analyses seek to answer several questions:  
+
+1) Are low-income riders receiving the same quality of service compared to the general population of riders?  
+
+2) Are we equitably predicting home location for low-income riders?  
+
+3) Are stops that are central in transit ridership networks shared across all card demographics? How do the networks vary in structure between card demographics? Is the structure of these networks reflected by the geographic layout of the transportation network?  
+
 
 
 What need are you filling? 
