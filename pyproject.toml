@@ -25,7 +25,8 @@ dependencies = [
     "scipy>=1.13.1",
     "sqlalchemy>=2.0.30",
     "python-dotenv>=1.0.1",
-    "setuptools>=70"
+    "setuptools>=70",
+    "shapely>=2.0.4"
 ]
 requires-python = ">=3.12"
 
