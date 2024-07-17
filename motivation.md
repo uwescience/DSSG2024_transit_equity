@@ -5,7 +5,6 @@ title: Motivation
 
 **Background**
 
-Why is this important? 
 Intentional movement from one location to another has characterized human history irrespective of time and spatial scales. The globally-connected society that we live in would be impossible without the dynamic transport of people and objects between places. Whether via air, water, land, or even space, transit represents the spatial networks that enable us to experience the world outside of our own backyards. 
 
 In particular, public transit reflects the truth that, although we may have unique ultimate origins and destinations, there are shared patterns in our movements that allow us to go from point A to point B together. Public transit has existed for much of recorded human history: for example, Greek mythology features one of the earliest tales of public transit in the story of the ferryman Charon, who required payment in the form of coins from travelers that needed to cross the river Styx (cite?). 
