@@ -12,7 +12,7 @@ from ...utils.db_helpers import get_automap_base_with_views
 
 class TransactionsWithLocations:
     '''
-    A class to get stop locations from transactions using customizable logic.
+    A class to get locations of transactions using customizable logic.
 
     Attributes
     ----------

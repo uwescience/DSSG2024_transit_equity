@@ -16,6 +16,7 @@ def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, e
     This function returns a query that can be used to get transactions with their stop locations.
     The transactions table is joined with the gtfs stop locations data.
     For each stop, we get the latest GTFS feed for each transit agency and assign the stop location from that feed.
+    (Warning! This function is too restrictive. Consider using TransactionsWithLocations class instead.)
 
     Parameters
     ----------
