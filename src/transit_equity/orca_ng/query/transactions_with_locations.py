@@ -92,12 +92,12 @@ class TransactionsWithLocations:
 
         stmt_gtfs_feed_alias = stmt_gtfs_feed.cte('feed_custom')
 
-        stmt_stop_custom = \
+        stmt_stop_with_agency = \
             select(stops, agencies_gtfs.c.agency_id, agencies_gtfs.c.agency_name)\
             .join(stmt_gtfs_feed_alias, stops.c.feed_id == stmt_gtfs_feed_alias.c.feed_id)\
             .join(agencies_gtfs, stmt_gtfs_feed_alias.c.feed_id == agencies_gtfs.c.feed_id)
 
-        return stmt_stop_custom
+        return stmt_stop_with_agency
     
     def get_transactions_with_agency(self) -> Select:
         '''
@@ -143,3 +143,32 @@ class TransactionsWithLocations:
                     isouter=True)
         
         return stmt_transactions_with_location
+    
+    def get_transactions_with_stop_or_device_locations_from_latest_gtfs(self) -> Select:
+        '''
+        This function returns a query that can be used to get transactions with their stop or device locations.
+        The stop location is used as the transaction location if present in the latest GTFS feed, else the device location is used.
+
+        Returns
+        -------
+        select : sqlalchemy.sql.selectable.Select
+            A select query that can be used to get transactions with their stop or device locations
+        
+        Example
+        -------
+        Example 1:
+        >>> from sqlalchemy import create_engine
+        >>> engine = create_engine('postgresql://user:password@localhost:5432/dbname'))
+        >>> transactions_t = Base_orca.metadata.tables['transactions']
+        >>> transactions_with_locations = TransactionsWithLocations(
+        ...     start_date=datetime.datetime(2023, 4, 1),
+        ...     end_date=datetime.datetime(2023, 4, 30),
+        ...     engine=engine,
+        ...     transactions_t=transactions_t
+        ... )
+        >>> query = transactions_with_locations.get_transactions_with_stop_or_device_locations_from_latest_gtfs()
+        >>> print(type(query))
+        '''
+        stmt_gtfs_feed_latest = self.get_latest_gtfs_feed()
+        stmt_stop_with_agency = self.get_stop_with_agency_from_feed(stmt_gtfs_feed_latest)
+        return self.get_transactions_with_stop_or_device_locations(stmt_stop_with_agency)
