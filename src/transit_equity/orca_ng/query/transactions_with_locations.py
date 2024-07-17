@@ -47,21 +47,22 @@ class TransactionsWithLocations:
         select : sqlalchemy.sql.selectable.Select
             A select query that can be used to get the latest GTFS feed for each transit agency
         '''
-        feed_info = self.Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.FEED_INFO_TABLE.value]
+        # feed_info = self.Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.FEED_INFO_TABLE.value]
+        feeds = self.Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.FEEDS_TABLE.value]
 
         # Get the feeds only for the given date range
         stmt_gtfs_feed = \
-            select(feed_info)\
-            .where(not_(or_(feed_info.c.feed_start_date >= self.end_date, 
-                            feed_info.c.feed_end_date <= self.start_date)))
+            select(feeds)\
+            .where(not_(or_(feeds.c.earliest_calendar_date >= self.end_date, 
+                            feeds.c.latest_calendar_date <= self.start_date)))
 
         stmt_gtfs_feed_alias = stmt_gtfs_feed.subquery('feed')
 
         # Rank the feeds for the given date range
         stmt_gtfs_feed_ranked = \
         select(stmt_gtfs_feed_alias, func.row_number().over(
-            partition_by=stmt_gtfs_feed_alias.c.feed_publisher_name,
-            order_by=stmt_gtfs_feed_alias.c.feed_id.desc()).label('feed_rank'))
+            partition_by=stmt_gtfs_feed_alias.c.agency_id,
+            order_by=stmt_gtfs_feed_alias.c.id.desc()).label('feed_rank'))
 
         stmt_gtfs_feed_ranked_alias = stmt_gtfs_feed_ranked.subquery('feed_ranked')
 
@@ -94,8 +95,8 @@ class TransactionsWithLocations:
 
         stmt_stop_with_agency = \
             select(stops, agencies_gtfs.c.agency_id, agencies_gtfs.c.agency_name)\
-            .join(stmt_gtfs_feed_alias, stops.c.feed_id == stmt_gtfs_feed_alias.c.feed_id)\
-            .join(agencies_gtfs, stmt_gtfs_feed_alias.c.feed_id == agencies_gtfs.c.feed_id)
+            .join(stmt_gtfs_feed_alias, stops.c.feed_id == stmt_gtfs_feed_alias.c.id)\
+            .join(agencies_gtfs, stmt_gtfs_feed_alias.c.id == agencies_gtfs.c.feed_id)
 
         return stmt_stop_with_agency
     
