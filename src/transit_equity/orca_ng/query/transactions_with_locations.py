@@ -52,8 +52,8 @@ class TransactionsWithLocations:
         # Get the feeds only for the given date range
         stmt_gtfs_feed = \
             select(feed_info)\
-            .where(not_(or_(feed_info.c.feed_start_date >= self.start_date, 
-                            feed_info.c.feed_end_date <= self.end_date)))
+            .where(not_(or_(feed_info.c.feed_start_date >= self.end_date, 
+                            feed_info.c.feed_end_date <= self.start_date)))
 
         stmt_gtfs_feed_alias = stmt_gtfs_feed.subquery('feed')
 

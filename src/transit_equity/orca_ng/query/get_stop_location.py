@@ -69,8 +69,8 @@ def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, e
     # Get the feeds only for the given date range
     stmt_gtfs_feed = \
         select(feed_info)\
-        .where(not_(or_(feed_info.c.feed_start_date >= start_date, 
-                        feed_info.c.feed_end_date <= end_date)))
+        .where(not_(or_(feed_info.c.feed_start_date >= end_date, 
+                        feed_info.c.feed_end_date <= start_date)))
 
     stmt_gtfs_feed_alias = stmt_gtfs_feed.subquery('feed')
 
