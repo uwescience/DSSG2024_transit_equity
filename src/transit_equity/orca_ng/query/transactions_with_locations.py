@@ -27,8 +27,10 @@ class TransactionsWithLocations:
         self.start_date = start_date
         self.end_date = end_date
         self.engine = engine
-        self.transactions_t = transactions_t
         self.get_automap_bases()
+        if transactions_t is None:
+            transactions_t = self.Base_orca.metadata.tables[ORCA_SCHEMA_TABLES.TRANSACTIONS_TABLE]
+        self.transactions_t = transactions_t
 
     def get_automap_bases(self):
         self.Base_dssg = get_automap_base_with_views(engine=self.engine, schema=DSSG_SCHEMA)
