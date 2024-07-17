@@ -3,9 +3,7 @@ import datetime
 from sqlalchemy import Engine
 from sqlalchemy import Table, Select
 from sqlalchemy import func, select, not_, or_, and_, case
-from sqlalchemy.ext.automap import AutomapBase
 
-from . import get_schema_key
 from ..constants.schemas import DSSG_SCHEMA, ORCA_SCHEMA, TRAC_SCHEMA, GTFS_SCHEMA
 from ..constants.schema_tables import DSSG_SCHEMA_TABLES, ORCA_SCHEMA_TABLES, TRAC_SCHEMA_TABLES, GTFS_SCHEMA_TABLES
 from ...utils.db_helpers import get_automap_base_with_views
