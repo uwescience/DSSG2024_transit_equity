@@ -35,5 +35,6 @@ class GTFS_SCHEMA_TABLES(Enum):
     Access using GTFS_SCHEMA_TABLES.<table_name>.value
     '''
     FEED_INFO_TABLE: str = f'{GTFS_SCHEMA}.tl_feed_info'
+    FEEDS_TABLE: str = f'{GTFS_SCHEMA}.transitland_feeds'
     STOPS_TABLE: str = f'{GTFS_SCHEMA}.tl_stops'
     AGENCY_TABLE: str = f'{GTFS_SCHEMA}.tl_agency'

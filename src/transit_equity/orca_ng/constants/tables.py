@@ -32,5 +32,6 @@ class GTFS_TABLES(Enum):
     Access using GTFS_TABLES.<table_name>.value
     '''
     FEED_INFO_TABLE: str = 'tl_feed_info'
+    FEEDS_TABLE: str = 'transitland_feeds'
     STOPS_TABLE: str = 'tl_stops'
     AGENCY_TABLE: str = 'tl_agency'
