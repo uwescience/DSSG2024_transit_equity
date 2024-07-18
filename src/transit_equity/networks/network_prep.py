@@ -3,31 +3,34 @@ import pandas as pd
 import geopandas as gpd
 from shapely import wkb
 
+def load_wkb(x):
+    return wkb.loads(binascii.unhexlify(x))
 
-def clean_and_filter_network_data(trips_df, hex_grid_path):
+def clean_and_filter_network_data(trips_df):
     """
-    Processes a DataFrame of trip data to filter, transform, and spatially analyze trips.
+    Cleans and filters trip data, transforming it into a GeoDataFrame for spatial analysis.
 
     Args:
-        df_trips_lift (pd.DataFrame): A DataFrame containing trip data from the sqlalchemy query already 
-        filtered to a particular orca card type, with the following columns:
-            - 'stop_location': The boarding location in binary string format.
-            - 'stop_location_1': The alighting location in binary string format.
-            - 'device_dtm_pacific': The boarding date and time.
-            - 'alight_dtm_pacific': The alighting date and time.
-            - 'txn_id': The boarding transaction ID.
-            - 'txn_id_1': The alighting transaction ID.
-        hex_grid_path (str): The file path to a shapefile containing hex grid polygons.
+        trips_df (pd.DataFrame): DataFrame containing trip data with columns:
+            - 'stop_location': Boarding location as a binary string.
+            - 'stop_location_1': Alighting location as a binary string.
+            - 'device_dtm_pacific': Boarding date and time.
+            - 'alight_dtm_pacific': Alighting date and time.
+            - 'txn_id': Boarding transaction ID.
+            - 'txn_id_1': Alighting transaction ID.
+            - 'card_id': ID of the card used for the trip.
 
     Returns:
-        gpd.GeoDataFrame: A cleaned GeoDataFrame with the following columns:
-            - 'card_id': The ID of the card used for the trip.
-            - 'trip_time_minutes': The duration of the trip in minutes.
-            - 'board_centroid': The centroid of the hex grid polygon where the trip started.
-            - 'alight_centroid': The centroid of the hex grid polygon where the trip ended.
-            - 'trip_centroid_frequency': The frequency of trips between the boarding and alighting centroids.
-            - 'number_boards': The number of times a centroid is a boarding point.
-            - 'number_alights': The number of times a centroid is an alighting point.
+        gpd.GeoDataFrame: Cleaned GeoDataFrame with columns:
+            - 'card_id': ID of the card used for the trip.
+            - 'board_location': Original boarding location binary string.
+            - 'alight_location': Original alighting location binary string.
+            - 'board_location_shapely': Shapely geometry of the boarding location.
+            - 'alight_location_shapely': Shapely geometry of the alighting location.
+            - 'trip_time_minutes': Duration of the trip in minutes.
+            - 'trip_frequency': Frequency of trips between the boarding and alighting locations.
+            - 'board_string': String representation of the boarding location.
+            - 'alight_string': String representation of the alighting location.
 
     Steps:
         1. Rename columns for clarity.
@@ -35,36 +38,27 @@ def clean_and_filter_network_data(trips_df, hex_grid_path):
         3. Calculate the absolute difference in time between boarding and alighting.
         4. Remove duplicate trips, keeping the first instance.
         5. Filter trips to those with a duration of 3 hours or less.
-        6. Convert location binary strings to shapely geometries.
+        6. Convert location binary strings to Shapely geometries.
         7. Convert geometries to string format.
         8. Calculate the frequency of trips between each pair of boarding and alighting locations.
         9. Merge frequency data with the original DataFrame.
         10. Drop unnecessary columns.
         11. Convert the DataFrame to a GeoDataFrame.
-        12. Load and preprocess the hex grid shapefile.
-        13. Perform spatial joins to associate boarding and alighting points with hex grid centroids.
-        14. Merge boarding and alighting GeoDataFrames.
-        15. Calculate the frequency of trips between each pair of centroids.
-        16. Clean the final GeoDataFrame by removing duplicates, null values, and trips with the same boarding and alighting centroids.
-        17. Add counts of how many times a centroid is a boarding or alighting point.
-        18. Filter trips to those with a frequency of more than 50 trips.
+        12. Set the CRS to EPSG:32610 and reproject to EPSG:3857.
 
     Example:
-        >>> gdf_network_clean = process_trips_data(df_trips_lift, "/path/to/hex_grid.shp")
-    """
-    def load_wkb(x):
-            return wkb.loads(binascii.unhexlify(x))
+    >>> gdf_trips = clean_and_filter_network_data(df_trips_lift)"""
     # rename stop location columns to be more intuitive
     trips_df = trips_df.rename(columns={'stop_location':'board_location',
-                                        'stop_location_1':'alight_location',
-                                        'device_dtm_pacific':'board_dtm_pacific',
-                                        'alight_dtm_pacific':'alight_dtm_pacific',
-                                        'txn_id':'board_txn_id',
-                                        'txn_id_1':'alight_txn_id',
-                                        })
+                                    'stop_location_1':'alight_location',
+                                    'device_dtm_pacific':'board_dtm_pacific',
+                                    'alight_dtm_pacific':'alight_dtm_pacific',
+                                    'txn_id':'board_txn_id',
+                                    'txn_id_1':'alight_txn_id',
+                                    })
 
     # Drop true duplicate rows
-    unduplicated_trips_lift = df_trips_lift.drop_duplicates()
+    unduplicated_trips_lift = trips_df.drop_duplicates()
 
     # Add column storing the absolute difference in time between board and alight
     unduplicated_trips_lift['trip_time_minutes'] = abs((unduplicated_trips_lift['alight_dtm_pacific'] \
@@ -117,21 +111,65 @@ def clean_and_filter_network_data(trips_df, hex_grid_path):
     # reproject to web mercator to match basemap
     gdf_trips = gdf_trips.to_crs('EPSG:3857')
 
-    # Loading hex data from Melissa
+return gdf_trips
+
+
+
+def get_hex_centroids_for_od_trips(geo_df, hex_grid_path):
+     """
+    Processes trip data to map origin-destination pairs to hexagon centroids and calculates the frequency of trips between these centroids.
+
+    Args:
+        geo_df (gpd.GeoDataFrame): GeoDataFrame containing trip data with the following columns:
+            - 'card_id': ID of the card used for the trip.
+            - 'board_location_shapely': Shapely geometry of the boarding location.
+            - 'alight_location_shapely': Shapely geometry of the alighting location.
+            - 'trip_time_minutes': Duration of the trip in minutes.
+            - 'trip_frequency': Frequency of trips between the boarding and alighting locations.
+        hex_grid_path (str): Path to the shapefile containing the hexagonal grid.
+
+    Returns:
+        gpd.GeoDataFrame: GeoDataFrame containing the following columns:
+            - 'card_id': ID of the card used for the trip.
+            - 'trip_time_minutes': Duration of the trip in minutes.
+            - 'board_centroid': Shapely geometry of the boarding centroid.
+            - 'alight_centroid': Shapely geometry of the alighting centroid.
+            - 'trip_centroid_frequency': Frequency of trips between the centroids.
+            - 'number_boards': Count of trips starting at each boarding centroid.
+            - 'number_alights': Count of trips ending at each alighting centroid.
+            - 'board_string': String representation of the boarding centroid.
+            - 'alight_string': String representation of the alighting centroid.
+
+    Steps:
+        1. Load hexagonal grid data.
+        2. Reproject hexagonal grid to match the CRS of `geo_df`.
+        3. Calculate centroids of hexagons.
+        4. Perform spatial joins to associate each boarding and alighting location with a hexagon centroid.
+        5. Calculate the frequency of trips between centroids.
+        6. Merge trip frequency data back into the GeoDataFrame.
+        7. Filter and clean the data to remove duplicates, null values, and trips where the start and stop centroids are the same.
+        8. Add columns to count the number of trips starting or ending at each centroid.
+        9. Filter to only include frequent trips (more than 50 occurrences).
+        10. Set the geometry to the boarding centroid for the final GeoDataFrame.
+
+    Example:
+    >>> gdf_network_clean = get_hex_centroids_for_od(trip_geo_df, "path/to/hex_grid.shp")
+    """
+    # Loading hex data
     hex_grid_eigth_mile = gpd.read_file(hex_grid_path)
 
-    # need to reproject to same crs as gdf_board
-    hex_grid_eigth_mile = hex_grid_eigth_mile.to_crs(gdf_trips.crs.to_string())
+    # need to reproject to same crs as geo_df
+    hex_grid_eigth_mile = hex_grid_eigth_mile.to_crs(geo_df.crs.to_string())
 
     # calculate centroid of each polygon and set correct crs
     hex_centroids = hex_grid_eigth_mile.centroid
-    hex_centroids = hex_centroids.to_crs(gdf_trips.crs.to_string())
+    hex_centroids = hex_centroids.to_crs(geo_df.crs.to_string())
 
     # add column to store the centroid geometries
     hex_grid_eigth_mile['centroid_location'] = hex_centroids
 
     # now need to do spatial join for each board and alight geometry to get the centroid location
-    gdf_boarding = gdf_trips[['card_id', 'board_location_shapely', 'trip_time_minutes', 'trip_frequency']]
+    gdf_boarding = geo_df[['card_id', 'board_location_shapely', 'trip_time_minutes', 'trip_frequency']]
 
     # Ensure shapely locations are set as geometry dtype
     gdf_boarding = gdf_boarding.set_geometry('board_location_shapely')
@@ -141,7 +179,7 @@ def clean_and_filter_network_data(trips_df, hex_grid_path):
 
     # repeat for alights
     # now need to do spatial join for each board and alight geometry to get the centroid location
-    gdf_alight = gdf_trips[['card_id', 'alight_location_shapely', 'trip_time_minutes', 'trip_frequency']]
+    gdf_alight = geo_df[['card_id', 'alight_location_shapely', 'trip_time_minutes', 'trip_frequency']]
 
     # Ensure shapely locations are set as geometry dtype
     gdf_alight = gdf_alight.set_geometry('alight_location_shapely')
