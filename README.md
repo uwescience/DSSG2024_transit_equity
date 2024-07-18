@@ -85,7 +85,7 @@ Once the Python environment has been setup, and the env file is loaded, you can 
 1. Import the necessary modules/methods in your Python code:
 
     ```python
-    from transit_equity.utils.db_helper import get_automap_base_with_views
+    from transit_equity.utils.db_helpers import get_automap_base_with_views
     ```
 
 2. Call the method function with the required arguments:
