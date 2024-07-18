@@ -69,7 +69,8 @@ To use dotenv for managing environment variables, follow these steps:
     
     Generally, you would want to provide the dotenv path while loading the environment. For example:
     ```python
-    load_dotenv(dotenv_path=<path_to_env>)
+    path_to_env = '<path_to_env_file>'
+    load_dotenv(dotenv_path=path_to_env)
     ```
 
 4. You can now access the environment variables in your code using `os.getenv('VARIABLE_NAME')`.
