@@ -77,3 +77,22 @@ To use dotenv for managing environment variables, follow these steps:
 
     Remember to add the `.env` file to your `.gitignore` to keep your sensitive information secure.
 
+
+## Example Usage
+
+Once the Python environment has been setup, and the env file is loaded, you can import a method and utilize it:
+
+1. Import the necessary modules/methods in your Python code:
+
+    ```python
+    from transit_equity.utils.db_helper import get_automap_base_with_views
+    ```
+
+2. Call the method function with the required arguments:
+
+    ```python
+    from sqlalchemy import create_engine
+    engine = create_engine('postgresql://user:password@localhost:5432/dbname')
+    Base = get_automap_base_with_views(engine=engine, schema='orca')
+    print(type(Base))   # <class 'sqlalchemy.ext.automap.AutomapBase'>
+    ```
