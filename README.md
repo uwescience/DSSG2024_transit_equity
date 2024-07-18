@@ -8,7 +8,10 @@ Website Link: [DSSG2024_transit_equity](https://uwescience.github.io/DSSG2024_tr
 To set up a Conda environment using the environment.yaml file, follow these steps:
 
 1. Open a terminal or command prompt.
-2. Navigate to the directory where the environment.yaml file is located. In this case, it would be the root folder.
+2. Navigate to the directory where the environment.yaml file is located. In this repository, it would be the root folder.
+
+    Note: Switch to the main branch.
+
 3. Run the following command to create the Conda environment:
 
     ```
@@ -35,7 +38,7 @@ Remember to deactivate the environment when you're done by running `conda deacti
 
 1. Activate the environment set up in [here](#environment-setup)
 
-2. Navigate to the root.
+2. Navigate to the root of this repository.
 
 3. Run the following command to install the `transit-equity` package in interactive mode without dependencies:
 
@@ -64,13 +67,9 @@ To use dotenv for managing environment variables, follow these steps:
     load_dotenv()
     ```
     
-    If your code is present inside a subdirectly, update the sys path accordingly. For example:
+    Generally, you would want to provide the dotenv path while loading the environment. For example:
     ```python
-    parent_dir = os.path.dirname(os.getcwd())
-    if parent_dir not in sys.path:
-        sys.path.append(parent_dir)
-    
-    from utils.connect import get_automap_base_with_views
+    load_dotenv(dotenv_path=<path_to_env>)
     ```
 
 4. You can now access the environment variables in your code using `os.getenv('VARIABLE_NAME')`.
