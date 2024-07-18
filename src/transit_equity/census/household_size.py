@@ -1,7 +1,7 @@
 from enum import Enum
 
 # B11016 - HOUSEHOLD TYPE BY HOUSEHOLD SIZE
-class B11016_HOUSEHOLD_SIZE_COLUMNS(Enum):
+class HOUSEHOLD_SIZE_COLUMNS(Enum):
     B11016_001E: str = 'total'
     B11016_002E: str = 'family_households'
     B11016_003E: str = 'family_2_person_household'
@@ -20,7 +20,7 @@ class B11016_HOUSEHOLD_SIZE_COLUMNS(Enum):
     B11016_016E: str = 'nonfamily_7_or_more_person_household'
 
 
-B11016_HOUSEHOLD_SIZE_COLUMNS_DICT = {
+HOUSEHOLD_SIZE_COLUMNS_DICT = {
     'B11016_001E': 'total',
     'B11016_002E': 'family_households',
     'B11016_003E': 'family_2_person_household',
