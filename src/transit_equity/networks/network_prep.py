@@ -8,7 +8,7 @@ between these centroids.
 Functions:
     clean_and_filter_network_data(trips_df):
         Cleans and filters trip data, converting location data to Shapely geometries, and calculates
-        trip frequencies.
+          trip frequencies.
         Args:
             trips_df (pd.DataFrame): DataFrame containing trip data.
         Returns:
@@ -23,13 +23,24 @@ Functions:
         Returns:
             gpd.GeoDataFrame: GeoDataFrame with origin-destination centroids and trip frequencies.
 
+    load_wkb(x):
+        Decodes and loads WKB binary location data into a Shapely geometry object for plotting with 
+        GeoPandas.
+        Args:
+            x (object): WKB binary object.
+        Returns:
+            object: Shapely geometry object.
+
 Example usage:
     import pandas as pd
     import geopandas as gpd
-    from module_name import clean_and_filter_network_data, get_hex_centroids_for_od
+    from transit_equity.networks.network_prep import clean_and_filter_network_data, 
+                                                        get_hex_centroids_for_od, 
+                                                        load_wkb
 
     # Load trip data
-    trips_df = pd.read_csv('path_to_trip_data.csv')
+    trips_df = pd.read_sql(query.statement,         #sql alchemy query 
+                            engine_ng)              #sql alchemy database engine
 
     # Clean and filter trip data
     gdf_trips = clean_and_filter_network_data(trips_df)
