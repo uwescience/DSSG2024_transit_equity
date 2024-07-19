@@ -62,6 +62,29 @@ HOUSEHOLD_SIZE_COLUMNS_DICT = {
 def get_average_household_size_from_census_row(census_row: pd.Series) -> float:
     '''
     A function to get the average household size from a census row
+
+    Parameters:
+    ----------
+    census_row: pd.Series
+        A pandas series containing the census data
+        Should contain all the columns in transit_equity.census.household_size.HOUSEHOLD_SIZE_COLUMNS
+    
+    Returns:
+    -------
+    float
+
+    Examples:
+    --------
+    Example 1:
+    >>> import pandas as pd
+    >>> from transit_equity.census.household_size import HOUSEHOLD_SIZE_COLUMNS
+    >>> from transit_equity.census.household_size import get_average_household_size_from_census_row
+    >>> census_row_dict = dict()
+    >>> for column in HOUSEHOLD_SIZE_COLUMNS:
+    ...     census_row_dict[column.value.field] = 0
+    >>> census_row = pd.Series(census_row_dict)
+    >>> get_average_household_size_from_census_row(census_row)
+    0.0
     '''
     if HOUSEHOLD_SIZE_COLUMNS.B11016_001E.value.field not in census_row:
         return 0
