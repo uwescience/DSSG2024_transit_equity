@@ -36,22 +36,38 @@ class HouseholdSizeDetails:
 # The counts have been assigned as 0 for total, family_households and non-family households
 # since they are not used in the calculation of average household size
 class HOUSEHOLD_SIZE_COLUMNS(Enum):
-    B11016_001E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_001E', label='total')
-    B11016_002E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_002E', label='family_households')
-    B11016_003E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_003E', label='family_2_person_household', count=2)
-    B11016_004E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_004E', label='family_3_person_household', count=3)
-    B11016_005E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_005E', label='family_4_person_household', count=4)
-    B11016_006E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_006E', label='family_5_person_household', count=5)
-    B11016_007E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_007E', label='family_6_person_household', count=6)
-    B11016_008E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_008E', label='family_7_or_more_person_household', count=7)
-    B11016_009E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_009E', label='nonfamily_households')
-    B11016_010E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_010E', label='nonfamily_1_person_household', count=1)
-    B11016_011E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_011E', label='nonfamily_2_person_household', count=2)
-    B11016_012E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_012E', label='nonfamily_3_person_household', count=3)
-    B11016_013E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_013E', label='nonfamily_4_person_household', count=4)
-    B11016_014E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_014E', label='nonfamily_5_person_household', count=5)
-    B11016_015E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_015E', label='nonfamily_6_person_household', count=6)
-    B11016_016E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_016E', label='nonfamily_7_or_more_person_household', count=7)
+    B11016_001E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_001E', 
+        label='total')
+    B11016_002E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_002E',
+        label='family_households')
+    B11016_003E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_003E',
+        label='family_2_person_household', count=2)
+    B11016_004E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_004E',
+        label='family_3_person_household', count=3)
+    B11016_005E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_005E',
+        label='family_4_person_household', count=4)
+    B11016_006E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_006E',
+        label='family_5_person_household', count=5)
+    B11016_007E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_007E',
+        label='family_6_person_household', count=6)
+    B11016_008E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_008E',
+        label='family_7_or_more_person_household', count=7)
+    B11016_009E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_009E',
+        label='nonfamily_households')
+    B11016_010E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_010E',
+        label='nonfamily_1_person_household', count=1)
+    B11016_011E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_011E',
+        label='nonfamily_2_person_household', count=2)
+    B11016_012E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_012E',
+        label='nonfamily_3_person_household', count=3)
+    B11016_013E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_013E',
+        label='nonfamily_4_person_household', count=4)
+    B11016_014E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_014E',
+        label='nonfamily_5_person_household', count=5)
+    B11016_015E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_015E',
+        label='nonfamily_6_person_household', count=6)
+    B11016_016E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_016E',
+        label='nonfamily_7_or_more_person_household', count=7)
 
 # The main motive of this dictionary is to map the column names to human readable names
 HOUSEHOLD_SIZE_COLUMNS_DICT = {
