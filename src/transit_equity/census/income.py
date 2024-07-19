@@ -2,6 +2,20 @@ import pandas as pd
 from enum import Enum
 
 class IncomeDetails:
+    '''
+    A class to store the details of the income distribution columns in the census data
+
+    Attributes:
+    ----------
+    field: str
+        The field name in the census data
+    label: str
+        The human readable label for the field
+    min_income: int
+        The minimum income in the range
+    max_income: int
+        The maximum income in the range
+    '''
     def __init__(self, field: str, label: str, min_income: int = 0, max_income: int = 0):
         self._field = field
         self._label = label
@@ -98,7 +112,9 @@ def get_households_in_income_range(income_distribution_row: pd.Series, min_incom
     ----------
     census_row: pd.Series
         A pandas series containing the income distribution data
-        Should contain all the columns in transit_equity.census.income.INCOME_DISTRIBUTION_COLUMNS
+        It contains different income ranges (e.g. 10000 to 14999, 15000 to 19999, etc.), in a census area, 
+            along with the number of households in each range.
+        It is recommended to have all the columns in transit_equity.census.income.INCOME_DISTRIBUTION_COLUMNS
     
     min_income: int
         Left end of the income range
@@ -113,15 +129,27 @@ def get_households_in_income_range(income_distribution_row: pd.Series, min_incom
     Examples:
     --------
     Example 1:
+
+    The following example shows the calculation of number of households in a given income range from a census row
+    with 100 households in total, 20 households with income less than 10000, 30 households with income between 10000 and 14999,
+    50 households with income between 15000 and 19999, and 0 households with income after.
+    The income range is [0, 14999].
+    Expected Answer: (20 + 30) = 50
+
     >>> import pandas as pd
     >>> from transit_equity.census.income import INCOME_DISTRIBUTION_COLUMNS
     >>> from transit_equity.census.income import get_households_in_income_range
-    >>> income_distribution_dict = dict()
-    >>> for column in INCOME_DISTRIBUTION_COLUMNS:
-    ...     income_distribution_dict[column.value.field] = 0
+    >>> income_distribution_dict = {
+    ...     'B19001_001E': 100,
+    ...     'B19001_002E': 20,
+    ...     'B19001_003E': 30,
+    ...     'B19001_004E': 50,
+    ...     'B19001_005E': 0,
+    ...     # Rest of the columns are 0
+    }
     >>> income_distribution_row = pd.Series(income_distribution_dict)
-    >>> get_households_in_income_range(income_distribution_row, 0, 0)
-    0.0
+    >>> get_households_in_income_range(income_distribution_row, 0, 14999)
+    50
     '''
     households = 0
     for column in INCOME_DISTRIBUTION_COLUMNS:

@@ -94,13 +94,13 @@ HOUSEHOLD_SIZE_COLUMNS_DICT = {
 def get_average_household_size_from_census_row(census_row: pd.Series) -> float:
     '''
     A function to get the average household size for a census row.
-    The census row contains the number of households of different sizes (e.g. 2-person, 3-person, etc.).
 
     Parameters:
     ----------
     census_row: pd.Series
         A pandas series containing the census data
-        Should contain all the columns in transit_equity.census.household_size.HOUSEHOLD_SIZE_COLUMNS
+        It contains the number of households of different sizes (e.g. 2-person, 3-person, etc.), in a census area.
+        It is recommended to have all the columns in transit_equity.census.household_size.HOUSEHOLD_SIZE_COLUMNS
     
     Returns:
     -------
@@ -124,7 +124,10 @@ def get_average_household_size_from_census_row(census_row: pd.Series) -> float:
     ...     'B11016_002E': 100,
     ...     'B11016_003E': 50,
     ...     'B11016_004E': 30,
-    ...     'B11016_005E': 20}
+    ...     'B11016_005E': 20,
+    ...     'B11016_006E': 0,
+    ...     # Rest of the columns are 0
+    ... }
     >>> census_row = pd.Series(census_row_dict)
     >>> get_average_household_size_from_census_row(census_row)
     2.7
