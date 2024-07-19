@@ -58,7 +58,7 @@ def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, e
     Base_gtfs: AutomapBase = automap_base_dict[get_schema_key(GTFS_SCHEMA)]
 
     if transactions_t is None:
-        transactions_t = Base_orca.metadata.tables[ORCA_SCHEMA_TABLES.TRANSACTIONS]
+        transactions_t = Base_orca.metadata.tables[ORCA_SCHEMA_TABLES.TRANSACTIONS.value]
     
     agencies = Base_trac.metadata.tables[TRAC_SCHEMA_TABLES.AGENCIES.value]
     feed_info = Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.TL_FEED_INFO.value]
