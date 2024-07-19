@@ -13,7 +13,6 @@ class DSSG_SCHEMA_TABLES(Enum):
     Access using DSSG_SCHEMA_TABLES.<table_name>.value
     '''
     BOARDINGS_VIEW: str = f'{DSSG_SCHEMA}.v_boardings_apr2023'
-    LINKED_TRANSACTIONS_VIEW: str = f'{DSSG_SCHEMA}.v_linked_transactions_apr2023'
     TRANSACTIONS_MAT_VIEW: str = f'{DSSG_SCHEMA}.m_transactions_apr2023'
 
 class ORCA_SCHEMA_TABLES(Enum):
