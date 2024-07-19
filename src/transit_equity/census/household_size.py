@@ -73,6 +73,8 @@ HOUSEHOLD_SIZE_COLUMNS_DICT = {
     'B11016_016E': 'nonfamily_7_or_more_person_household',
 }
 
+# TODO: This function can be extended to do a calculation on an entire pandas DataFrame
+# The extended function will also have better performance.
 def get_average_household_size_from_census_row(census_row: pd.Series) -> float:
     '''
     A function to get the average household size from a census row

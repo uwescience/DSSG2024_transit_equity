@@ -1,3 +1,4 @@
+import pandas as pd
 from enum import Enum
 
 class Income_Details:
@@ -63,3 +64,11 @@ INCOME_DISTRIBUTION_COLUMNS_DICT = {
     'B19001_016E': '150000_to_199999',
     'B19001_017E': '200000_or_more',
 }
+
+def get_households_in_income_range(income_distribution_row: pd.Series, min_income: int, max_income: int) -> int:
+    '''
+    A function to get the number of households in a given income range from a census row.
+    Since the range is variable, we will have to check all the columns in the series that are present in the range.
+    If a column is partially in the range, we will consider the whole column.
+    '''
+    
