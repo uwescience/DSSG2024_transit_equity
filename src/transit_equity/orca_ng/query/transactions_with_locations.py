@@ -9,7 +9,7 @@ from ..constants.schema_tables import DSSG_SCHEMA_TABLES, ORCA_SCHEMA_TABLES, TR
 from ...utils.db_helpers import get_automap_base_with_views
 
 class TransactionsWithLocations:
-    '''
+    """
     A class to get locations of transactions using customizable logic.
 
     Attributes
@@ -22,7 +22,7 @@ class TransactionsWithLocations:
         Engine that is already connected to a database
     transactions_t : sqlalchemy.Table, optional
         Table object for the transactions table. If not provided, the default orca.transactions table is used
-    '''
+    """
     def __init__(self, start_date: datetime, end_date: datetime, engine: Engine, transactions_t: Table | None = None):
         self.start_date = start_date
         self.end_date = end_date
@@ -39,14 +39,14 @@ class TransactionsWithLocations:
         self.Base_gtfs = get_automap_base_with_views(engine=self.engine, schema=GTFS_SCHEMA)
     
     def get_latest_gtfs_feed(self) -> Select:
-        '''
+        """
         This function returns a query that can be used to get the latest GTFS feed for each transit agency.
 
         Returns
         -------
         select : sqlalchemy.sql.selectable.Select
             A select query that can be used to get the latest GTFS feed for each transit agency
-        '''
+        """
         # feed_info = self.Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.TL_FEED_INFO.value]
         feeds = self.Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.TRANSITLAND_FEEDS.value]
 
@@ -74,7 +74,7 @@ class TransactionsWithLocations:
         return stmt_gtfs_feed_latest
     
     def get_stop_with_agency_from_feed(self, stmt_gtfs_feed: Select) -> Select:
-        '''
+        """
         This function returns a query that can be used to get the stop details based on the given feeds.
         Thus, contains gtfs agency details as well (including gtfs agency id).
 
@@ -87,7 +87,7 @@ class TransactionsWithLocations:
         -------
         select : sqlalchemy.sql.selectable.Select
             A select query that can be used to get the stop details based on the given feeds
-        '''
+        """
         stops = self.Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.TL_STOPS.value]
         agencies_gtfs = self.Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.TL_AGENCY.value]
 
@@ -101,14 +101,14 @@ class TransactionsWithLocations:
         return stmt_stop_with_agency
     
     def get_transactions_with_agency(self) -> Select:
-        '''
+        """
         This function returns a query that can be used to get transactions 
 
         Returns
         -------
         select : sqlalchemy.sql.selectable.Select
             A select query that can be used to get transactions with their agency details
-        '''
+        """
         agencies = self.Base_trac.metadata.tables[TRAC_SCHEMA_TABLES.AGENCIES.value]
         stmt_transactions_with_agency = \
             select(self.transactions_t, agencies.c.agency_id, agencies.c.orca_agency_id, agencies.c.gtfs_agency_id, agencies.c.agency_name)\
@@ -116,7 +116,7 @@ class TransactionsWithLocations:
         return stmt_transactions_with_agency
 
     def get_transactions_with_stop_or_device_locations(self, stmt_stop_with_agency: Select) -> Select:
-        '''
+        """
         This function returns a query that can be used to get transactions with their stop or device locations.
         The stop location is used as the transaction location if present in stmt_stop_with_agency, else the device location is used.
 
@@ -125,7 +125,7 @@ class TransactionsWithLocations:
         stmt_stop_with_agency : sqlalchemy.sql.selectable.Select
             A select query that can be used to get stop location details based on customizable logic
             Based on current implementation, this should be (or compatible with) the output of get_stop_with_agency_from_feed
-        '''
+        """
         stmt_transactions_with_agency = self.get_transactions_with_agency()
         stmt_transactions_with_agency_alias = stmt_transactions_with_agency.cte('transactions_with_agency')
         # stmt_transactions_with_agency_and_location = \
@@ -133,6 +133,11 @@ class TransactionsWithLocations:
         #     .where(not_(and_(self.transactions_t.c.stop_id.is_(None), self.transactions_t.c.device_location.is_(None))))
         stmt_stop_with_agency_alias = stmt_stop_with_agency.cte('stop_custom')
 
+        # TODO: Add functionality to rename common columns in the second cte
+        # Currently, the following statement has a glaring issue.
+        # The ctes stmt_transactions_with_agency_alias and stmt_stop_with_agency_alias
+        # Have columns with the same name. SqlAlchemy handles this by appending _1 to the column names of the second cte.
+        # This is not very human readable and can cause confusion.
         stmt_transactions_with_location = \
             select(stmt_transactions_with_agency_alias,
                 case((stmt_stop_with_agency_alias.c.stop_location.is_not(None), stmt_stop_with_agency_alias.c.stop_location),
@@ -146,7 +151,7 @@ class TransactionsWithLocations:
         return stmt_transactions_with_location
     
     def get_transactions_with_stop_or_device_locations_from_latest_gtfs(self) -> Select:
-        '''
+        """
         This function returns a query that can be used to get transactions with their stop or device locations.
         The stop location is used as the transaction location if present in the latest GTFS feed, else the device location is used.
 
@@ -169,7 +174,7 @@ class TransactionsWithLocations:
         ... )
         >>> query = transactions_with_locations.get_transactions_with_stop_or_device_locations_from_latest_gtfs()
         >>> print(type(query))
-        '''
+        """
         stmt_gtfs_feed_latest = self.get_latest_gtfs_feed()
         stmt_stop_with_agency = self.get_stop_with_agency_from_feed(stmt_gtfs_feed_latest)
         return self.get_transactions_with_stop_or_device_locations(stmt_stop_with_agency)
