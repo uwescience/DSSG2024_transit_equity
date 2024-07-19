@@ -12,7 +12,7 @@ from ...utils.db_helpers import get_automap_base_with_views
 
 def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, end_date: datetime, 
     automap_base_dict: dict, transactions_t: Table | None = None) -> Select:
-    '''
+    """
     This function returns a query that can be used to get transactions with their stop locations.
     The transactions table is joined with the gtfs stop locations data.
     For each stop, we get the latest GTFS feed for each transit agency and assign the stop location from that feed.
@@ -51,7 +51,7 @@ def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, e
     ...     transactions_t=transactions_t
     ... )
     >>> print(type(query))
-    '''
+    """
     # Keys for schemas of interest
     Base_trac: AutomapBase = automap_base_dict[get_schema_key(TRAC_SCHEMA)]
     Base_orca: AutomapBase = automap_base_dict[get_schema_key(ORCA_SCHEMA)]

@@ -2,7 +2,7 @@ import pandas as pd
 from enum import Enum
 
 class IncomeDetails:
-    '''
+    """
     A class to store the details of the income distribution columns in the census data
 
     Attributes:
@@ -15,7 +15,7 @@ class IncomeDetails:
         The minimum income in the range
     max_income: int
         The maximum income in the range
-    '''
+    """
     def __init__(self, field: str, label: str, min_income: int = 0, max_income: int = 0):
         self._field = field
         self._label = label
@@ -83,7 +83,7 @@ class INCOME_DISTRIBUTION_COLUMNS(Enum):
 # TODO: Create another function that returns the columns that fall within the income range
 # Such a function is more extensible as we can do more nuanced analysis, with less assumptions about the data
 def get_households_in_income_range(income_distribution_row: pd.Series, min_income: int, max_income: int) -> int:
-    '''
+    """
     A function to get the number of households in a given income range from a census row.
     Since the range is variable, we will have to check all the columns in the series that are present in the range.
     If a column is partially in the range, we will consider the whole column.
@@ -130,7 +130,7 @@ def get_households_in_income_range(income_distribution_row: pd.Series, min_incom
     >>> income_distribution_row = pd.Series(income_distribution_dict)
     >>> get_households_in_income_range(income_distribution_row, 0, 14999)
     50
-    '''
+    """
     households = 0
     for column in INCOME_DISTRIBUTION_COLUMNS:
         if column.value.field not in income_distribution_row:
