@@ -114,13 +114,13 @@ def get_households_in_income_range(income_distribution_row: pd.Series, min_incom
     --------
     Example 1:
     >>> import pandas as pd
-    >>> from transit_equity.census.household_size import HOUSEHOLD_SIZE_COLUMNS
-    >>> from transit_equity.census.household_size import get_average_household_size_from_census_row
-    >>> census_row_dict = dict()
-    >>> for column in HOUSEHOLD_SIZE_COLUMNS:
-    ...     census_row_dict[column.value.field] = 0
-    >>> census_row = pd.Series(census_row_dict)
-    >>> get_average_household_size_from_census_row(census_row)
+    >>> from transit_equity.census.income import INCOME_DISTRIBUTION_COLUMNS
+    >>> from transit_equity.census.income import get_households_in_income_range
+    >>> income_distribution_dict = dict()
+    >>> for column in INCOME_DISTRIBUTION_COLUMNS:
+    ...     income_distribution_dict[column.value.field] = 0
+    >>> income_distribution_row = pd.Series(income_distribution_dict)
+    >>> get_households_in_income_range(income_distribution_row, 0, 0)
     0.0
     '''
     households = 0
