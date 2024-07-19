@@ -72,11 +72,5 @@ def get_average_household_size_from_census_row(census_row: pd.Series) -> float:
     for column in HOUSEHOLD_SIZE_COLUMNS:
         if column.value.field not in census_row:
             continue
-        print(f'{column.value.field}: {census_row[column.value.field]}, {column.value.count}')
         total_people += census_row[column.value.field] * column.value.count
-    print(total_people, total_households) 
     return total_people / total_households
-
-if __name__ == '__main__':
-    print(HOUSEHOLD_SIZE_COLUMNS.B11016_001E.value)
-    print([column.name for column in HOUSEHOLD_SIZE_COLUMNS])
