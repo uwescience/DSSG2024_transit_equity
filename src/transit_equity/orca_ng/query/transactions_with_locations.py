@@ -29,7 +29,7 @@ class TransactionsWithLocations:
         self.engine = engine
         self.get_automap_bases()
         if transactions_t is None:
-            transactions_t = self.Base_orca.metadata.tables[ORCA_SCHEMA_TABLES.TRANSACTIONS_TABLE]
+            transactions_t = self.Base_orca.metadata.tables[ORCA_SCHEMA_TABLES.TRANSACTIONS.value]
         self.transactions_t = transactions_t
 
     def get_automap_bases(self):
@@ -47,8 +47,8 @@ class TransactionsWithLocations:
         select : sqlalchemy.sql.selectable.Select
             A select query that can be used to get the latest GTFS feed for each transit agency
         """
-        # feed_info = self.Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.FEED_INFO_TABLE.value]
-        feeds = self.Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.FEEDS_TABLE.value]
+        # feed_info = self.Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.TL_FEED_INFO.value]
+        feeds = self.Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.TRANSITLAND_FEEDS.value]
 
         # Get the feeds only for the given date range
         stmt_gtfs_feed = \
@@ -88,8 +88,8 @@ class TransactionsWithLocations:
         select : sqlalchemy.sql.selectable.Select
             A select query that can be used to get the stop details based on the given feeds
         """
-        stops = self.Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.STOPS_TABLE.value]
-        agencies_gtfs = self.Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.AGENCY_TABLE.value]
+        stops = self.Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.TL_STOPS.value]
+        agencies_gtfs = self.Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.TL_AGENCY.value]
 
         stmt_gtfs_feed_alias = stmt_gtfs_feed.cte('feed_custom')
 
@@ -109,7 +109,7 @@ class TransactionsWithLocations:
         select : sqlalchemy.sql.selectable.Select
             A select query that can be used to get transactions with their agency details
         """
-        agencies = self.Base_trac.metadata.tables[TRAC_SCHEMA_TABLES.AGENCIES_TABLE.value]
+        agencies = self.Base_trac.metadata.tables[TRAC_SCHEMA_TABLES.AGENCIES.value]
         stmt_transactions_with_agency = \
             select(self.transactions_t, agencies.c.agency_id, agencies.c.orca_agency_id, agencies.c.gtfs_agency_id, agencies.c.agency_name)\
             .join(agencies, self.transactions_t.c.source_agency_id == agencies.c.orca_agency_id)
