@@ -125,11 +125,11 @@ def get_households_in_income_range(income_distribution_row: pd.Series, min_incom
     '''
     households = 0
     for column in INCOME_DISTRIBUTION_COLUMNS:
-        if column.name not in income_distribution_row:
+        if column.value.field not in income_distribution_row:
             continue
         # Check if the value of the field is within [min_income, max_income]
         if column.value.min_income >= min_income and column.value.max_income <= max_income:
-            households += income_distribution_row[column.name]
+            households += income_distribution_row[column.value.field]
         # Else check if the value of the field has no overlap with [min_income, max_income]
         elif column.value.min_income >= max_income or column.value.max_income <= min_income:
             pass
@@ -137,5 +137,5 @@ def get_households_in_income_range(income_distribution_row: pd.Series, min_incom
         else:
             # As mentioned in the docstrings, in such a case, we will consider the whole column.
             # This logic can be improved based on some heuristics
-            households += income_distribution_row[column.name]
+            households += income_distribution_row[column.value.field]
     return households
