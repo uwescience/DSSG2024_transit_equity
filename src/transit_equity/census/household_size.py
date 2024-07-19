@@ -3,6 +3,18 @@ from enum import Enum
 
 # This class will be useful for calculating statistics on households
 class Household_Size_Details:
+    '''
+    A class to store the details of a household size
+
+    Attributes:
+    ----------
+    field: str
+        The field name in the census data
+    label: str
+        The human readable label for the field
+    count: int
+        The number of people in the household
+    '''
     def __init__(self, field: str, label: str, count: int = 0):
         self._field = field
         self._label = label
@@ -21,6 +33,8 @@ class Household_Size_Details:
         return self._count
 
 # B11016 - HOUSEHOLD TYPE BY HOUSEHOLD SIZE
+# The counts have been assigned as 0 for total, family_households and non-family households
+# since they are not used in the calculation of average household size
 class HOUSEHOLD_SIZE_COLUMNS(Enum):
     B11016_001E: Household_Size_Details = Household_Size_Details(field='B11016_001E', label='total')
     B11016_002E: Household_Size_Details = Household_Size_Details(field='B11016_002E', label='family_households')
