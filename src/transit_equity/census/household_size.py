@@ -1,25 +1,45 @@
+import pandas as pd
 from enum import Enum
+
+# This class will be useful for calculating statistics on households
+class Household_Size_Details:
+    def __init__(self, field: str, label: str, count: int = 0):
+        self._field = field
+        self._label = label
+        self._count = count
+    
+    @property
+    def field(self):
+        return self._field
+    
+    @property
+    def label(self):
+        return self._label
+    
+    @property
+    def count(self):
+        return self._count
 
 # B11016 - HOUSEHOLD TYPE BY HOUSEHOLD SIZE
 class HOUSEHOLD_SIZE_COLUMNS(Enum):
-    B11016_001E: str = 'total'
-    B11016_002E: str = 'family_households'
-    B11016_003E: str = 'family_2_person_household'
-    B11016_004E: str = 'family_3_person_household'
-    B11016_005E: str = 'family_4_person_household'
-    B11016_006E: str = 'family_5_person_household'
-    B11016_007E: str = 'family_6_person_household'
-    B11016_008E: str = 'family_7_or_more_person_household'
-    B11016_009E: str = 'nonfamily_households'
-    B11016_010E: str = 'nonfamily_1_person_household'
-    B11016_011E: str = 'nonfamily_2_person_household'
-    B11016_012E: str = 'nonfamily_3_person_household'
-    B11016_013E: str = 'nonfamily_4_person_household'
-    B11016_014E: str = 'nonfamily_5_person_household'
-    B11016_015E: str = 'nonfamily_6_person_household'
-    B11016_016E: str = 'nonfamily_7_or_more_person_household'
+    B11016_001E: Household_Size_Details = Household_Size_Details(field='B11016_001E', label='total')
+    B11016_002E: Household_Size_Details = Household_Size_Details(field='B11016_002E', label='family_households')
+    B11016_003E: Household_Size_Details = Household_Size_Details(field='B11016_003E', label='family_2_person_household', count=2)
+    B11016_004E: Household_Size_Details = Household_Size_Details(field='B11016_004E', label='family_3_person_household', count=3)
+    B11016_005E: Household_Size_Details = Household_Size_Details(field='B11016_005E', label='family_4_person_household', count=4)
+    B11016_006E: Household_Size_Details = Household_Size_Details(field='B11016_006E', label='family_5_person_household', count=5)
+    B11016_007E: Household_Size_Details = Household_Size_Details(field='B11016_007E', label='family_6_person_household', count=6)
+    B11016_008E: Household_Size_Details = Household_Size_Details(field='B11016_008E', label='family_7_or_more_person_household', count=7)
+    B11016_009E: Household_Size_Details = Household_Size_Details(field='B11016_009E', label='nonfamily_households')
+    B11016_010E: Household_Size_Details = Household_Size_Details(field='B11016_010E', label='nonfamily_1_person_household', count=1)
+    B11016_011E: Household_Size_Details = Household_Size_Details(field='B11016_011E', label='nonfamily_2_person_household', count=2)
+    B11016_012E: Household_Size_Details = Household_Size_Details(field='B11016_012E', label='nonfamily_3_person_household', count=3)
+    B11016_013E: Household_Size_Details = Household_Size_Details(field='B11016_013E', label='nonfamily_4_person_household', count=4)
+    B11016_014E: Household_Size_Details = Household_Size_Details(field='B11016_014E', label='nonfamily_5_person_household', count=5)
+    B11016_015E: Household_Size_Details = Household_Size_Details(field='B11016_015E', label='nonfamily_6_person_household', count=6)
+    B11016_016E: Household_Size_Details = Household_Size_Details(field='B11016_016E', label='nonfamily_7_or_more_person_household', count=7)
 
-
+# The main motive of this dictionary is to map the column names to human readable names
 HOUSEHOLD_SIZE_COLUMNS_DICT = {
     'B11016_001E': 'total',
     'B11016_002E': 'family_households',
@@ -38,3 +58,25 @@ HOUSEHOLD_SIZE_COLUMNS_DICT = {
     'B11016_015E': 'nonfamily_6_person_household',
     'B11016_016E': 'nonfamily_7_or_more_person_household',
 }
+
+def get_average_household_size_from_census_row(census_row: pd.Series) -> float:
+    '''
+    A function to get the average household size from a census row
+    '''
+    if HOUSEHOLD_SIZE_COLUMNS.B11016_001E.value.field not in census_row:
+        return 0
+    total_households = census_row[HOUSEHOLD_SIZE_COLUMNS.B11016_001E.value.field]
+    if total_households == 0:
+        return 0
+    total_people = 0
+    for column in HOUSEHOLD_SIZE_COLUMNS:
+        if column.value.field not in census_row:
+            continue
+        print(f'{column.value.field}: {census_row[column.value.field]}, {column.value.count}')
+        total_people += census_row[column.value.field] * column.value.count
+    print(total_people, total_households) 
+    return total_people / total_households
+
+if __name__ == '__main__':
+    print(HOUSEHOLD_SIZE_COLUMNS.B11016_001E.value)
+    print([column.name for column in HOUSEHOLD_SIZE_COLUMNS])

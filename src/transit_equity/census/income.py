@@ -1,5 +1,6 @@
 from enum import Enum
 
+# B19001 - HOUSEHOLD INCOME IN THE PAST 12 MONTHS
 class INCOME_DISTRIBUTION_COLUMNS(Enum):
     B19001_001E: str = 'total'
     B19001_002E: str = 'less_than_10000'
@@ -19,7 +20,7 @@ class INCOME_DISTRIBUTION_COLUMNS(Enum):
     B19001_016E: str = '150000_to_199999'
     B19001_017E: str = '200000_or_more'
 
-# B19001 - HOUSEHOLD INCOME IN THE PAST 12 MONTHS
+# The main motive of this dictionary is to map the column names to human readable names
 INCOME_DISTRIBUTION_COLUMNS_DICT = {
     'B19001_001E': 'total',
     'B19001_002E': 'less_than_10000',
