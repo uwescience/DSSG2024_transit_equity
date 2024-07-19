@@ -25,11 +25,11 @@ class IncomeDetails:
         return self._max_income
 
 # B19001 - HOUSEHOLD INCOME IN THE PAST 12 MONTHS
-# The min_income and max_income have been assigned as 0 and -1 respectively for the total field, 
+# The min_income and max_income have been assigned as -1 for the total field, 
 # # since they are not used in the calculation of average household income
 class INCOME_DISTRIBUTION_COLUMNS(Enum):
     B19001_001E: IncomeDetails = IncomeDetails(field='B19001_001E',
-        label='total', min_income=0, max_income=-1)
+        label='total', min_income=-1, max_income=-1)
     B19001_002E: IncomeDetails = IncomeDetails(field='B19001_002E',
         label='less_than_10000', min_income=0, max_income=9999)
     B19001_003E: IncomeDetails = IncomeDetails(field='B19001_003E',
@@ -84,11 +84,44 @@ INCOME_DISTRIBUTION_COLUMNS_DICT = {
     'B19001_017E': '200000_or_more',
 }
 
+# TODO: This function can be extended to do a calculation on an entire pandas DataFrame
+# The extended function will also have better performance.
+# TODO: Create another function that returns the columns that fall within the income range
+# Such a function is more extensible as we can do more nuanced analysis, with less assumptions about the data
 def get_households_in_income_range(income_distribution_row: pd.Series, min_income: int, max_income: int) -> int:
     '''
     A function to get the number of households in a given income range from a census row.
     Since the range is variable, we will have to check all the columns in the series that are present in the range.
     If a column is partially in the range, we will consider the whole column.
+
+    Parameters:
+    ----------
+    census_row: pd.Series
+        A pandas series containing the income distribution data
+        Should contain all the columns in transit_equity.census.income.INCOME_DISTRIBUTION_COLUMNS
+    
+    min_income: int
+        Left end of the income range
+    
+    max_income: int
+        Right end of the income range
+    
+    Returns:
+    -------
+    float
+
+    Examples:
+    --------
+    Example 1:
+    >>> import pandas as pd
+    >>> from transit_equity.census.household_size import HOUSEHOLD_SIZE_COLUMNS
+    >>> from transit_equity.census.household_size import get_average_household_size_from_census_row
+    >>> census_row_dict = dict()
+    >>> for column in HOUSEHOLD_SIZE_COLUMNS:
+    ...     census_row_dict[column.value.field] = 0
+    >>> census_row = pd.Series(census_row_dict)
+    >>> get_average_household_size_from_census_row(census_row)
+    0.0
     '''
     households = 0
     for column in INCOME_DISTRIBUTION_COLUMNS:
@@ -97,3 +130,12 @@ def get_households_in_income_range(income_distribution_row: pd.Series, min_incom
         # Check if the value of the field is within [min_income, max_income]
         if column.value.min_income >= min_income and column.value.max_income <= max_income:
             households += income_distribution_row[column.name]
+        # Else check if the value of the field has no overlap with [min_income, max_income]
+        elif column.value.min_income >= max_income or column.value.max_income <= min_income:
+            pass
+        # Else, there is some overlap with [min_income, max_income]
+        else:
+            # As mentioned in the docstrings, in such a case, we will consider the whole column.
+            # This logic can be improved based on some heuristics
+            households += income_distribution_row[column.name]
+    return households
