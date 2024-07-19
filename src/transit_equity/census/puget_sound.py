@@ -14,9 +14,9 @@ def get_puget_sound_block_group_data(
         block_group_wa_link: str = CENSUS_GROUP_WASHINGTON_LINK,
         fips_list: list = FIPS_PUGET_SOUND
     ):
-    '''
+    """
     A function to get the census block data for Puget Sound
-    '''
+    """
     # Access shapefile of Washington census block groups
     gdf_wa_block_group = gpd.read_file(block_group_wa_link)
 

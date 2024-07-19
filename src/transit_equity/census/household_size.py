@@ -3,7 +3,7 @@ from enum import Enum
 
 # This class will be useful for calculating statistics on households
 class HouseholdSizeDetails:
-    '''
+    """
     A class to store the details of a household size
 
     Attributes:
@@ -14,7 +14,7 @@ class HouseholdSizeDetails:
         The human readable label for the field
     count: int
         The number of people in the household
-    '''
+    """
     def __init__(self, field: str, label: str, count: int = 0):
         self._field = field
         self._label = label
@@ -74,7 +74,7 @@ class HOUSEHOLD_SIZE_COLUMNS(Enum):
 # TODO: This function can be extended to do a calculation on an entire pandas DataFrame
 # The extended function will also have better performance.
 def get_average_household_size_from_census_row(census_row: pd.Series) -> float:
-    '''
+    """
     A function to get the average household size for a census row.
 
     Parameters:
@@ -113,7 +113,7 @@ def get_average_household_size_from_census_row(census_row: pd.Series) -> float:
     >>> census_row = pd.Series(census_row_dict)
     >>> get_average_household_size_from_census_row(census_row)
     2.7
-    '''
+    """
     if HOUSEHOLD_SIZE_COLUMNS.B11016_001E.value.field not in census_row:
         return 0
     total_households = census_row[HOUSEHOLD_SIZE_COLUMNS.B11016_001E.value.field]
