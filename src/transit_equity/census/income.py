@@ -1,24 +1,47 @@
 from enum import Enum
 
+class Income_Details:
+    def __init__(self, field: str, label: str, min_income: int = 0, max_income: int = 0):
+        self._field = field
+        self._label = label
+        self._min_income = min_income
+        self._max_income = max_income
+    
+    @property
+    def field(self):
+        return self._field
+    
+    @property
+    def label(self):
+        return self._label
+    
+    @property
+    def min_income(self):
+        return self._min_income
+    
+    @property
+    def max_income(self):
+        return self._max_income
+
 # B19001 - HOUSEHOLD INCOME IN THE PAST 12 MONTHS
 class INCOME_DISTRIBUTION_COLUMNS(Enum):
-    B19001_001E: str = 'total'
-    B19001_002E: str = 'less_than_10000'
-    B19001_003E: str = '10000_to_14999'
-    B19001_004E: str = '15000_to_19999'
-    B19001_005E: str = '20000_to_24999'
-    B19001_006E: str = '25000_to_29999'
-    B19001_007E: str = '30000_to_34999'
-    B19001_008E: str = '35000_to_39999'
-    B19001_009E: str = '40000_to_44999'
-    B19001_010E: str = '45000_to_49999'
-    B19001_011E: str = '50000_to_59999'
-    B19001_012E: str = '60000_to_74999'
-    B19001_013E: str = '75000_to_99999'
-    B19001_014E: str = '100000_to_124999'
-    B19001_015E: str = '125000_to_149999'
-    B19001_016E: str = '150000_to_199999'
-    B19001_017E: str = '200000_or_more'
+    B19001_001E: Income_Details = Income_Details(field='B19001_001E', label='total', min_income=0, max_income=0)
+    B19001_002E: Income_Details = Income_Details(field='B19001_002E', label='less_than_10000', min_income=0, max_income=9999)
+    B19001_003E: Income_Details = Income_Details(field='B19001_003E', label='10000_to_14999', min_income=10000, max_income=14999)
+    B19001_004E: Income_Details = Income_Details(field='B19001_004E', label='15000_to_19999', min_income=15000, max_income=19999)
+    B19001_005E: Income_Details = Income_Details(field='B19001_005E', label='20000_to_24999', min_income=20000, max_income=24999)
+    B19001_006E: Income_Details = Income_Details(field='B19001_006E', label='25000_to_29999', min_income=25000, max_income=29999)
+    B19001_007E: Income_Details = Income_Details(field='B19001_007E', label='30000_to_34999', min_income=30000, max_income=34999)
+    B19001_008E: Income_Details = Income_Details(field='B19001_008E', label='35000_to_39999', min_income=35000, max_income=39999)
+    B19001_009E: Income_Details = Income_Details(field='B19001_009E', label='40000_to_44999', min_income=40000, max_income=44999)
+    B19001_010E: Income_Details = Income_Details(field='B19001_010E', label='45000_to_49999', min_income=45000, max_income=49999)
+    B19001_011E: Income_Details = Income_Details(field='B19001_011E', label='50000_to_59999', min_income=50000, max_income=59999)
+    B19001_012E: Income_Details = Income_Details(field='B19001_012E', label='60000_to_74999', min_income=60000, max_income=74999)
+    B19001_013E: Income_Details = Income_Details(field='B19001_013E', label='75000_to_99999', min_income=75000, max_income=99999)
+    B19001_014E: Income_Details = Income_Details(field='B19001_014E', label='100000_to_124999', min_income=100000, max_income=124999)
+    B19001_015E: Income_Details = Income_Details(field='B19001_015E', label='125000_to_149999', min_income=125000, max_income=149999)
+    B19001_016E: Income_Details = Income_Details(field='B19001_016E', label='150000_to_199999', min_income=150000, max_income=199999)
+    B19001_017E: Income_Details = Income_Details(field='B19001_017E', label='200000_or_more', min_income=200000, max_income=200000)
 
 # The main motive of this dictionary is to map the column names to human readable names
 INCOME_DISTRIBUTION_COLUMNS_DICT = {
