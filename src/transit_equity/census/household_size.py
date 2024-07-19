@@ -108,11 +108,14 @@ def get_average_household_size_from_census_row(census_row: pd.Series) -> float:
 
     Examples:
     --------
+    
+    Example 1:
+
     The following example shows the calculation of average household size from a census row
     with 100 family households (0 non-family households), 
     50 2-person households, 30 3-person households, 20 4-person households.
     Expected Answer: (50*2 + 30*3 + 20*4 / 100) = 2.7
-    Example 1:
+
     >>> import pandas as pd
     >>> from transit_equity.census.household_size import HOUSEHOLD_SIZE_COLUMNS
     >>> from transit_equity.census.household_size import get_average_household_size_from_census_row
