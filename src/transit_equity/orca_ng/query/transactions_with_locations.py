@@ -133,6 +133,11 @@ class TransactionsWithLocations:
         #     .where(not_(and_(self.transactions_t.c.stop_id.is_(None), self.transactions_t.c.device_location.is_(None))))
         stmt_stop_with_agency_alias = stmt_stop_with_agency.cte('stop_custom')
 
+        # TODO: Add functionality to rename common columns in the second cte
+        # Currently, the following statement has a glaring issue.
+        # The ctes stmt_transactions_with_agency_alias and stmt_stop_with_agency_alias
+        # Have columns with the same name. SqlAlchemy handles this by appending _1 to the column names of the second cte.
+        # This is not very human readable and can cause confusion.
         stmt_transactions_with_location = \
             select(stmt_transactions_with_agency_alias,
                 case((stmt_stop_with_agency_alias.c.stop_location.is_not(None), stmt_stop_with_agency_alias.c.stop_location),
