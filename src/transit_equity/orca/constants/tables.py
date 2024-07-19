@@ -10,6 +10,7 @@ class DSSG_TABLES(Enum):
     Access using DSSG_TABLES.<table_name>.value
     '''
     BOARDINGS_VIEW: str = 'v_boardings_apr2023'
+    LINKED_TRANSACTIONS_VIEW: str = 'v_linked_transactions_apr2023'
     TRANSACTIONS_MAT_VIEW: str = 'm_transactions_apr2023'
 
 class ORCA_TABLES(Enum):
