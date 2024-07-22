@@ -23,20 +23,12 @@ Functions:
         Returns:
             gpd.GeoDataFrame: GeoDataFrame with origin-destination centroids and trip frequencies.
 
-    load_wkb(x):
-        Decodes and loads WKB binary location data into a Shapely geometry object for plotting with 
-        GeoPandas.
-        Args:
-            x (object): WKB binary object.
-        Returns:
-            object: Shapely geometry object.
 
 Example usage:
     import pandas as pd
     import geopandas as gpd
     from transit_equity.networks.network_prep import clean_and_filter_network_data, 
-                                                        get_hex_centroids_for_od, 
-                                                        load_wkb
+                                                        get_hex_centroids_for_od
 
     # Load trip data
     trips_df = pd.read_sql(query.statement,         #sql alchemy query 
