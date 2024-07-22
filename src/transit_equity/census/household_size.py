@@ -32,10 +32,16 @@ class HouseholdSizeDetails:
     def count(self):
         return self._count
 
-# B11016 - HOUSEHOLD TYPE BY HOUSEHOLD SIZE
-# The counts have been assigned as 0 for total, family_households and non-family households
-# since they are not used in the calculation of average household size
 class HOUSEHOLD_SIZE_COLUMNS(Enum):
+    """
+    This Enum class contains the details of the household size distribution columns in the census data
+        that will be relevant for the low income analysis
+
+    Table: B11016 - HOUSEHOLD TYPE BY HOUSEHOLD SIZE
+
+    The counts have been assigned as 0 for total, family_households and non-family households
+        since they are not used in the calculation of average household size
+    """
     B11016_001E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_001E', 
         label='total')
     B11016_002E: HouseholdSizeDetails = HouseholdSizeDetails(field='B11016_002E',
