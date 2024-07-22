@@ -47,6 +47,9 @@ class INCOME_DISTRIBUTION_COLUMNS(Enum):
 
     The min_income and max_income have been assigned as -1 for the total field, 
         since they are not used in the calculation of average household income
+    
+    The max_income for the last column has been assigned as math.inf since it is the highest income range.
+        Please note this if you intend to use this class for any other purpose such as average income calculation.
     """
     B19001_001E: IncomeDetails = IncomeDetails(field='B19001_001E',
         label='total', min_income=-1, max_income=-1)
@@ -81,7 +84,7 @@ class INCOME_DISTRIBUTION_COLUMNS(Enum):
     B19001_016E: IncomeDetails = IncomeDetails(field='B19001_016E',
         label='150000_to_199999', min_income=150000, max_income=199999)
     B19001_017E: IncomeDetails = IncomeDetails(field='B19001_017E',
-        label='200000_or_more', min_income=200000, max_income=200000)
+        label='200000_or_more', min_income=200000, max_income=1e9)
 
 
 # TODO: This function can be extended to do a calculation on an entire pandas DataFrame
