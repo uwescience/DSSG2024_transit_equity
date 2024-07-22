@@ -2,6 +2,7 @@ import pandas as pd
 from enum import Enum
 
 # This class will be useful for calculating statistics on households
+# TODO: Add more clarity to the meaning of count variable
 class HouseholdSizeDetails:
     """
     A class to store the details of a household size
