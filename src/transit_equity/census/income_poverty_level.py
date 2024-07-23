@@ -90,10 +90,13 @@ def get_population_in_income_poverty_level_range(income_poverty_level_row: pd.Se
     population
         The population in the given income to poverty level ratio range
     
-    true_income_poverty_level_range: Tuple[int, int]
-        The actual income to poverty level ratio range that was used in the calculation
-        This is useful when the input range is not within the bounds of the income to poverty level ratio ranges
-        It will be the intersection of the input range and the income to poverty level ratio ranges
+    true_min_income_poverty_level: int
+        The actual minimum income to poverty level ratio that was used in the calculation.
+        This is useful when the input range is not within the bounds of the income to poverty level ratio ranges.
+    
+    true_max_income_poverty_level: int
+        The actual maximum income to poverty level ratio that was used in the calculation.
+        This is useful when the input range is not within the bounds of the income to poverty level ratio ranges.
     
     Examples:
     ---------
@@ -148,7 +151,8 @@ def get_population_in_income_poverty_level_range(income_poverty_level_row: pd.Se
                 true_max_income_poverty_level = column.value.max_income_poverty_level
     return {
         'population': population,
-        'true_income_poverty_level_range': (true_min_income_poverty_level, true_max_income_poverty_level)
+        'true_min_income_poverty_level': true_min_income_poverty_level,
+        'true_max_income_poverty_level': true_max_income_poverty_level
     }
 
 def get_population_in_income_poverty_level_range_df(income_poverty_level_row_df: pd.DataFrame,
@@ -180,10 +184,13 @@ def get_population_in_income_poverty_level_range_df(income_poverty_level_row_df:
     population: pd.Series
         The population in the given income to poverty level ratio range for each row in the DataFrame
     
-    true_income_poverty_level_range: Tuple[int, int]
-        The actual income to poverty level ratio range that was used in the calculation
-        This is useful when the input range is not within the bounds of the income to poverty level ratio ranges
-        It will be the intersection of the input range and the income to poverty level ratio ranges
+    true_min_income_poverty_level: int
+        The actual minimum income to poverty level ratio that was used in the calculation.
+        This is useful when the input range is not within the bounds of the income to poverty level ratio ranges.
+
+    true_max_income_poverty_level: int
+        The actual maximum income to poverty level ratio that was used in the calculation.
+        This is useful when the input range is not within the bounds of the income to poverty level ratio ranges.
     
     Examples:
     ---------
@@ -242,5 +249,6 @@ def get_population_in_income_poverty_level_range_df(income_poverty_level_row_df:
                 true_max_income_poverty_level = column.value.max_income_poverty_level
     return {
         'population': population,
-        'true_income_poverty_level_range': (true_min_income_poverty_level, true_max_income_poverty_level)
+        'true_min_income_poverty_level': true_min_income_poverty_level,
+        'true_max_income_poverty_level': true_max_income_poverty_level
     }
