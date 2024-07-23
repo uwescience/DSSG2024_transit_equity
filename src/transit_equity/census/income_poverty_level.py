@@ -61,7 +61,7 @@ class INCOME_POVERTY_LEVEL_COLUMNS(Enum):
         label='2_to_above', min_income_level=2.0, max_income_level=1e6)
     
 def get_population_in_income_level_range(income_poverty_level_row: pd.Series, 
-                                         min_income_level: int = LOW_INCOME_RANGE[0], 
+                                         min_income_level: int = LOW_INCOME_RANGE[0],
                                          max_income_level: int = LOW_INCOME_RANGE[1]):
     """
     A function to get the population in the given income to poverty level ratio range from a census row.
@@ -85,8 +85,13 @@ def get_population_in_income_level_range(income_poverty_level_row: pd.Series,
     
     Returns:
     --------
-    int
+    population
         The population in the given income to poverty level ratio range
+    
+    true_income_level_range: Tuple[int, int]
+        The actual income to poverty level ratio range that was used in the calculation
+        This is useful when the input range is not within the bounds of the income to poverty level ratio ranges
+        It will be the intersection of the input range and the income to poverty level ratio ranges
     
     Examples:
     ---------
@@ -121,6 +126,8 @@ def get_population_in_income_level_range(income_poverty_level_row: pd.Series,
     60
     """
     population = 0
+    true_min_income_level = min_income_level
+    true_max_income_level = max_income_level
     for column in INCOME_POVERTY_LEVEL_COLUMNS:
         if column.value.field not in income_poverty_level_row:
             continue
@@ -133,4 +140,11 @@ def get_population_in_income_level_range(income_poverty_level_row: pd.Series,
         # Else there is some overlap with [min_income_level, max_income_level)
         else:
             population += income_poverty_level_row[column.value.field]
-    return population
+            if column.value.min_income_level < min_income_level:
+                true_min_income_level = column.value.min_income_level
+            if column.value.max_income_level > max_income_level:
+                true_max_income_level = column.value.max_income_level
+    return {
+        'population': population,
+        'true_income_level_range': (true_min_income_level, true_max_income_level)
+    }
