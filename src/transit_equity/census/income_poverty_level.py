@@ -58,7 +58,7 @@ class INCOME_POVERTY_LEVEL_COLUMNS(Enum):
     C17002_007E: IncomePovertyLevelDetails = IncomePovertyLevelDetails(field='C17002_007E',
         label='1.85_to_1.99', min_income_level=1.85, max_income_level=2.0)
     C17002_008E: IncomePovertyLevelDetails = IncomePovertyLevelDetails(field='C17002_008E',
-        label='2_to_2.99', min_income_level=2.0, max_income_level=1e6)
+        label='2_to_more', min_income_level=2.0, max_income_level=1e6)
     
 def get_population_in_income_level_range(income_poverty_level_row: pd.Series, 
                                          min_income_level: int = LOW_INCOME_RANGE[0], 
