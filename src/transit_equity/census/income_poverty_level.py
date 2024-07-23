@@ -15,6 +15,7 @@ class IncomePovertyLevelDetails:
         The minimum income to poverty level ratio
     max_income_level: int
         The maximum income to poverty level ratio. Exclusive.
+        Thus the range is [min_income_level, max_income_level)
     """
     def __init__(self, field: str, label: str, min_income_level: int = 0, max_income_level: int = 0):
         # As it turns out, we do not need to use the @property decorator for the class attributes
@@ -59,4 +60,42 @@ class INCOME_POVERTY_LEVEL_COLUMNS(Enum):
     
 def get_population_in_income_level_range(income_poverty_level_row: pd.Series, 
                                          min_income_level: int, max_income_level: int):
-    pass
+    """
+    A function to get the population in the given income to poverty level ratio range from a census row.
+    Since the income to poverty level ratio is a continuous variable, 
+        we will have to check all the columns in the series that are present in the range.
+    If a column is partially in the range, we will consider the whole column.
+
+    Parameters:
+    -----------
+    income_poverty_level_row: pd.Series
+        A pandas series containing the income to poverty level ratio columns
+        It contains different income to poverty level ratio ranges (e.g. less_than_0.5, 0.5_to_0.99, etc.)
+            in a census area.
+        
+    min_income_level: int
+        The minimum income to poverty level ratio for the range
+    
+    max_income_level: int
+        The maximum income to poverty level ratio for the range. Exclusive.
+        Thus the range is [min_income_level, max_income_level)
+    
+    Returns:
+    --------
+    int
+        The population in the given income to poverty level ratio range
+    """
+    population = 0
+    for column in INCOME_POVERTY_LEVEL_COLUMNS:
+        if column.value.field not in income_poverty_level_row:
+            continue
+        # Check if the value of the field is within [min_income_level, max_income_level]
+        if column.value.min_income_level >= min_income_level and column.value.max_income_level < max_income_level:
+            population += income_poverty_level_row[column.value.field]
+        # Else check if the value of the field has no overlap with [min_income_level, max_income_level]
+        elif column.value.min_income_level >= max_income_level or column.value.max_income_level < min_income_level:
+            pass
+        # Else there is some overlap with [min_income_level, max_income_level)
+        else:
+            population += income_poverty_level_row[column.value.field]
+    return population
