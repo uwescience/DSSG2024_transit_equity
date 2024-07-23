@@ -41,7 +41,7 @@ Example usage:
     hex_grid_path = 'path_to_hex_grid.shp'
 
     # Map origin-destination pairs to hexagon centroids and calculate frequencies
-    gdf_network_clean = get_hex_centroids_for_od(gdf_trips, hex_grid_path)
+    gdf_network_clean = get_hex_centroids_for_od_trips(gdf_trips, hex_grid_path)
 """
 
 import pandas as pd
@@ -209,7 +209,7 @@ def get_hex_centroids_for_od_trips(geo_df, hex_grid_path):
         10. Set the geometry to the boarding centroid for the final GeoDataFrame.
 
     Example:
-    >>> gdf_network_clean = get_hex_centroids_for_od(trip_geo_df, "path/to/hex_grid.shp")
+    >>> gdf_network_clean = get_hex_centroids_for_od_trips(trip_geo_df, "path/to/hex_grid.shp")
     """
     # Loading hex data
     hex_grid_eigth_mile = gpd.read_file(hex_grid_path)
@@ -326,7 +326,7 @@ def get_hex_centroids_for_od_trips(geo_df, hex_grid_path):
     gdf_network_clean['alight_string'] = gdf_network_clean['alight_centroid'].astype('string')
 
     # Filter to only frequent trips, ones that happened more than 50 times
-    gdf_network_clean = gdf_network_clean[gdf_network_clean['trip_centroid_frequency'] > 50]
+    gdf_network_clean = gdf_network_clean[gdf_network_clean['trip_centroid_frequency'] > 20]
 
     # now need to reset geometry for the geodataframe
     gdf_network_clean = gdf_network_clean.set_geometry('board_centroid')
