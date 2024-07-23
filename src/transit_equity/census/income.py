@@ -115,6 +115,7 @@ def get_households_in_income_range(income_distribution_row: pd.Series, min_incom
     Returns:
     -------
     float
+        The number of households in the given income range
 
     Examples:
     --------
