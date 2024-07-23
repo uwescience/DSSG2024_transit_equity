@@ -60,8 +60,6 @@ class INCOME_POVERTY_LEVEL_COLUMNS(Enum):
     C17002_008E: IncomePovertyLevelDetails = IncomePovertyLevelDetails(field='C17002_008E',
         label='2_to_above', min_income_poverty_level=2.0, max_income_poverty_level=1e6)
 
-# TODO: This function can be extended to do a calculation on an entire pandas DataFrame
-# The extended function will also have better performance.
 def get_population_in_income_poverty_level_range(income_poverty_level_row: pd.Series, 
                                          min_income_poverty_level: int = LOW_INCOME_RANGE[0],
                                          max_income_poverty_level: int = LOW_INCOME_RANGE[1]):
