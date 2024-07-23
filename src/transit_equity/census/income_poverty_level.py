@@ -1,3 +1,10 @@
+"""
+TODO: Add module description
+
+TODO: Make the module more cohesive by integrating the common code between the two main functions 
+    into separate helper functions
+"""
+
 import pandas as pd
 from enum import Enum
 
