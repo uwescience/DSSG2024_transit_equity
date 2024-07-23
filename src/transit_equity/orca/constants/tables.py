@@ -10,9 +10,11 @@ class DSSG_TABLES(Enum):
     Access using DSSG_TABLES.<table_name>.value
     """
     V_BOARDINGS_APR2023: str = 'v_boardings_apr2023'
+    V_LINKED_TRANSACTIONS_APR2023: str = 'v_linked_transactions_apr2023'
     M_TRANSACTIONS_APR2023: str = 'm_transactions_apr2023'
 
     BOARDINGS_VIEW: str = 'v_boardings_apr2023'
+    LINKED_TRANSACTIONS_VIEW: str = 'v_linked_transactions_apr2023'
     TRANSACTIONS_MAT_VIEW: str = 'm_transactions_apr2023'
 
 class ORCA_TABLES(Enum):
@@ -34,7 +36,6 @@ class TRAC_TABLES(Enum):
     AGENCIES: str = 'agencies'
 
     AGENCIES_TABLE: str = 'agencies'
-
 
 class GTFS_TABLES(Enum):
     """

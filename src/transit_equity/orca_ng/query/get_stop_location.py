@@ -1,18 +1,22 @@
 import datetime
 
-from sqlalchemy import Table, Select, func, select, not_, or_, and_, case
+from sqlalchemy import Engine
+from sqlalchemy import Table, Select
+from sqlalchemy import func, select, not_, or_, and_, case
 from sqlalchemy.ext.automap import AutomapBase
 
 from . import get_schema_key
 from ..constants.schemas import DSSG_SCHEMA, ORCA_SCHEMA, TRAC_SCHEMA, GTFS_SCHEMA
 from ..constants.schema_tables import DSSG_SCHEMA_TABLES, ORCA_SCHEMA_TABLES, TRAC_SCHEMA_TABLES, GTFS_SCHEMA_TABLES
+from ...utils.db_helpers import get_automap_base_with_views
 
 def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, end_date: datetime, 
     automap_base_dict: dict, transactions_t: Table | None = None) -> Select:
-    '''
+    """
     This function returns a query that can be used to get transactions with their stop locations.
     The transactions table is joined with the gtfs stop locations data.
     For each stop, we get the latest GTFS feed for each transit agency and assign the stop location from that feed.
+    (Warning! This function is too restrictive. Consider using TransactionsWithLocations class instead.)
 
     Parameters
     ----------
@@ -47,29 +51,25 @@ def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, e
     ...     transactions_t=transactions_t
     ... )
     >>> print(type(query))
-    '''
+    """
     # Keys for schemas of interest
-    schemas_required = [DSSG_SCHEMA, ORCA_SCHEMA, TRAC_SCHEMA, GTFS_SCHEMA]
-    schema_keys = [get_schema_key(schema_name) for schema_name in schemas_required]
-    Base_dssg: AutomapBase = automap_base_dict[get_schema_key(DSSG_SCHEMA)]
     Base_trac: AutomapBase = automap_base_dict[get_schema_key(TRAC_SCHEMA)]
     Base_orca: AutomapBase = automap_base_dict[get_schema_key(ORCA_SCHEMA)]
     Base_gtfs: AutomapBase = automap_base_dict[get_schema_key(GTFS_SCHEMA)]
 
     if transactions_t is None:
-        transactions_t = Base_orca.metadata.tables[ORCA_SCHEMA_TABLES.TRANSACTIONS_TABLE]
+        transactions_t = Base_orca.metadata.tables[ORCA_SCHEMA_TABLES.TRANSACTIONS.value]
     
-    agencies = Base_trac.metadata.tables[TRAC_SCHEMA_TABLES.AGENCIES_TABLE.value]
-    modes = Base_orca.metadata.tables[ORCA_SCHEMA_TABLES.MODES_TABLE.value]
-    feed_info = Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.FEED_INFO_TABLE.value]
-    stops = Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.STOPS_TABLE.value]
-    agencies_gtfs = Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.AGENCY_TABLE.value]
+    agencies = Base_trac.metadata.tables[TRAC_SCHEMA_TABLES.AGENCIES.value]
+    feed_info = Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.TL_FEED_INFO.value]
+    stops = Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.TL_STOPS.value]
+    agencies_gtfs = Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.TL_AGENCY.value]
 
     # Get the feeds only for the given date range
     stmt_gtfs_feed = \
         select(feed_info)\
-        .where(not_(or_(feed_info.c.feed_start_date >= start_date, 
-                        feed_info.c.feed_end_date <= end_date)))
+        .where(not_(or_(feed_info.c.feed_start_date >= end_date, 
+                        feed_info.c.feed_end_date <= start_date)))
 
     stmt_gtfs_feed_alias = stmt_gtfs_feed.subquery('feed')
 

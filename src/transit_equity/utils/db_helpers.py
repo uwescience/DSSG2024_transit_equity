@@ -54,7 +54,7 @@ def get_automap_base_with_views(engine: Engine, schema: str) -> AutomapBase:
     --------
     Example 1:
     >>> from sqlalchemy import create_engine
-    >>> engine = create_engine('postgresql://user:password@localhost:5432/dbname'))
+    >>> engine = create_engine('postgresql://user:password@localhost:5432/dbname')
     >>> Base = get_automap_base_with_views(engine=engine, schema='orca')
     >>> print(type(Base))
     <class 'sqlalchemy.ext.automap.AutomapBase'>
