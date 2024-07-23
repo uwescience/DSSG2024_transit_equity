@@ -14,7 +14,7 @@ Functions:
         Returns:
             gpd.GeoDataFrame: GeoDataFrame with cleaned and filtered trip data.
         
-    get_hex_centroids_for_od(geo_df, hex_grid_path):
+    get_hex_centroids_for_od_trips(geo_df, hex_grid_path):
         Processes trip data to map origin-destination pairs to hexagon centroids and calculates the 
         frequency of trips between these centroids.
         Args:
@@ -41,5 +41,5 @@ Example usage:
     hex_grid_path = 'path_to_hex_grid.shp'
 
     # Map origin-destination pairs to hexagon centroids and calculate frequencies
-    gdf_network_clean = get_hex_centroids_for_od(gdf_trips, hex_grid_path)
+    gdf_network_clean = get_hex_centroids_for_od_trips(gdf_trips, hex_grid_path)
 """
