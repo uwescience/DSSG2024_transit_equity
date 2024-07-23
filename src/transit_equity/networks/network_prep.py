@@ -231,6 +231,9 @@ def get_hex_centroids_for_od_trips(geo_df, hex_grid_path):
     # Ensure shapely locations are set as geometry dtype
     gdf_boarding = gdf_boarding.set_geometry('board_location_shapely')
 
+    # Set correct crs
+    gdf_boarding = gdf_boarding.set_crs(epsg=32610)
+
     # reproject to web mercator to match basemap
     gdf_boarding = gdf_boarding.to_crs('EPSG:3857')
 
@@ -241,6 +244,9 @@ def get_hex_centroids_for_od_trips(geo_df, hex_grid_path):
 
     # Ensure shapely locations are set as geometry dtype
     gdf_alight = gdf_alight.set_geometry('alight_location_shapely')
+
+    # Set correct crs
+    gdf_boarding = gdf_boarding.set_crs(epsg=32610)
 
     # reproject to web mercator to match basemap
     gdf_alight = gdf_alight.to_crs('EPSG:3857')
