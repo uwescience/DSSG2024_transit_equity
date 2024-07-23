@@ -231,9 +231,6 @@ def get_hex_centroids_for_od_trips(geo_df, hex_grid_path):
     # Ensure shapely locations are set as geometry dtype
     gdf_boarding = gdf_boarding.set_geometry('board_location_shapely')
 
-    # Set correct crs
-    gdf_boarding = gdf_boarding.set_crs(epsg=32610)
-
     # reproject to web mercator to match basemap
     gdf_boarding = gdf_boarding.to_crs('EPSG:3857')
 
@@ -246,7 +243,7 @@ def get_hex_centroids_for_od_trips(geo_df, hex_grid_path):
     gdf_alight = gdf_alight.set_geometry('alight_location_shapely')
 
     # Set correct crs
-    gdf_boarding = gdf_boarding.set_crs(epsg=32610)
+    gdf_alight = gdf_alight.set_crs(epsg=32610)
 
     # reproject to web mercator to match basemap
     gdf_alight = gdf_alight.to_crs('EPSG:3857')
@@ -264,7 +261,7 @@ def get_hex_centroids_for_od_trips(geo_df, hex_grid_path):
 
     # need to drop board_centroid == 'None'
     gdf_boarding_poly_joined = \
-        gdf_boarding_poly_joined[gdf_boarding_poly_joined['board_centroid'] is not None]
+        gdf_boarding_poly_joined[gdf_boarding_poly_joined['board_centroid'] != None]
 
     #repeat for alights
     gdf_destination_poly_joined = gpd.sjoin(gdf_alight, hex_grid_eigth_mile, how='left',
@@ -279,7 +276,7 @@ def get_hex_centroids_for_od_trips(geo_df, hex_grid_path):
 
     # need to drop board_centroid == 'None'
     gdf_destination_poly_joined = \
-        gdf_destination_poly_joined[gdf_destination_poly_joined['alight_centroid'] is not None]
+        gdf_destination_poly_joined[gdf_destination_poly_joined['alight_centroid'] != None]
 
     # now need to join both geo dataframes
     gdf_board_alight_merge = gdf_boarding_poly_joined.merge(gdf_destination_poly_joined,
