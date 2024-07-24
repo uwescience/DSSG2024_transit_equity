@@ -58,7 +58,7 @@ def get_transaction_counts_per_block_group(df_transactions_with_locations: str, 
     return gdf_block_group_transaction_counts
 
 # A generic function that analyzes unique users per census
-def get_users_per_block(df_transactions_with_locations: str, gdf_block_group_data: gpd.GeoDataFrame,
+def get_user_counts_per_block(df_transactions_with_locations: str, gdf_block_group_data: gpd.GeoDataFrame,
                                            transaction_location_column = 'transaction_location', 
                                            is_transaction_location_shaped: bool = False,
                                            census_gdf_crs: int = 32610) -> gpd.GeoDataFrame:
