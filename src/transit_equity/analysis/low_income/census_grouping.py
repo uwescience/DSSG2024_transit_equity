@@ -62,6 +62,38 @@ def get_users_per_block(df_transactions_with_locations: str, gdf_block_group_dat
                                            transaction_location_column = 'transaction_location', 
                                            is_transaction_location_shaped: bool = False,
                                            census_gdf_crs: int = 32610) -> gpd.GeoDataFrame:
+    """
+    A function to get the number of unique users per census block group.
+
+    (Note: Currently, there is no explicit check to ensure that the census GeoDataFrame is for census block groups.
+    Hence, in theory, this function can be used to get the number of transactions per any type of census geography.
+    However, this has not been tested.)
+
+    Parameters
+    ----------
+    df_transactions_with_locations : pd.DataFrame
+        A DataFrame containing the transactions with their locations
+        (Note: The CRS of the transaction locations should be EPSG:4326)
+        TODO: Check if it is necessary to specify the CRS of the transaction locations
+    
+    gdg_block_group_data : gpd.GeoDataFrame
+        A GeoDataFrame containing the census block group data
+    
+    transaction_location_column : str
+        The column name in the DataFrame that contains the transaction location
+    
+    is_transaction_location_shaped : bool
+        A flag to indicate if the transaction location is already a Shapely geometry object
+    
+    census_gdf_crs : int
+        The CRS of the census block group data
+    
+    Returns
+    -------
+    gpd.GeoDataFrame
+        A GeoDataFrame containing the number of unique users per census block group
+    """
+    
     # The transaction_location_column is a WKB hex string that needs to be converted to a Shapely geometry object
     if not is_transaction_location_shaped:
         df_transactions_with_locations['transaction_location_shape'] = \
