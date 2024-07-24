@@ -69,7 +69,7 @@ class INCOME_POVERTY_LEVEL_COLUMNS(Enum):
     C17002_008E: IncomePovertyLevelDetails = IncomePovertyLevelDetails(field='C17002_008E',
         label='2_to_above', min_level=2.0, max_level=1e6)
 
-def get_population_in_level_range(level_row: pd.Series, 
+def get_population_in_income_poverty_level_range(income_poverty_level_row: pd.Series, 
                                          min_level: int = LOW_INCOME_RANGE[0],
                                          max_level: int = LOW_INCOME_RANGE[1]):
     """
@@ -80,7 +80,7 @@ def get_population_in_level_range(level_row: pd.Series,
 
     Parameters:
     -----------
-    level_row: pd.Series
+    income_poverty_level_row: pd.Series
         A pandas series containing the income to poverty level ratio columns
         It contains different income to poverty level ratio ranges (e.g. less_than_0.5, 0.5_to_0.99, etc.)
             in a census area.
@@ -122,7 +122,7 @@ def get_population_in_level_range(level_row: pd.Series,
 
     >>> import pandas as pd
     >>> from transit_equity.census.level import INCOME_POVERTY_LEVEL_COLUMNS
-    >>> from transit_equity.census.level import get_population_in_level_range
+    >>> from transit_equity.census.level import get_population_in_income_poverty_level_range
     >>> level_dict = {
     ...     'C17002_001E': 100,
     ...     'C17002_002E': 20,
@@ -133,25 +133,25 @@ def get_population_in_level_range(level_row: pd.Series,
     ...     'C17002_007E': 0,
     ...     'C17002_008E': 40,
     }
-    >>> level_row = pd.Series(level_dict)
-    >>> get_population_in_level_range(level_row, 0, 2.0)
+    >>> income_poverty_level_row = pd.Series(level_dict)
+    >>> get_population_in_income_poverty_level_range(income_poverty_level_row, 0, 2.0)
     60
     """
     population = 0
     true_min_level = min_level
     true_max_level = max_level
     for column in INCOME_POVERTY_LEVEL_COLUMNS:
-        if column.value.field not in level_row:
+        if column.value.field not in income_poverty_level_row:
             continue
         # Check if the value of the field is within [min_level, max_level]
         if column.value.min_level >= min_level and column.value.max_level < max_level:
-            population += level_row[column.value.field]
+            population += income_poverty_level_row[column.value.field]
         # Else check if the value of the field has no overlap with [min_level, max_level]
         elif column.value.min_level >= max_level or column.value.max_level < min_level:
             pass
         # Else there is some overlap with [min_level, max_level)
         else:
-            population += level_row[column.value.field]
+            population += income_poverty_level_row[column.value.field]
             if column.value.min_level < min_level:
                 true_min_level = column.value.min_level
             if column.value.max_level > max_level:
@@ -162,7 +162,7 @@ def get_population_in_level_range(level_row: pd.Series,
         'true_max_level': true_max_level
     }
 
-def get_population_in_level_range_df(level_row_df: pd.DataFrame,
+def get_population_in_income_poverty_level_range_df(income_poverty_level_row_df: pd.DataFrame,
                                                     min_level: int = LOW_INCOME_RANGE[0],
                                                     max_level: int = LOW_INCOME_RANGE[1]):
     """
@@ -174,7 +174,7 @@ def get_population_in_level_range_df(level_row_df: pd.DataFrame,
 
     Parameters:
     -----------
-    level_row_df: pd.DataFrame
+    income_poverty_level_row_df: pd.DataFrame
         A pandas DataFrame containing the income to poverty level ratio columns
         It contains different income to poverty level ratio ranges (e.g. less_than_0.5, 0.5_to_0.99, etc.)
             in a census area.
@@ -216,7 +216,7 @@ def get_population_in_level_range_df(level_row_df: pd.DataFrame,
     
     >>> import pandas as pd
     >>> from transit_equity.census.level import INCOME_POVERTY_LEVEL_COLUMNS
-    >>> from transit_equity.census.level import get_population_in_level_range_df
+    >>> from transit_equity.census.level import get_population_in_income_poverty_level_range_df
     >>> level_dict = {
     ...     'C17002_001E': [100, 100, 100],
     ...     'C17002_002E': [20, 20, 20],
@@ -227,8 +227,8 @@ def get_population_in_level_range_df(level_row_df: pd.DataFrame,
     ...     'C17002_007E': [0, 0, 0],
     ...     'C17002_008E': [40, 40, 40],
     }
-    >>> level_row_df = pd.DataFrame(level_dict)
-    >>> get_population_in_level_range_df(level_row_df, 0, 2.0)
+    >>> income_poverty_level_row_df = pd.DataFrame(level_dict)
+    >>> get_population_in_income_poverty_level_range_df(income_poverty_level_row_df, 0, 2.0)
     0    60
     1    60
     2    60
@@ -236,20 +236,20 @@ def get_population_in_level_range_df(level_row_df: pd.DataFrame,
     """
     true_min_level = min_level
     true_max_level = max_level
-    population = pd.Series([0] * len(level_row_df))
+    population = pd.Series([0] * len(income_poverty_level_row_df))
     
     for column in INCOME_POVERTY_LEVEL_COLUMNS:
-        if column.value.field not in level_row_df:
+        if column.value.field not in income_poverty_level_row_df:
             continue
         # Check if the value of the field is within [min_level, max_level]
         if column.value.min_level >= min_level and column.value.max_level < max_level:
-            population += level_row_df[column.value.field]
+            population += income_poverty_level_row_df[column.value.field]
         # Else check if the value of the field has no overlap with [min_level, max_level]
         elif column.value.min_level >= max_level or column.value.max_level < min_level:
             pass
         # Else there is some overlap with [min_level, max_level)
         else:
-            population += level_row_df[column.value.field]
+            population += income_poverty_level_row_df[column.value.field]
             if column.value.min_level < min_level:
                 true_min_level = column.value.min_level
             if column.value.max_level > max_level:
