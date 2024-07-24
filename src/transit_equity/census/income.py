@@ -44,6 +44,7 @@ class INCOME_DISTRIBUTION_COLUMNS(Enum):
         that will be relevant for the low income analysis
 
     Table: B19001 - HOUSEHOLD INCOME IN THE PAST 12 MONTHS
+    https://api.census.gov/data/2019/acs/acs5/groups/B19001.html
 
     The min_income and max_income have been assigned as -1 for the total field, 
         since they are not used in the calculation of average household income
@@ -114,6 +115,7 @@ def get_households_in_income_range(income_distribution_row: pd.Series, min_incom
     Returns:
     -------
     float
+        The number of households in the given income range
 
     Examples:
     --------
