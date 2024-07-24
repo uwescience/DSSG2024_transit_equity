@@ -203,35 +203,37 @@ def get_population_in_income_poverty_level_range_df(income_poverty_level_row_df:
     ---------
     Example 1:
 
-    The following example shows the calculation of population in a given income to poverty level ratio range from a census row
-    with 100 people in total, 20 people with income to poverty level ratio less than 0.5,
+    The following example shows the calculation of population in a given income to poverty level ratio range 
+        from a census dataframe with 3 rows
+    
+    The income to poverty level ratio range is [0, 2.0).
+    
+    First Row: There are 100 people in total, 20 people with income to poverty level ratio less than 0.5,
     30 people with income to poverty level ratio between 0.5 and 0.99, 
     10 people with income to poverty level ratio between 1.0 and 1.24, 
     40 people with income to poverty level ratio between 2.0 and above, 
     and 0 people with income to poverty level ratio in between.
-
-    The income to poverty level ratio range is [0, 2.0).
     
-    Expected Answer: (20 + 30 + 10) = 60
+    First Row Expected Answer: (20 + 30 + 10) = 60
     
     >>> import pandas as pd
     >>> from transit_equity.census.level import INCOME_POVERTY_LEVEL_COLUMNS
     >>> from transit_equity.census.level import get_population_in_income_poverty_level_range_df
     >>> level_dict = {
-    ...     'C17002_001E': [100, 100, 100],
+    ...     'C17002_001E': [100, 100, 200],
     ...     'C17002_002E': [20, 20, 20],
     ...     'C17002_003E': [30, 30, 30],
-    ...     'C17002_004E': [10, 10, 10],
+    ...     'C17002_004E': [10, 10, 60],
     ...     'C17002_005E': [0, 0, 0],
     ...     'C17002_006E': [0, 0, 0],
     ...     'C17002_007E': [0, 0, 0],
-    ...     'C17002_008E': [40, 40, 40],
+    ...     'C17002_008E': [40, 40, 90],
     }
     >>> income_poverty_level_row_df = pd.DataFrame(level_dict)
     >>> get_population_in_income_poverty_level_range_df(income_poverty_level_row_df, 0, 2.0)
     0    60
     1    60
-    2    60
+    2    110
     dtype: int64
     """
     true_min_level = min_level
