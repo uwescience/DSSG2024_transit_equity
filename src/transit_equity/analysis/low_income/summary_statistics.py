@@ -30,13 +30,13 @@ def summarize_census_block_counts_df(df_transactions_with_location: pd.DataFrame
     list
         A list of strings containing the summary statistics
     """
-    gdf_pg_bg_counts_summary = [f'Total Transactions: {df_transactions_with_location.shape[0]},'+ 
+    gdf_summary = [f'Total Transactions: {df_transactions_with_location.shape[0]},'+ 
                             f'Total Blocks: {gdf_block_group_counts.shape[0]}']
-    gdf_pg_bg_counts_summary.append(f'Average Transactions per Block: {df_transactions_with_location.shape[0] / gdf_block_group_counts.shape[0]}')
-    gdf_pg_bg_counts_summary.append(f'Min Counts per Block: {gdf_block_group_counts[summary_column].min()}, '+
+    gdf_summary.append(f'Average Transactions per Block: {df_transactions_with_location.shape[0] / gdf_block_group_counts.shape[0]}')
+    gdf_summary.append(f'Min Counts per Block: {gdf_block_group_counts[summary_column].min()}, '+
                                     f'Max Counts per Block: {gdf_block_group_counts[summary_column].max()}')
-    gdf_pg_bg_counts_summary.append(f'Median Counts per Block: {gdf_block_group_counts[summary_column].median()}')
-    gdf_pg_bg_counts_summary.append(f'\nPercentile Counts per Block:\n{gdf_block_group_counts[summary_column]\
+    gdf_summary.append(f'Median Counts per Block: {gdf_block_group_counts[summary_column].median()}')
+    gdf_summary.append(f'\nPercentile Counts per Block:\n{gdf_block_group_counts[summary_column]\
                                         .quantile(percentiles)}\n')
     
-    return gdf_pg_bg_counts_summary
+    return gdf_summary
