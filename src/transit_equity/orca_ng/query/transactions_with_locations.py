@@ -1,5 +1,10 @@
 """
 This file contains the TransactionsWithLocations class that can be used to get transactions with their stop locations.
+
+Classes
+-------
+TransactionsWithLocations
+    A class to get locations of transactions using customizable logic
 """
 import datetime
 
@@ -25,6 +30,28 @@ class TransactionsWithLocations:
         Engine that is already connected to a database
     transactions_t : sqlalchemy.Table, optional
         Table object for the transactions table. If not provided, the default orca.transactions table is used
+
+    Methods
+    -------
+    get_automap_bases()
+        Get the automap bases for the schemas of interest
+    
+    get_latest_gtfs_feed()
+        Get the latest GTFS feed for each transit agency
+    
+    get_stop_with_agency_from_feed(stmt_gtfs_feed: Select)
+        Get the stop details based on the given feeds
+    
+    get_transactions_with_agency()
+        Get transactions with their agency details
+    
+    get_transactions_with_stop_or_device_locations(stmt_stop_with_agency: Select)
+        Get transactions with their stop or device locations
+    
+    get_transactions_with_stop_or_device_locations_from_latest_gtfs()
+        Get transactions with their stop or device locations using the latest GTFS feed.
+        Uses logic from get_latest_gtfs_feed, get_stop_with_agency_from_feed and 
+        get_transactions_with_stop_or_device_locations.
     """
     def __init__(self, start_date: datetime, end_date: datetime, engine: Engine, transactions_t: Table | None = None):
         self.start_date = start_date
@@ -36,6 +63,9 @@ class TransactionsWithLocations:
         self.transactions_t = transactions_t
 
     def get_automap_bases(self):
+        """
+        Get the automap bases for the schemas of interest
+        """
         self.Base_dssg = get_automap_base_with_views(engine=self.engine, schema=DSSG_SCHEMA)
         self.Base_trac = get_automap_base_with_views(engine=self.engine, schema=TRAC_SCHEMA)
         self.Base_orca = get_automap_base_with_views(engine=self.engine, schema=ORCA_SCHEMA)
@@ -121,7 +151,8 @@ class TransactionsWithLocations:
     def get_transactions_with_stop_or_device_locations(self, stmt_stop_with_agency: Select) -> Select:
         """
         This function returns a query that can be used to get transactions with their stop or device locations.
-        The stop location is used as the transaction location if present in stmt_stop_with_agency, else the device location is used.
+        The stop location is used as the transaction location if present in stmt_stop_with_agency, 
+            else the device location is used.
 
         Parameters
         ----------
@@ -156,7 +187,8 @@ class TransactionsWithLocations:
     def get_transactions_with_stop_or_device_locations_from_latest_gtfs(self) -> Select:
         """
         This function returns a query that can be used to get transactions with their stop or device locations.
-        The stop location is used as the transaction location if present in the latest GTFS feed, else the device location is used.
+        The stop location is used as the transaction location if present in the latest GTFS feed, 
+            else the device location is used.
 
         Returns
         -------
