@@ -1,5 +1,10 @@
 """
+This module contains functions to get various summary statistics for the low income analysis.
 
+Functions:
+----------
+summarize_census_block_counts_df:
+    Summarize different counts and statistics of transactions per census block group.
 """
 import pandas as pd
 import geopandas as gpd
