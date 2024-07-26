@@ -1,3 +1,19 @@
+"""
+This module contains the functions and classes to get and analyze household size data from the census data.
+
+Classes
+-------
+HouseholdSizeDetails : 
+    A class to store the details of a household size
+
+HOUSEHOLD_SIZE_COLUMNS : 
+    An Enum class containing the details of the household size distribution columns in the census data
+
+Functions
+---------
+get_average_household_size_from_census_row :
+    A function to get the average household size for a census row
+"""
 import pandas as pd
 from enum import Enum
 

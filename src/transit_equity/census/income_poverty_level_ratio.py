@@ -1,5 +1,22 @@
 """
-TODO: Add module description
+This module contains the functions and classes to get and analyze income to poverty level ratio data from the census data.
+
+Constants
+---------
+LOW_INCOME_RANGE : Tuple[int, int]
+
+Classes
+-------
+IncomePovertyLevelRatioDetails :
+    A class to store the details of the poverty level columns in the census data
+
+INCOME_POVERTY_LEVEL_RATIO_COLUMNS :
+    An Enum class containing the details of the income to poverty level columns in the census data
+
+Functions
+---------
+get_population_in_income_poverty_level_range_df :
+    A function to get the population in the given income to poverty level ratio range
 
 TODO: Make the module more cohesive by integrating the common code between the two main functions 
     into separate helper functions
