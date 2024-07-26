@@ -1,3 +1,15 @@
+"""
+This module contains functions to summarize transactions by census block group.
+
+Functions
+---------
+get_transaction_counts_per_block_group:
+    A function to get the number of transactions per census block group.
+
+get_user_counts_per_block:
+    A function to get the number of unique users per census block group.
+"""
+
 import pandas as pd
 import geopandas as gpd
 from shapely import wkb
@@ -6,7 +18,8 @@ from shapely import wkb
 def get_transaction_counts_per_block_group(df_transactions_with_locations: str, gdf_block_group_data: gpd.GeoDataFrame,
                                            transaction_location_column = 'transaction_location', 
                                            is_transaction_location_shaped: bool = False,
-                                           census_gdf_crs: int = 32610) -> gpd.GeoDataFrame:
+                                           census_gdf_crs: int = 32610,
+                                           count_column: str = 'txn_count') -> gpd.GeoDataFrame:
     """
     A function to get the number of transactions per census block group.
 
@@ -33,6 +46,9 @@ def get_transaction_counts_per_block_group(df_transactions_with_locations: str, 
     census_gdf_crs : int
         The CRS of the census block group data
     
+    count_column : str
+        The name of the column in the output GeoDataFrame that will contain the transaction count
+    
     Returns
     -------
     gpd.GeoDataFrame
@@ -52,7 +68,7 @@ def get_transaction_counts_per_block_group(df_transactions_with_locations: str, 
 
     gdf_transactions_bg = gpd.sjoin(gdf_transactions, gdf_block_group_data, how="left", predicate="within")
     gdf_transactions_bg_counts = gdf_transactions_bg[['txn_id', 'GEOID']].groupby(by='GEOID', axis=0).count().reset_index()\
-        .rename(columns={'txn_id': 'txn_count'})
+        .rename(columns={'txn_id': count_column})
     
     gdf_block_group_transaction_counts = pd.merge(gdf_block_group_data, gdf_transactions_bg_counts, how='inner', on='GEOID')
     return gdf_block_group_transaction_counts
@@ -61,7 +77,8 @@ def get_transaction_counts_per_block_group(df_transactions_with_locations: str, 
 def get_user_counts_per_block(df_transactions_with_locations: str, gdf_block_group_data: gpd.GeoDataFrame,
                                            transaction_location_column = 'transaction_location', 
                                            is_transaction_location_shaped: bool = False,
-                                           census_gdf_crs: int = 32610) -> gpd.GeoDataFrame:
+                                           census_gdf_crs: int = 32610,
+                                           count_column: str = 'user_count') -> gpd.GeoDataFrame:
     """
     A function to get the number of unique users per census block group.
 
@@ -110,7 +127,7 @@ def get_user_counts_per_block(df_transactions_with_locations: str, gdf_block_gro
     gdf_users_bg: pd.DataFrame = gdf_transactions_bg[['txn_id', 'card_id', 'GEOID']].groupby(by=['card_id', 'GEOID'], axis=0).count().reset_index()
 
     gdf_users_bg_counts: pd.DataFrame = gdf_users_bg[['card_id', 'GEOID']].groupby(by='GEOID', axis=0).count().reset_index()\
-        .rename(columns={'card_id': 'user_count'})
+        .rename(columns={'card_id': count_column})
 
     gdf_block_group_user_counts = pd.merge(gdf_block_group_data, gdf_users_bg_counts, how='inner', on='GEOID')
 
