@@ -33,22 +33,22 @@ class TransactionsWithLocations:
 
     Methods
     -------
-    get_automap_bases()
+    get_automap_bases :
         Get the automap bases for the schemas of interest
     
-    get_latest_gtfs_feed()
+    get_latest_gtfs_feed :
         Get the latest GTFS feed for each transit agency
     
-    get_stop_with_agency_from_feed(stmt_gtfs_feed: Select)
+    get_stop_with_agency_from_feed :
         Get the stop details based on the given feeds
     
-    get_transactions_with_agency()
+    get_transactions_with_agency :
         Get transactions with their agency details
     
-    get_transactions_with_stop_or_device_locations(stmt_stop_with_agency: Select)
+    get_transactions_with_stop_or_device_locations :
         Get transactions with their stop or device locations
     
-    get_transactions_with_stop_or_device_locations_from_latest_gtfs()
+    get_transactions_with_stop_or_device_locations_from_latest_gtfs :
         Get transactions with their stop or device locations using the latest GTFS feed.
         Uses logic from get_latest_gtfs_feed, get_stop_with_agency_from_feed and 
         get_transactions_with_stop_or_device_locations.

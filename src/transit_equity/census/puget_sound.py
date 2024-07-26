@@ -1,3 +1,22 @@
+"""
+This module contains constants functions to get the census block data for Puget Sound
+
+Constants
+---------
+CENSUS_GROUP_WASHINGTON_LINK :
+    Example Link for Washington Census Block Groups
+
+FIPS_PUGET_SOUND :
+    Puget Sound Regional Council FIPS [King, Kitsap, Pierce, Snohomish]
+
+FIPS_PUGET_SOUND_ALL :
+    Puget Sound All Counties FIPS [King, Kitsap, Pierce, Snohomish, Island, Jefferson, Mason, Skagit, Thurston]
+
+Functions
+---------
+get_puget_sound_block_group_data :
+    Function to get the census block data for Puget Sound
+"""
 import geopandas as gpd
 
 # Example Link for 

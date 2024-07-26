@@ -1,3 +1,14 @@
+"""
+This module contains helper functions to to interact with the database.
+
+Functions
+---------
+get_engine_from_env :
+    Function to get a sqlalchemy Engine object using the environment variables
+
+get_automap_base_with_views :
+    Function to get an AutomapBase object that also provides access to views of a schema
+"""
 import os
 from dotenv import load_dotenv
 
