@@ -1,5 +1,5 @@
 """
-This module contains the TransactionsWithLocations class that can be used to get transactions with their stop locations.
+This file contains the TransactionsWithLocations class that can be used to get transactions with their stop locations.
 """
 import datetime
 
