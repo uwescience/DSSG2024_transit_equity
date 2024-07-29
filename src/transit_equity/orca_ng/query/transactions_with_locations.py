@@ -56,6 +56,7 @@ class TransactionsWithLocations:
     """
     STOP_LOCATION_TRANSFORMED_KEY = 'stop_location_transformed'
     TRANSACTION_LOCATION_KEY = 'transaction_location'
+    STOP_CRS = 4326
 
     def __init__(self, start_date: datetime, end_date: datetime, engine: Engine, transactions_t: Table | None = None):
         self.start_date = start_date
@@ -133,7 +134,7 @@ class TransactionsWithLocations:
         stmt_gtfs_feed_alias = stmt_gtfs_feed.cte('feed_custom')
 
         stmt_stop_with_agency = \
-            select(stops, func.ST_TRANSFORM(stops.c.stop_location, 4326).label(self.STOP_LOCATION_TRANSFORMED_KEY), 
+            select(stops, func.ST_TRANSFORM(stops.c.stop_location, self.STOP_CRS).label(self.STOP_LOCATION_TRANSFORMED_KEY), 
                    agencies_gtfs.c.agency_id, agencies_gtfs.c.agency_name)\
             .join(stmt_gtfs_feed_alias, stops.c.feed_id == stmt_gtfs_feed_alias.c.id)\
             .join(agencies_gtfs, stmt_gtfs_feed_alias.c.id == agencies_gtfs.c.feed_id)
