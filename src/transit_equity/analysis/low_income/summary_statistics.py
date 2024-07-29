@@ -12,7 +12,7 @@ import geopandas as gpd
 def get_summary_census_block_counts_df(df_transactions_with_location: pd.DataFrame, 
                                      gdf_block_group_counts: gpd.GeoDataFrame,
                                      summary_column: str = 'txn_count',
-                                     percentiles: list = [0.25, 0.5, 0.75, 0.9, 0.95, 0.99],
+                                     percentiles: list = None,
                                      transaction_label: str = 'Transaction') -> list:
     """
     Summarize the counts of transactions per census block group.
@@ -36,6 +36,9 @@ def get_summary_census_block_counts_df(df_transactions_with_location: pd.DataFra
     list
         A list of strings containing the summary statistics
     """
+    if not percentiles:
+        percentiles = [0.25, 0.5, 0.75, 0.9, 0.95, 0.99]
+
     summary = [f'Total {transaction_label}s: {df_transactions_with_location.shape[0]},'+ 
                             f'Total Blocks: {gdf_block_group_counts.shape[0]}']
     summary.append(f'Average {transaction_label}s per Block: {df_transactions_with_location.shape[0] / gdf_block_group_counts.shape[0]}')
