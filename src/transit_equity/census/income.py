@@ -1,3 +1,19 @@
+"""
+This module contains the functions and classes to get and analyze income distribution data from the census data.
+
+Classes
+-------
+IncomeDetails :
+    A class to store the details of the income distribution columns in the census data
+
+INCOME_DISTRIBUTION_COLUMNS :
+    An Enum class containing the details of the income distribution columns in the census data
+
+Functions
+---------
+get_households_in_income_range :
+    A function to get the number of households in a given income range from a census row
+"""
 import pandas as pd
 from enum import Enum
 

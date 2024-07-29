@@ -1,3 +1,8 @@
+"""
+Deprecation Warning: 
+    This file is deprecated due to its restrictive nature. Consider using transactions_with_locations module instead.
+This module contains a function that returns a query to get transactions with their stop locations.
+"""
 import datetime
 
 from sqlalchemy import Engine
@@ -13,10 +18,12 @@ from ...utils.db_helpers import get_automap_base_with_views
 def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, end_date: datetime, 
     automap_base_dict: dict, transactions_t: Table | None = None) -> Select:
     """
+    Deprecation Warning: 
+    This function is deprecated due to its restrictive nature. Consider using TransactionsWithLocations class instead.
+
     This function returns a query that can be used to get transactions with their stop locations.
     The transactions table is joined with the gtfs stop locations data.
     For each stop, we get the latest GTFS feed for each transit agency and assign the stop location from that feed.
-    (Warning! This function is too restrictive. Consider using TransactionsWithLocations class instead.)
 
     Parameters
     ----------
