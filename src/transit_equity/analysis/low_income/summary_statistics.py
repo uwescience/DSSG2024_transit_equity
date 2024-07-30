@@ -9,10 +9,11 @@ summarize_census_block_counts_df:
 import pandas as pd
 import geopandas as gpd
 
-def summarize_census_block_counts_df(df_transactions_with_location: pd.DataFrame, 
+def get_summary_census_block_counts_df(df_transactions_with_location: pd.DataFrame, 
                                      gdf_block_group_counts: gpd.GeoDataFrame,
                                      summary_column: str = 'txn_count',
-                                     percentiles: list = [0.25, 0.5, 0.75, 0.9, 0.95, 0.99]) -> list:
+                                     percentiles: list = None,
+                                     transaction_label: str = 'Transaction') -> list:
     """
     Summarize the counts of transactions per census block group.
 
@@ -35,13 +36,16 @@ def summarize_census_block_counts_df(df_transactions_with_location: pd.DataFrame
     list
         A list of strings containing the summary statistics
     """
-    gdf_summary = [f'Total Transactions: {df_transactions_with_location.shape[0]},'+ 
+    if not percentiles:
+        percentiles = [0.25, 0.5, 0.75, 0.9, 0.95, 0.99]
+
+    summary = [f'Total {transaction_label}s: {df_transactions_with_location.shape[0]},'+ 
                             f'Total Blocks: {gdf_block_group_counts.shape[0]}']
-    gdf_summary.append(f'Average Transactions per Block: {df_transactions_with_location.shape[0] / gdf_block_group_counts.shape[0]}')
-    gdf_summary.append(f'Min Counts per Block: {gdf_block_group_counts[summary_column].min()}, '+
-                                    f'Max Counts per Block: {gdf_block_group_counts[summary_column].max()}')
-    gdf_summary.append(f'Median Counts per Block: {gdf_block_group_counts[summary_column].median()}')
-    gdf_summary.append(f'\nPercentile Counts per Block:\n{gdf_block_group_counts[summary_column]\
+    summary.append(f'Average {transaction_label}s per Block: {df_transactions_with_location.shape[0] / gdf_block_group_counts.shape[0]}')
+    summary.append(f'Min {transaction_label}s per Block: {gdf_block_group_counts[summary_column].min()}, '+
+                                    f'Max {transaction_label}s per Block: {gdf_block_group_counts[summary_column].max()}')
+    summary.append(f'Median {transaction_label}s per Block: {gdf_block_group_counts[summary_column].median()}')
+    summary.append(f'\nPercentile {transaction_label}s per Block:\n{gdf_block_group_counts[summary_column]\
                                         .quantile(percentiles)}\n')
     
-    return gdf_summary
+    return summary
