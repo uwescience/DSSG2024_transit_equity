@@ -1,5 +1,10 @@
 """
 This module contains some utility functions to work with census data
+
+Functions
+---------
+get_geo_id:
+    Get the GEOID column for a census DataFrame
 """
 import pandas as pd
 
