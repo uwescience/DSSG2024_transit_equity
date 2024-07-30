@@ -137,6 +137,7 @@ def get_user_counts_per_block(df_transactions_with_locations: str, gdf_block_gro
 def get_counts_per_block_in_region(gdf_block_group_counts: gpd.GeoDataFrame, gdf_region: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     """
     A function to filter out the block group counts by the regions they belong to.
+    Not a very necessary function since it is only 1 line of code, but it is here for consistency and readability.
 
     Parameters
     ----------
