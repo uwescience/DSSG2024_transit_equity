@@ -5,7 +5,7 @@ import geopandas as gpd
 import contextily as cx
 
 def plot_multiple_histograms_by_column_group(data: pd.DataFrame, column: str = 'low_income_population', group_column: str = 'county',
-                    title: str = 'Histogram', bins: int = 10):
+                    figsize: tuple = (10, 10), title: str = 'Histogram', bins: int = 10):
     """
     Plot multiple histograms of the same column grouped by another column.
 
@@ -19,6 +19,9 @@ def plot_multiple_histograms_by_column_group(data: pd.DataFrame, column: str = '
     
     group_column : str
         The column to group by
+    
+    figsize : tuple
+        The size of the plot
     
     title : str
         The title of the plot
@@ -34,7 +37,7 @@ def plot_multiple_histograms_by_column_group(data: pd.DataFrame, column: str = '
     all_heights, all_bins = np.histogram(data[column], bins = bins)
 
     # Create subplots
-    fig, ax = plt.subplots(1, 1, figsize = (10, 10))
+    fig, ax = plt.subplots(1, 1, figsize = figsize)
 
     width = (all_bins[1] - all_bins[0])/(len(data[group_column].unique()) + 1)
 
