@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Motivation
+has_children: true
 ---
 
 **Background**
