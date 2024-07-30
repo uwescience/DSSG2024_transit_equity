@@ -45,7 +45,7 @@ def plot_multiple_histograms_by_column_group(data: pd.DataFrame, column: str = '
         ax.bar(bins[:-1] + index*width, heights, label = group, width=width)
         index += 1
     
-    plt.show()
+    plt.legend()
 
 def plot_gdf(gdf: gpd.GeoDataFrame, column: str, cmap: str = 'RdBu', title: str = 'Map', 
     figsize: tuple = (10, 10), **kwargs):
