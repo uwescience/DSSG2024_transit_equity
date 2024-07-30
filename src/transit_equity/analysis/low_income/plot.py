@@ -47,7 +47,7 @@ def plot_multiple_histograms_by_column_group(data: pd.DataFrame, column: str = '
     
     plt.legend()
 
-def plot_gdf(gdf: gpd.GeoDataFrame, column: str, cmap: str = 'RdBu', title: str = 'Map', 
+def plot_gdf(gdf: gpd.GeoDataFrame, column: str, cmap: str = 'viridis', title: str = 'Map', 
     figsize: tuple = (10, 10), **kwargs):
     """
     Plot a GeoDataFrame with a specified column and colormap
