@@ -87,7 +87,7 @@ def plot_gdf(gdf: gpd.GeoDataFrame, column: str, cmap: str = 'RdBu', title: str 
         cmap = cmap,
         legend = True,
         legend_kwds = kwargs['legend_kwds'] if 'legend_kwds' in kwargs else {},
-        scheme="User_Defined",
+        scheme=None if 'classification_kwds' not in kwargs else "User_Defined",
         classification_kwds = kwargs['classification_kwds'] if 'classification_kwds' in kwargs else {})
 
     cx.add_basemap(ax)
