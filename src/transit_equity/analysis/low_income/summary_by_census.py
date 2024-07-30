@@ -132,3 +132,24 @@ def get_user_counts_per_block(df_transactions_with_locations: str, gdf_block_gro
     gdf_block_group_user_counts = pd.merge(gdf_block_group_data, gdf_users_bg_counts, how='inner', on='GEOID')
 
     return gdf_block_group_user_counts
+
+# A generic function used to filter out count-related dataframes by the regions they belong to
+def get_counts_per_block_in_region(gdf_block_group_counts: gpd.GeoDataFrame, gdf_region: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+    """
+    A function to filter out the block group counts by the regions they belong to.
+
+    Parameters
+    ----------
+    gdf_block_group_counts : gpd.GeoDataFrame
+        A GeoDataFrame containing the block group counts
+    
+    gdf_region : gpd.GeoDataFrame
+        A GeoDataFrame containing the regions
+    
+    Returns
+    -------
+    gpd.GeoDataFrame
+        A GeoDataFrame containing the block group counts filtered by the regions they belong to
+    """
+    gdf_block_group_counts_region = gpd.sjoin(gdf_block_group_counts, gdf_region, how="inner", predicate="within")
+    return gdf_block_group_counts_region
