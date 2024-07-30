@@ -7,7 +7,7 @@ title: About
 
 Team Photo  
 
-Individual Bios  
+### Individual Bios  
 
 #### Rebecca Hayes  
 Rebecca is a community ecologist that uses field, lab, and computational methods to explore biogeographical questions and host-microbe interactions. They are interested in understanding the biotic and abiotic drivers of bee gut microbiome variation and parasite dynamics. Specifically, they study bee communities in two systems: pristine, high-elevation mountain meadows in the Madrean Sky Islands Archipelago in Arizona and New Mexico and highly human-modified industrial timber plantations in the Oregon Cascades mountain range.  
