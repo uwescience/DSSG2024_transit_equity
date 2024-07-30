@@ -78,6 +78,9 @@ def get_king_county_divisions(division_column: str = 'division') -> gpd.GeoDataF
     gdf_kc_lower[division_column] = division_id
     gdf_kc_divisions.append(gdf_kc_lower)
 
+    # Note: If you want to group resultant geopandas dataframe by division_column, you can use the following code:
+    # gdf_king_county_divisions_grouped = gdf_king_county_divisions.dissolve(by=division_column).reset_index()
+
     return pd.concat(gdf_kc_divisions, axis=0)
 
 
