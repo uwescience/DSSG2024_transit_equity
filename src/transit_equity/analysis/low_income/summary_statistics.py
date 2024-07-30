@@ -17,6 +17,8 @@ def get_summary_census_block_counts_df(df_transactions_with_location: pd.DataFra
     """
     Summarize the counts of transactions per census block group.
 
+    Warning: This function only makes sense if the gdf_block_group_counts is not filtered.
+
     Parameters
     ----------
     df_transactions_with_location : pd.DataFrame
@@ -24,6 +26,7 @@ def get_summary_census_block_counts_df(df_transactions_with_location: pd.DataFra
     
     gdf_block_group_counts : gpd.GeoDataFrame
         A GeoDataFrame containing the counts of any summary column per census block group
+        Warning: This function only makes sense if the gdf_block_group_counts is not filtered.
     
     summary_column : str
         The name of the column in the GeoDataFrame that contains the summary counts
