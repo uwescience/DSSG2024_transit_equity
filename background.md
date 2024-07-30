@@ -4,7 +4,6 @@ title: Background
 parent: Motivation
 ---
 
-**Background**
 
 Intentional movement from one location to another has characterized human history irrespective of time and spatial scales. The globally-connected society that we live in would be impossible without the dynamic transport of people and objects between places. Whether via air, water, land, or even space, transit represents the spatial networks that enable us to experience the world outside of our own backyards. 
 

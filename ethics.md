@@ -4,7 +4,6 @@ title: Stakeholders
 parent: Motivation
 ---
 
-**Ethics**
 
 One of the main ethical considerations we navigated as a team is the issue of our dataset not being fully representative of the demographics for the different types of ORCA cards available. For example, the LIFT cards for low-income riders and the reduced fare ride program for disabled riders requires knowledge of the programs and an application process, which represents two barriers to full use by the people who are eligible for them. Many low-income riders use cash payments to access transit, which is missing from the ORCA database. Additionally, because there are many definitions of disability and self-identification as disabled must preclude securing a reduced fare disability rider card, there are real concerns about using the subset of riders with disability cards to represent the whole disabled community. 
 

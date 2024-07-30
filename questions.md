@@ -4,7 +4,6 @@ title: Questions
 parent: Motivation
 ---
 
-**Questions** 
 
 Though ORCA fare cards have existed in some form since 2009, there have been limited opportunities to explore the data and synthesize meaning from the millions of trips recorded in the ORCA database. This is not from lack of interest by the participating agencies; rather, due to the size and complexity of the dataset, just managing the data is a full time job for multiple employees. Performing data analysis is a much desired and necessary next step to facilitate data-driven improvements to our region's transit systems. Our transit equity team, comprised of graduate students from the fields of urban planning, data and computer science, and community ecology, is using ORCA data to reveal insights into usage patterns of ORCA riders from disadvantaged communities that can identify areas for improvement and guide transportation in the Puget Sound region towards a more equitable future. 
 
