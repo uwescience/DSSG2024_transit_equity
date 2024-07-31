@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Stakeholders
+title: Ethics
 parent: Motivation
 ---
 
