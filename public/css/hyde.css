@@ -85,7 +85,7 @@ html {
 
 /* About section */
 .sidebar-about h1 {
-  color: #FCF2C5;
+  color: #F48B2B;
   margin-top: 0;
   font-family: "PT Sans", Helvetica, Arial, sans-serif;
   font-size: 2.0rem; /*change this for a smaller or bigger title in the sidebar */
@@ -118,7 +118,7 @@ a.sidebar-nav-item:hover{
   text-decoration: underline;*/
   *color: #f1f1f1;
   /*color: green;*/
-  text-decoration=none !important;
+  text-decoration:none !important;
 }
 /*a.dropdown-btn:hover{
 /*a.dropdown-btn:focus {
