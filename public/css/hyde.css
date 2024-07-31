@@ -134,7 +134,7 @@ a.sidebar-nav-item:hover{
   font-weight: bold;
 }
 .active {
-  background-color: gray;
+  background-color: #F48B2B;
   color: white;
 }
 
