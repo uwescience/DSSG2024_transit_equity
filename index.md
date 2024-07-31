@@ -11,7 +11,7 @@ layout: default
 
 **Project Lead/s:**  
 Ryan Avery  
-Mark Hallenback
+Mark Hallenbeck
 
 **Data Science Lead/s:**   
 Bryna Hazelton
