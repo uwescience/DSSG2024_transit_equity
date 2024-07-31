@@ -3,6 +3,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import geopandas as gpd
 import contextily as cx
+import folium.folium
+
+from matplotlib.colors import rgb2hex
+from matplotlib.patches import Patch
+from geopandas.explore import _categorical_legend
 
 def plot_multiple_histograms_by_column_group(data: pd.DataFrame, column: str = 'low_income_population', group_column: str = 'county',
                     figsize: tuple = (10, 10), title: str = 'Histogram', bins: int = 10):
@@ -102,3 +107,60 @@ def plot_gdf(gdf: gpd.GeoDataFrame, column: str, cmap: str = 'viridis', title: s
     ax.set_title(title, fontdict = {'fontsize': '20', 'fontweight' : '4'})
 
     return fig, ax
+
+def explore_gdf(gdf: gpd.GeoDataFrame, column: str, cmap: str = 'viridis', title: str = 'Map', figsize: tuple = (10, 10),
+                bins: list = None, bin_labels: list = None, bin_column: str = '_bin') -> folium.Map:
+    """
+    Explore a GeoDataFrame with a specified column and colormap.
+    If bins, bin_labels, and bin_column are provided, the data will be classified into bins, and the bins will be plotted.
+    
+    Warning:
+    The binned column will also be added to the GeoDataFrame. Feel free to drop this column if you don't need it. 
+
+    Parameters
+    ----------
+    gdf : gpd.GeoDataFrame
+        The GeoDataFrame to plot
+    
+    column : str
+        The column to plot
+    
+    cmap : str
+        The colormap to use
+    
+    title : str
+        The title of the plot
+    
+    figsize : tuple
+        The size of the plot
+
+    bins : list
+        The bins to use for classification
+    
+    bin_labels : list
+        The labels for the bins
+    
+    bin_column : str
+        The column to store the bin values
+    """
+    if bins is None or len(bins) == 0:
+        m = gdf.explore(column = column, cmap = cmap, figsize = figsize, title = title)
+        return m
+
+    if bin_labels is None or len(bin_labels) == 0:
+        bin_labels = bins
+
+    gdf[bin_column] = np.digitize(gdf[column], bins=bins, right=False)
+    cmap_listed = plt.colormaps[cmap].resampled(len(bins))
+    # legend_elements = [Patch(facecolor=cmap_listed(i), edgecolor='black', 
+    #                          label=bin_labels[i]) for i in range(len(bin_labels))]
+    colors = [rgb2hex(cmap_listed(i)) for i in range(len(bin_labels))]
+
+    m = gdf.explore(bin_column, cmap=cmap, legend = False)
+    _categorical_legend(
+        m=m,
+        title='Transaction Counts',
+        categories=bin_labels,
+        colors=colors
+    )
+    return m
