@@ -6,7 +6,7 @@ parent: Analyses
 
 The goal of this analysis is to understand the differences between trip origin and destination networks among ORCA card types. Specifically, we are interested in the following questions:  
 
-### 1) How do the networks vary in structure between card demographics?  
+### 1) How do the trip networks vary in structure between card demographics?  
 This question will reveal large-scale patterns of ridership across different ORCA card types. We assume that different categories of riders will have different travel behaviors which will lead to varying network structure, but this has not been confirmed analytically. Networks can vary in a multitude of ways, however for this analysis we are focusing on several metrics particularly relevant to transit:  
 
     A) Degree centrality (the number of trips that each stop has), which will reflect which stops are most frequently used by each group. A higher value indicates that a stop is frequented more by riders of the target demographic. This metric is computed at the stop level.  
@@ -27,8 +27,13 @@ This question will generate insight to whether the trip networks are geographica
 
 **Data**
 
-What data sets are you using?
-What did you do to prepare the data?
+What data sets are you using?  
+For this analysis, we used a subset of ORCA origin-destination trip data from April 2023 in the ORCA next generation database. At the time of analysis, the full updated trip table was not available. This analysis is ready to complete for each month at a later date as the data becomes available.  
+ 
+Additionally, we incorporated census block data and USGS National Hydrography Dataset data to create regional spatial hexgrid shapefiles to aggregate stops that are close to each other.  
+
+What did you do to prepare the data?  
+ 
 
 **Tools (aka “component specification”)**
 
