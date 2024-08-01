@@ -159,7 +159,7 @@ def explore_gdf(gdf: gpd.GeoDataFrame, column: str, cmap: str = 'viridis', title
     #                          label=bin_labels[i]) for i in range(len(bin_labels))]
     colors = [rgb2hex(cmap_listed(i)) for i in range(bins_true_length)]
 
-    m = gdf.explore(bin_column, cmap=cmap, legend = True, vmin=bins_true_min, vmax=bins_true_max, figsize=figsize, title=title)
+    m = gdf.explore(bin_column, cmap=cmap, legend = False, vmin=bins_true_min, vmax=bins_true_max, figsize=figsize, title=title)
     _categorical_legend(
         m=m,
         title=title,
