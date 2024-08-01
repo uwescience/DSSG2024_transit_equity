@@ -150,16 +150,19 @@ def explore_gdf(gdf: gpd.GeoDataFrame, column: str, cmap: str = 'viridis', title
     if bin_labels is None or len(bin_labels) == 0:
         bin_labels = bins
 
+    bins_true_min, bins_true_max = 0, len(bins)
+    bins_true_length = bins_true_max - bins_true_min + 1
+
     gdf[bin_column] = np.digitize(gdf[column], bins=bins, right=False)
-    cmap_listed = plt.colormaps[cmap].resampled(len(bins))
+    cmap_listed = plt.colormaps[cmap].resampled(bins_true_length)
     # legend_elements = [Patch(facecolor=cmap_listed(i), edgecolor='black', 
     #                          label=bin_labels[i]) for i in range(len(bin_labels))]
-    colors = [rgb2hex(cmap_listed(i)) for i in range(len(bin_labels))]
+    colors = [rgb2hex(cmap_listed(i)) for i in range(bins_true_length)]
 
-    m = gdf.explore(bin_column, cmap=cmap, legend = False)
+    m = gdf.explore(bin_column, cmap=cmap, legend = False, vmin=bins_true_min, vmax=bins_true_max, figsize=figsize, title=title)
     _categorical_legend(
         m=m,
-        title='Transaction Counts',
+        title=title,
         categories=bin_labels,
         colors=colors
     )
