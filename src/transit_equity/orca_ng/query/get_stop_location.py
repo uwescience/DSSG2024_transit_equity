@@ -1,3 +1,8 @@
+"""
+Deprecation Warning: 
+    This file is deprecated due to its restrictive nature. Consider using transactions_with_locations module instead.
+This module contains a function that returns a query to get transactions with their stop locations.
+"""
 import datetime
 
 from sqlalchemy import Engine
@@ -13,10 +18,12 @@ from ...utils.db_helpers import get_automap_base_with_views
 def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, end_date: datetime, 
     automap_base_dict: dict, transactions_t: Table | None = None) -> Select:
     """
+    Deprecation Warning: 
+    This function is deprecated due to its restrictive nature. Consider using TransactionsWithLocations class instead.
+
     This function returns a query that can be used to get transactions with their stop locations.
     The transactions table is joined with the gtfs stop locations data.
     For each stop, we get the latest GTFS feed for each transit agency and assign the stop location from that feed.
-    (Warning! This function is too restrictive. Consider using TransactionsWithLocations class instead.)
 
     Parameters
     ----------
@@ -35,7 +42,8 @@ def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, e
     Returns
     -------
     select : sqlalchemy.sql.selectable.Select
-        A select query that can be used to get transactions with their stop locations
+        A select query that can be used to get transactions with their stop locations or device locations
+        The CRS for the transaction location is 4326
     
     Examples
     --------
@@ -90,7 +98,8 @@ def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, e
 
     # Use the feed_latest CTE to get all the stop details based on the latest feed, to get the stop_latest CTE
     stmt_stop_latest = \
-        select(stops, agencies_gtfs.c.agency_id, agencies_gtfs.c.agency_name)\
+        select(stops, func.ST_TRANSFORM(stops.c.stop_location, 4326).label('stop_location_transformed'),
+               agencies_gtfs.c.agency_id, agencies_gtfs.c.agency_name)\
         .join(stmt_gtfs_feed_latest_alias, stops.c.feed_id == stmt_gtfs_feed_latest_alias.c.feed_id)\
         .join(agencies_gtfs, stmt_gtfs_feed_latest_alias.c.feed_id == agencies_gtfs.c.feed_id)
 
@@ -106,7 +115,7 @@ def get_stop_locations_from_transactions_and_latest_gtfs(start_date: datetime, e
     # Combine the transactions_with_agency CTE data with stop_latest CTE data to get the locations of each transaction
     stmt_transactions_with_location = \
     select(stmt_transactions_with_agency_alias,
-        case((stmt_stop_latest_alias.c.stop_location.is_not(None), stmt_stop_latest_alias.c.stop_location),
+        case((stmt_stop_latest_alias.c.stop_location_transformed.is_not(None), stmt_stop_latest_alias.c.stop_location_transformed),
             else_=stmt_transactions_with_agency_alias.c.device_location).label('transaction_location'))\
         .join(stmt_stop_latest_alias,
             and_(stmt_transactions_with_agency_alias.c.stop_code == stmt_stop_latest_alias.c.stop_id,

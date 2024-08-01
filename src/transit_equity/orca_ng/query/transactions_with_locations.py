@@ -1,3 +1,11 @@
+"""
+This file contains the TransactionsWithLocations class that can be used to get transactions with their stop locations.
+
+Classes
+-------
+TransactionsWithLocations
+    A class to get locations of transactions using customizable logic
+"""
 import datetime
 
 from sqlalchemy import Engine
@@ -22,7 +30,34 @@ class TransactionsWithLocations:
         Engine that is already connected to a database
     transactions_t : sqlalchemy.Table, optional
         Table object for the transactions table. If not provided, the default orca.transactions table is used
+
+    Methods
+    -------
+    get_automap_bases :
+        Get the automap bases for the schemas of interest
+    
+    get_latest_gtfs_feed :
+        Get the latest GTFS feed for each transit agency
+    
+    get_stop_with_agency_from_feed :
+        Get the stop details based on the given feeds.
+        The CRS for the stop location is changed to 4326 to be compatible with the transaction location.
+    
+    get_transactions_with_agency :
+        Get transactions with their agency details.
+    
+    get_transactions_with_stop_or_device_locations :
+        Get transactions with their stop or device locations.
+    
+    get_transactions_with_stop_or_device_locations_from_latest_gtfs :
+        Get transactions with their stop or device locations using the latest GTFS feed.
+        Uses logic from get_latest_gtfs_feed, get_stop_with_agency_from_feed and 
+        get_transactions_with_stop_or_device_locations.
     """
+    STOP_LOCATION_TRANSFORMED_KEY = 'stop_location_transformed'
+    TRANSACTION_LOCATION_KEY = 'transaction_location'
+    STOP_CRS = 4326
+
     def __init__(self, start_date: datetime, end_date: datetime, engine: Engine, transactions_t: Table | None = None):
         self.start_date = start_date
         self.end_date = end_date
@@ -33,6 +68,9 @@ class TransactionsWithLocations:
         self.transactions_t = transactions_t
 
     def get_automap_bases(self):
+        """
+        Get the automap bases for the schemas of interest
+        """
         self.Base_dssg = get_automap_base_with_views(engine=self.engine, schema=DSSG_SCHEMA)
         self.Base_trac = get_automap_base_with_views(engine=self.engine, schema=TRAC_SCHEMA)
         self.Base_orca = get_automap_base_with_views(engine=self.engine, schema=ORCA_SCHEMA)
@@ -77,6 +115,7 @@ class TransactionsWithLocations:
         """
         This function returns a query that can be used to get the stop details based on the given feeds.
         Thus, contains gtfs agency details as well (including gtfs agency id).
+        The CRS for the stop location is changed to 4326 to be compatible with the transaction location.
 
         Parameters
         ----------
@@ -86,7 +125,8 @@ class TransactionsWithLocations:
         Returns
         -------
         select : sqlalchemy.sql.selectable.Select
-            A select query that can be used to get the stop details based on the given feeds
+            A select query that can be used to get the stop details based on the given feeds.
+            The CRS for the stop location is changed to 4326 to be compatible with the transaction location.
         """
         stops = self.Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.TL_STOPS.value]
         agencies_gtfs = self.Base_gtfs.metadata.tables[GTFS_SCHEMA_TABLES.TL_AGENCY.value]
@@ -94,7 +134,8 @@ class TransactionsWithLocations:
         stmt_gtfs_feed_alias = stmt_gtfs_feed.cte('feed_custom')
 
         stmt_stop_with_agency = \
-            select(stops, agencies_gtfs.c.agency_id, agencies_gtfs.c.agency_name)\
+            select(stops, func.ST_TRANSFORM(stops.c.stop_location, self.STOP_CRS).label(self.STOP_LOCATION_TRANSFORMED_KEY), 
+                   agencies_gtfs.c.agency_id, agencies_gtfs.c.agency_name)\
             .join(stmt_gtfs_feed_alias, stops.c.feed_id == stmt_gtfs_feed_alias.c.id)\
             .join(agencies_gtfs, stmt_gtfs_feed_alias.c.id == agencies_gtfs.c.feed_id)
 
@@ -118,7 +159,8 @@ class TransactionsWithLocations:
     def get_transactions_with_stop_or_device_locations(self, stmt_stop_with_agency: Select) -> Select:
         """
         This function returns a query that can be used to get transactions with their stop or device locations.
-        The stop location is used as the transaction location if present in stmt_stop_with_agency, else the device location is used.
+        The stop location is used as the transaction location if present in stmt_stop_with_agency, 
+            else the device location is used.
 
         Parameters
         ----------
@@ -140,8 +182,9 @@ class TransactionsWithLocations:
         # This is not very human readable and can cause confusion.
         stmt_transactions_with_location = \
             select(stmt_transactions_with_agency_alias,
-                case((stmt_stop_with_agency_alias.c.stop_location.is_not(None), stmt_stop_with_agency_alias.c.stop_location),
-                    else_=stmt_transactions_with_agency_alias.c.device_location).label('transaction_location'),
+                case((getattr(stmt_stop_with_agency_alias.c, self.STOP_LOCATION_TRANSFORMED_KEY).is_not(None), 
+                      getattr(stmt_stop_with_agency_alias.c, self.STOP_LOCATION_TRANSFORMED_KEY)),
+                    else_=stmt_transactions_with_agency_alias.c.device_location).label(self.TRANSACTION_LOCATION_KEY),
                 stmt_stop_with_agency_alias)\
             .join(stmt_stop_with_agency_alias,
                 and_(stmt_transactions_with_agency_alias.c.stop_code == stmt_stop_with_agency_alias.c.stop_id,
@@ -153,12 +196,14 @@ class TransactionsWithLocations:
     def get_transactions_with_stop_or_device_locations_from_latest_gtfs(self) -> Select:
         """
         This function returns a query that can be used to get transactions with their stop or device locations.
-        The stop location is used as the transaction location if present in the latest GTFS feed, else the device location is used.
+        The stop location is used as the transaction location if present in the latest GTFS feed, 
+            else the device location is used.
 
         Returns
         -------
         select : sqlalchemy.sql.selectable.Select
             A select query that can be used to get transactions with their stop or device locations
+            The CRS for the transaction location is 4326
         
         Example
         -------
