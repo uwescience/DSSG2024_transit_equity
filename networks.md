@@ -27,12 +27,18 @@ This question will generate insight to whether the trip networks are geographica
 
 **Data**
 
-What data sets are you using?  
 For this analysis, we used a subset of ORCA origin-destination trip data from April 2023 in the ORCA next generation database. At the time of analysis, the full updated trip table was not available. This analysis is ready to complete for each month at a later date as the data becomes available.  
  
 Additionally, we incorporated census block data and USGS National Hydrography Dataset data to create regional spatial hexgrid shapefiles to aggregate stops that are close to each other.  
 
-What did you do to prepare the data?  
+Data was filtered by card type into the following groups: adult, youth, lift card (low-income riders), senior, and disabled riders. Each group was analyzed as a separate network for comparison. 
+
+The following data cleaning steps were taken to prepare the trip table for network analysis:
+    1) 
+    2)
+    3)
+
+
  
 
 **Tools (aka “component specification”)**
