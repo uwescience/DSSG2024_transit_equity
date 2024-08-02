@@ -1,5 +1,5 @@
 """
-This module contains the functions and classes to get and analyze income to poverty level ratio data from the census data.
+This module contains the functions and classes to get and analyze income to poverty level ratio data from the US Census Bureau.
 
 Constants
 ---------
@@ -17,9 +17,6 @@ Functions
 ---------
 get_population_in_income_poverty_level_range_df :
     A function to get the population in the given income to poverty level ratio range
-
-TODO: Make the module more cohesive by integrating the common code between the two main functions 
-    into separate helper functions
 """
 
 import pandas as pd
