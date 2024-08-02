@@ -1,5 +1,5 @@
 """
-This module contains the functions and classes to get and analyze income distribution data from the census data.
+This module contains the functions and classes to get and analyze income distribution data from the US Census Bureau.
 
 Classes
 -------
