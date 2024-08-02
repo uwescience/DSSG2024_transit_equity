@@ -8,6 +8,7 @@ import folium.folium
 from matplotlib.colors import rgb2hex
 from matplotlib.patches import Patch
 from geopandas.explore import _categorical_legend
+from folium.plugins import Geocoder
 
 def plot_multiple_histograms_by_column_group(data: pd.DataFrame, column: str = 'low_income_population', group_column: str = 'county',
                     figsize: tuple = (10, 10), title: str = 'Histogram', bins: int = 10):
@@ -109,6 +110,7 @@ def plot_gdf(gdf: gpd.GeoDataFrame, column: str, cmap: str = 'viridis', title: s
     return fig, ax
 
 def explore_gdf(gdf: gpd.GeoDataFrame, column: str, cmap: str = 'viridis', title: str = 'Map', figsize: tuple = (10, 10),
+                search_bar: bool = True,
                 bins: list = None, bin_labels: list = None, bin_column: str = '_bin') -> folium.Map:
     """
     Explore a GeoDataFrame with a specified column and colormap.
@@ -166,4 +168,8 @@ def explore_gdf(gdf: gpd.GeoDataFrame, column: str, cmap: str = 'viridis', title
         categories=bin_labels,
         colors=colors
     )
+
+    if search_bar:
+        Geocoder().add_to(m)
+
     return m
