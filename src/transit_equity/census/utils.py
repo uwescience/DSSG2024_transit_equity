@@ -1,12 +1,19 @@
 """
 This module contains some utility functions to work with census data
 
+Constants
+---------
+TIGER_MAIN_COLUMNS :
+    The main columns that are present in the TIGER shapefiles
+
 Functions
 ---------
 get_geo_id:
     Get the GEOID column for a census DataFrame
 """
 import pandas as pd
+
+TIGER_MAIN_COLUMNS = ['STATEFP', 'COUNTYFP', 'TRACTCE', 'BLKGRPCE', 'GEOID']
 
 def get_geo_id(census_df: pd.DataFrame, state_col: str = 'state', county_col: str = 'county', 
                tract_col: str = 'tract', block_group_col: str = 'block group') -> pd.DataFrame:

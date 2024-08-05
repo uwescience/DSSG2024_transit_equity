@@ -17,6 +17,8 @@ import pandas as pd
 import geopandas as gpd
 from shapely import wkb
 
+from ...census.utils import TIGER_MAIN_COLUMNS
+
 # A generic function that groups transactions (of any type, but with the same schema) by census block group
 def get_transaction_counts_per_block_group(df_transactions_with_locations: str, gdf_block_group_data: gpd.GeoDataFrame,
                                            transaction_location_column = 'transaction_location', 
@@ -136,7 +138,72 @@ def get_user_counts_per_block_group(df_transactions_with_locations: str, gdf_blo
 
     return gdf_block_group_user_counts
 
-# def get_all_counts_per_block_group
+def get_all_counts_per_block_group(df_transactions_with_locations: str, gdf_block_group_data: gpd.GeoDataFrame,
+                                   transaction_location_column = 'transaction_location',
+                                   is_transaction_location_shaped: bool = False,
+                                   census_gdf_crs: int = 32610,
+                                   transaction_count_column: str = 'txn_count',
+                                   user_count_column: str = 'user_count',
+                                   merge_columns: list = None) -> gpd.GeoDataFrame:
+    """
+    A function to get various counts per census block group.
+    These counts include: 
+    - Number of transactions per census block group
+    - Number of unique users per census
+    - Number of low-income individuals per census block group
+    - Number of individuals per census block group
+    Additional counts can be added as needed.
+
+    Parameters
+    ----------
+    df_transactions_with_locations : pd.DataFrame
+        A DataFrame containing the transactions with their locations
+        (Note: The CRS of the transaction locations should be EPSG:4326)
+    
+    gdg_block_group_data : gpd.GeoDataFrame
+        A GeoDataFrame containing the census block group data
+
+    transaction_location_column : str
+        The column name in the DataFrame that contains the transaction location
+    
+    is_transaction_location_shaped : bool
+        A flag to indicate if the transaction location is already a Shapely geometry object
+    
+    census_gdf_crs : int
+        The CRS of the census block group data
+    
+    transaction_count_column : str
+        The name of the column in the output GeoDataFrame that will contain the transaction count
+    
+    user_count_column : str
+        The name of the column in the output GeoDataFrame that will contain the user count
+    
+    merge_columns : list
+        The columns to merge the counts-based GeoDataFrames on. 
+        If None, the columns in `transit_equity.census.utils.TIGER_MAIN_COLUMNS` and 'geometry' will be used.
+    Returns
+    -------
+    gpd.GeoDataFrame
+        A GeoDataFrame containing the number of transactions and unique users per census block group
+    """
+    gdf_block_group_transaction_counts = get_transaction_counts_per_block_group(
+        df_transactions_with_locations, gdf_block_group_data, 
+        transaction_location_column=transaction_location_column, is_transaction_location_shaped=is_transaction_location_shaped,
+        census_gdf_crs=census_gdf_crs, count_column=transaction_count_column)
+    
+    gdf_block_group_user_counts = get_user_counts_per_block_group(
+        df_transactions_with_locations, gdf_block_group_data,
+        transaction_location_column=transaction_location_column, is_transaction_location_shaped=is_transaction_location_shaped,
+        census_gdf_crs=census_gdf_crs, count_column=user_count_column)
+    
+    if merge_columns is None:
+        merge_columns = [*TIGER_MAIN_COLUMNS, 'geometry']
+    
+    gdf_block_group_counts = pd.merge(gdf_block_group_transaction_counts, gdf_block_group_user_counts, how='inner',
+                                      on=merge_columns)
+    
+    return gdf_block_group_counts
+
 
 # A generic function used to filter out count-related dataframes by the regions they belong to
 def get_counts_per_block_in_region(gdf_block_group_counts: gpd.GeoDataFrame, gdf_region: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
