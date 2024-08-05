@@ -16,6 +16,7 @@ from census import Census
 from dotenv import load_dotenv
 
 TIGER_MAIN_COLUMNS = ['STATEFP', 'COUNTYFP', 'TRACTCE', 'BLKGRPCE', 'GEOID']
+CENSUS_MAIN_COLUMNS = ['NAME', 'state', 'county', 'tract', 'block group']
 
 def get_census(path_env: str, census_api_key: str = 'CENSUS_API_KEY') -> Census:
     """
