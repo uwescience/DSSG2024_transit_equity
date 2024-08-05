@@ -13,7 +13,12 @@ dependencies:
   - pytest
   - scipy
   - sqlalchemy
+  - geopandas
+  - contextily
+  - plotly
   - sphinx>=6.2
   - pip
   - pip:
       - python-dotenv==1.0.1
+      - census==0.8.22
+      - us==3.1.1
