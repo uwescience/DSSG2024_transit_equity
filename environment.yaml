@@ -12,8 +12,11 @@ dependencies:
   - psycopg2
   - pytest
   - scipy
+  - geopandas
+  - contextily
   - sqlalchemy
   - sphinx>=6.2
   - pip
   - pip:
       - python-dotenv==1.0.1
+      - census==0.8.22
