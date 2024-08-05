@@ -35,12 +35,16 @@ def get_transaction_counts_per_block_group(df_transactions_with_locations: str, 
     Parameters
     ----------
     df_transactions_with_locations : pd.DataFrame
-        A DataFrame containing the transactions with their locations
+        A DataFrame containing the transactions with their locations.
+        One way to get this DataFrame is to use the `TransactionsWithLocations` class in the 
+        `transit_equity.orca_ng.query.transactions_with_locations` module.
         (Note: The CRS of the transaction locations should be EPSG:4326)
         TODO: Check if it is necessary to specify the CRS of the transaction locations
     
     gdg_block_group_data : gpd.GeoDataFrame
-        A GeoDataFrame containing the census block group data
+        A GeoDataFrame containing the census block group data.
+        One way to get this GeoDataFrame is to use the `get_puget_sound_block_group_data` function in the
+        `transit_equity.census.puget_sound` module.
     
     transaction_location_column : str
         The column name in the DataFrame that contains the transaction location
@@ -94,12 +98,16 @@ def get_user_counts_per_block_group(df_transactions_with_locations: str, gdf_blo
     Parameters
     ----------
     df_transactions_with_locations : pd.DataFrame
-        A DataFrame containing the transactions with their locations
+        A DataFrame containing the transactions with their locations.
+        One way to get this DataFrame is to use the `TransactionsWithLocations` class in the 
+        `transit_equity.orca_ng.query.transactions_with_locations` module.
         (Note: The CRS of the transaction locations should be EPSG:4326)
         TODO: Check if it is necessary to specify the CRS of the transaction locations
     
     gdg_block_group_data : gpd.GeoDataFrame
-        A GeoDataFrame containing the census block group data
+        A GeoDataFrame containing the census block group data.
+        One way to get this GeoDataFrame is to use the `get_puget_sound_block_group_data` function in the
+        `transit_equity.census.puget_sound` module.
     
     transaction_location_column : str
         The column name in the DataFrame that contains the transaction location
@@ -157,11 +165,15 @@ def get_all_counts_per_block_group(df_transactions_with_locations: str, gdf_bloc
     Parameters
     ----------
     df_transactions_with_locations : pd.DataFrame
-        A DataFrame containing the transactions with their locations
+        A DataFrame containing the transactions with their locations.
+        One way to get this DataFrame is to use the `TransactionsWithLocations` class in the 
+        `transit_equity.orca_ng.query.transactions_with_locations` module.
         (Note: The CRS of the transaction locations should be EPSG:4326)
     
     gdg_block_group_data : gpd.GeoDataFrame
-        A GeoDataFrame containing the census block group data
+        A GeoDataFrame containing the census block group data.
+        One way to get this GeoDataFrame is to use the `get_puget_sound_block_group_data` function in the
+        `transit_equity.census.puget_sound` module.
 
     transaction_location_column : str
         The column name in the DataFrame that contains the transaction location
