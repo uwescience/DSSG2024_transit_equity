@@ -244,7 +244,7 @@ def get_population_in_income_poverty_level_range_df(income_poverty_level_ratio_d
 def get_low_income_population(income_poverty_level_ratio_df: pd.DataFrame,
                               min_ratio: int = LOW_INCOME_RANGE[0], max_ratio: int = LOW_INCOME_RANGE[1],
                               low_income_population_column: str = 'low_income_population',
-                              population_column: str = POPULATION_COLUMNS.TOTAL_POPULATION.value.field) -> pd.DataFrame:
+                              population_column: str = 'population') -> pd.DataFrame:
     """
     A highly specific function to get the low income population from the census data.
 
