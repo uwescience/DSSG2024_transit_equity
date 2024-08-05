@@ -44,34 +44,6 @@ def get_census(path_env: str, census_api_key: str = 'CENSUS_API_KEY') -> Census:
     load_dotenv(dotenv_path=path_env)
     census = Census(census_api_key)
     return census
-    
-def get_engine_from_env(path_env: str, postgres_url_key: str = 'POSTGRES_URL') -> Engine:
-    '''
-    Returns a sqlalchemy Engine object using the environment variables
-    Note: This will overwrite the environment variables if they are already set by some other means
-
-    Parameters
-    ----------
-    path_env : str
-        Path to the .env file that contains the environment variables
-    postgres_url_key : str
-        Key in the .env file that contains the postgres url
-    
-    Returns
-    -------
-    Engine
-        A sqlalchemy Engine object that is connected to the database
-    
-    Examples
-    --------
-    Example 1:
-    >>> engine = get_engine_from_env('.env')
-    >>> print(type(engine))
-    <class 'sqlalchemy.engine.base.Engine'>
-    '''
-    load_dotenv(dotenv_path=path_env)
-    engine: Engine = create_engine(os.getenv(postgres_url_key))
-    return engine
 
 def get_geo_id(census_df: pd.DataFrame, state_col: str = 'state', county_col: str = 'county', 
                tract_col: str = 'tract', block_group_col: str = 'block group') -> pd.DataFrame:
