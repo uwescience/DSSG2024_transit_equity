@@ -12,8 +12,66 @@ get_geo_id:
     Get the GEOID column for a census DataFrame
 """
 import pandas as pd
+from census import Census
+from dotenv import load_dotenv
 
 TIGER_MAIN_COLUMNS = ['STATEFP', 'COUNTYFP', 'TRACTCE', 'BLKGRPCE', 'GEOID']
+
+def get_census(path_env: str, census_api_key: str = 'CENSUS_API_KEY') -> Census:
+    """
+    Get the Census object using the API key
+
+    Parameters
+    ----------
+    path_env : str
+        Path to the .env file that contains the environment variables
+    
+    census_api_key : str
+        The key for the environment variable that contains the census API key
+    
+    Returns
+    -------
+    Census
+        A Census object that is connected to the API
+    
+    Examples
+    --------
+    Example 1:
+    >>> census = get_census('.env', 'CENSUS_API_KEY')
+    >>> print(type(census))
+    <class 'census.core.Census'>
+    """
+    load_dotenv(dotenv_path=path_env)
+    census = Census(census_api_key)
+    return census
+    
+def get_engine_from_env(path_env: str, postgres_url_key: str = 'POSTGRES_URL') -> Engine:
+    '''
+    Returns a sqlalchemy Engine object using the environment variables
+    Note: This will overwrite the environment variables if they are already set by some other means
+
+    Parameters
+    ----------
+    path_env : str
+        Path to the .env file that contains the environment variables
+    postgres_url_key : str
+        Key in the .env file that contains the postgres url
+    
+    Returns
+    -------
+    Engine
+        A sqlalchemy Engine object that is connected to the database
+    
+    Examples
+    --------
+    Example 1:
+    >>> engine = get_engine_from_env('.env')
+    >>> print(type(engine))
+    <class 'sqlalchemy.engine.base.Engine'>
+    '''
+    load_dotenv(dotenv_path=path_env)
+    engine: Engine = create_engine(os.getenv(postgres_url_key))
+    return engine
 
 def get_geo_id(census_df: pd.DataFrame, state_col: str = 'state', county_col: str = 'county', 
                tract_col: str = 'tract', block_group_col: str = 'block group') -> pd.DataFrame:
