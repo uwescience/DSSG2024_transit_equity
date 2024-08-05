@@ -26,6 +26,7 @@ import us
 
 from .population import POPULATION_COLUMNS
 from .puget_sound import FIPS_PUGET_SOUND
+from .utils import CENSUS_MAIN_COLUMNS, get_geo_id
 
 LOW_INCOME_RANGE = (0, 2.0)
 
@@ -95,6 +96,7 @@ def get_income_poverty_level_ratio_df(census: Census,
     A function to get the income to poverty level ratio columns from the US Census Bureau API
     The income to poverty level ratio columns are present in the C17002 table in the census data.
     The income to poverty level ratio columns contain the number of people in different income to poverty level ratio ranges.
+    Additionally, the total population is also present in the census data.
 
     Parameters:
     -----------
@@ -103,6 +105,7 @@ def get_income_poverty_level_ratio_df(census: Census,
 
     fields: list
         The list of fields to get from the census data.
+        The default fields are the income to poverty level ratio columns and the total population column.
     
     state_fips: str
         The FIPS code of the state for which the census data is required.
@@ -237,9 +240,53 @@ def get_population_in_income_poverty_level_range_df(income_poverty_level_ratio_d
         'true_min_ratio': true_min_ratio,
         'true_max_ratio': true_max_ratio
     }
-# low_income_population_details = get_population_in_income_poverty_level_range_df(df_census_income_poverty_ratio, 0, 2.0)
-# if low_income_population_details is not None:
-#     df_census_income_poverty_ratio[LOW_INCOME_POPULATION_COLUMN] = low_income_population_details['population']
-# df_low_income_population = df_census_income_poverty_ratio[[*CENSUS_COLUMNS, LOW_INCOME_POPULATION_COLUMN, POPULATION_COLUMN_KEY]]
-# df_low_income_population.rename(columns={POPULATION_COLUMN_KEY: POPULATION_COLUMN}, inplace=True)
-# df_low_income_population.loc[:,'GEOID'] = get_geo_id(df_low_income_population)
+
+def get_low_income_population(income_poverty_level_ratio_df: pd.DataFrame,
+                              min_ratio: int = LOW_INCOME_RANGE[0], max_ratio: int = LOW_INCOME_RANGE[1],
+                              low_income_population_column: str = 'low_income_population',
+                              population_column: str = POPULATION_COLUMNS.TOTAL_POPULATION.value.field) -> pd.DataFrame:
+    """
+    A highly specific function to get the low income population from the census data.
+
+    Parameters:
+    -----------
+    income_poverty_level_ratio_df: pd.DataFrame
+        A pandas DataFrame containing the income to poverty level ratio columns
+        It contains different income to poverty level ratio ranges (e.g. less_than_0.5, 0.5_to_0.99, etc.)
+            in a census area.
+        One way to get this DataFrame is by using the `get_income_poverty_level_ratio_df` function.
+    
+    min_ratio: int
+        The minimum income to poverty level ratio for the range
+    
+    max_ratio: int
+        The maximum income to poverty level ratio for the range. Exclusive.
+        Thus the range is [min_ratio, max_ratio)
+    
+    low_income_population_column: str
+        The name of the column that will contain the low income population data
+    
+    population_column: str
+        The name of the column that will contain the total population data
+    
+    Returns:
+    --------
+    df_low_income_population: pd.DataFrame
+        A pandas DataFrame containing the low income population and the total population data
+        The DataFrame will contain the same columns as the input DataFrame with the addition of the low income population column and the total population column.
+        The DataFrame will also contain a new column 'GEOID' that contains the GEOID values
+    """
+    low_income_population_details = get_population_in_income_poverty_level_range_df(
+        income_poverty_level_ratio_df, min_ratio, max_ratio)
+    if low_income_population_details is None:
+        return None
+    
+    income_poverty_level_ratio_df[low_income_population_column] = low_income_population_details['population']
+
+    POPULATION_COLUMN_KEY = POPULATION_COLUMNS.TOTAL_POPULATION.value.field
+    df_low_income_population = income_poverty_level_ratio_df[[
+        *CENSUS_MAIN_COLUMNS, low_income_population_column, POPULATION_COLUMN_KEY]]
+    df_low_income_population.rename(columns={POPULATION_COLUMN_KEY: population_column}, inplace=True)
+    df_low_income_population.loc[:,'GEOID'] = get_geo_id(df_low_income_population)
+
+    return df_low_income_population

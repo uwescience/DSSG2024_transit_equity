@@ -9,6 +9,9 @@ get_transaction_counts_per_block_group:
 get_user_counts_per_block_group:
     A function to get the number of unique users per census block group.
 
+get_all_counts_per_block_group:
+    A function to get various counts per census block group.
+
 get_counts_per_block_in_region:
     A function to filter out count-related dataframes by the regions they belong to
 """
