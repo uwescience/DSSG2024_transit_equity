@@ -6,8 +6,11 @@ Functions
 get_transaction_counts_per_block_group:
     A function to get the number of transactions per census block group.
 
-get_user_counts_per_block:
+get_user_counts_per_block_group:
     A function to get the number of unique users per census block group.
+
+get_counts_per_block_in_region:
+    A function to filter out count-related dataframes by the regions they belong to
 """
 
 import pandas as pd
@@ -74,7 +77,7 @@ def get_transaction_counts_per_block_group(df_transactions_with_locations: str, 
     return gdf_block_group_transaction_counts
 
 # A generic function that analyzes unique users per census
-def get_user_counts_per_block(df_transactions_with_locations: str, gdf_block_group_data: gpd.GeoDataFrame,
+def get_user_counts_per_block_group(df_transactions_with_locations: str, gdf_block_group_data: gpd.GeoDataFrame,
                                            transaction_location_column = 'transaction_location', 
                                            is_transaction_location_shaped: bool = False,
                                            census_gdf_crs: int = 32610,
@@ -132,6 +135,8 @@ def get_user_counts_per_block(df_transactions_with_locations: str, gdf_block_gro
     gdf_block_group_user_counts = pd.merge(gdf_block_group_data, gdf_users_bg_counts, how='inner', on='GEOID')
 
     return gdf_block_group_user_counts
+
+# def get_all_counts_per_block_group
 
 # A generic function used to filter out count-related dataframes by the regions they belong to
 def get_counts_per_block_in_region(gdf_block_group_counts: gpd.GeoDataFrame, gdf_region: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
