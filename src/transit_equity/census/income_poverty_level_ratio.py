@@ -271,7 +271,7 @@ def get_low_income_population(income_poverty_level_ratio_df: pd.DataFrame,
     
     Returns:
     --------
-    df_low_income_population: pd.DataFrame
+    low_income_population_df: pd.DataFrame
         A pandas DataFrame containing the low income population and the total population data
         The DataFrame will contain the same columns as the input DataFrame with the addition of the low income population column and the total population column.
         The DataFrame will also contain a new column 'GEOID' that contains the GEOID values
@@ -284,9 +284,9 @@ def get_low_income_population(income_poverty_level_ratio_df: pd.DataFrame,
     income_poverty_level_ratio_df[low_income_population_column] = low_income_population_details['population']
 
     POPULATION_COLUMN_KEY = POPULATION_COLUMNS.TOTAL_POPULATION.value.field
-    df_low_income_population = income_poverty_level_ratio_df[[
+    low_income_population_df = income_poverty_level_ratio_df[[
         *CENSUS_MAIN_COLUMNS, low_income_population_column, POPULATION_COLUMN_KEY]]
-    df_low_income_population.rename(columns={POPULATION_COLUMN_KEY: population_column}, inplace=True)
-    df_low_income_population.loc[:,'GEOID'] = get_geo_id(df_low_income_population)
+    low_income_population_df.rename(columns={POPULATION_COLUMN_KEY: population_column}, inplace=True)
+    low_income_population_df.loc[:,'GEOID'] = get_geo_id(low_income_population_df)
 
-    return df_low_income_population
+    return low_income_population_df
