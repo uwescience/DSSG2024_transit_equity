@@ -1,38 +1,162 @@
 """
-Module for processing and analyzing trip data with spatial geometries.
+Module for processing and analyzing trip data from the orca_ng database for network analysis.
 
-This module contains functions to clean, filter, and analyze trip data, particularly in the context 
-of mapping origin-destination pairs to hexagon centroids and calculating the frequency of trips 
-between these centroids.
+This module contains functions to pull, clean, and filter trip data from the orca_ng 
+database, transforming it into a GeoDataFrame for spatial network analysis.
 
-Functions:
-    clean_and_filter_network_data(trips_df):
-        Cleans and filters trip data, converting location data to Shapely geometries, and calculates
-          trip frequencies.
-        Args:
-            trips_df (pd.DataFrame): DataFrame containing trip data.
-        Returns:
-            gpd.GeoDataFrame: GeoDataFrame with cleaned and filtered trip data.
-        
+Functions
+---------
+get_trip_tables_by_cardtype(postgres_url_ng, test_schema, orca_schema, trips_table, 
+                            alights_table, boardings_table, transactions_table, 
+                            vboardings_table, gtfs_table, user_type)
+    Pulls and processes trips table data from the orca_ng database based on user type.
 
-
-Example usage:
-    import pandas as pd
-    import geopandas as gpd
-    from transit_equity.networks.network_prep import clean_and_filter_network_data
-
-    # Load trip data
-    trips_df = pd.read_sql(query.statement,         #sql alchemy query 
-                            engine_ng)              #sql alchemy database engine
-
-    # Clean and filter trip data
-    gdf_trips = clean_and_filter_network_data(trips_df)
-
+clean_and_filter_network_data(trips_df)
+    Cleans and filters trip data, transforming it into a GeoDataFrame for spatial analysis.
 """
-
+import os
 import pandas as pd
 import geopandas as gpd
+from sqlalchemy import and_, create_engine
+from sqlalchemy.orm import sessionmaker
 from transit_equity.geospatial.format_conversions import load_wkb
+from transit_equity.utils.db_helpers import get_automap_base_with_views
+
+def get_trip_tables_by_cardtype(postgres_url_ng,
+                                test_schema,
+                                orca_schema,
+                                trips_table,
+                                alights_table,
+                                boardings_table,
+                                vboardings_table,
+                                gtfs_table,
+                                user_type):
+    """
+    Pull and process trips table data from the orca_ng database based on user type.
+
+    This function connects to the orca_ng database, constructs a query to pull trip data,
+    processes the data in chunks, filters and cleans the data, and returns a GeoDataFrame
+    containing the trip data.
+
+    Parameters
+    ----------
+    postgres_url_ng : str
+        The URL for connecting to the PostgreSQL database.
+    test_schema : str
+        The schema name containing test tables.
+    orca_schema : str
+        The schema name containing ORCA-related tables.
+    trips_table : str
+        The name of the trips table.
+    alights_table : str
+        The name of the alights table.
+    boardings_table : str
+        The name of the boardings table.
+    transactions_table : str
+        The name of the transactions table.
+    vboardings_table : str
+        The name of the view boardings table.
+    gtfs_table : str
+        The name of the GTFS stops table.
+    user_type : str
+        The passenger type ID used to filter the data. In the orca_ng table, the groups are as
+        follows:
+            1 = Adult
+            2 = Youth
+            3 = Senior
+            4 = Disabled
+            5 = Low Income
+        Note: This may need to be updated if the codes were changed between the new ORCA db and 
+        orca_ng. I think that the new ORCA db uses letters to signify the card types, and that the 
+        column name that stores the passenger types may be named differently. Double check if this 
+        is true when using the updated database.
+    
+    Returns
+    -------
+    GeoDataFrame
+        A GeoDataFrame containing the trip data, with geometries set to 'board_location_shapely'.
+    """
+
+    # Check database urls are correct
+    print(os.getenv(postgres_url_ng))
+
+    #connect to engines
+    engine_ng = create_engine(os.getenv(postgres_url_ng))
+
+    # Setup Session Maker and Session
+    session_ng_maker = sessionmaker(bind=engine_ng)
+    session_ng = session_ng_maker()
+
+    # NG test Schema Base
+    base_ng_test = get_automap_base_with_views(engine=engine_ng, schema=test_schema)
+    base_ng_orca = get_automap_base_with_views(engine=engine_ng, schema=orca_schema)
+
+    # Tables of interest from orca_ng
+    trips_ng = base_ng_test.metadata.tables[trips_table]
+    alights_ng = base_ng_test.metadata.tables[alights_table]
+    boardings_ng = base_ng_test.metadata.tables[boardings_table]
+    vboardings_ng = base_ng_orca.metadata.tables[vboardings_table]
+    gtfs_stops_ng = base_ng_test.metadata.tables[gtfs_table]
+
+    # Constructing the query
+    query = (
+        session_ng.query(
+            vboardings_ng.c.card_id,
+            vboardings_ng.c.txn_id,
+            alights_ng.c.txn_id,
+            vboardings_ng.c.device_dtm_pacific,
+            alights_ng.c.alight_dtm_pacific,
+            boardings_ng.c.stop_location,
+            gtfs_stops_ng.c.stop_location
+        ).select_from(trips_ng)
+        .join(boardings_ng, boardings_ng.c.txn_id == trips_ng.c.orig_txn_id)
+        .join(alights_ng, alights_ng.c.txn_id == trips_ng.c.dest_txn_id)
+        .join(vboardings_ng, vboardings_ng.c.txn_id == trips_ng.c.orig_txn_id)
+        .join(gtfs_stops_ng, gtfs_stops_ng.c.stop_id == alights_ng.c.stop_id)
+        .filter(
+            and_(
+                boardings_ng.c.stop_location.isnot(None),
+                gtfs_stops_ng.c.stop_location.isnot(None),
+                vboardings_ng.c.passenger_type_id == user_type
+            )
+        )
+    )
+
+    # Because the adults table is so large that it was causing memory limitation issues, read the
+    # table in chunks of 100000 rows and then concatenate them after.
+    chunk_size = 100000
+
+
+    with engine_ng.connect() as connection:
+        result_proxy = connection.execution_options(stream_results=True).execute(query.statement)
+        chunk_count = 0
+        chunks = []
+
+        while True:
+            chunk = result_proxy.fetchmany(chunk_size)
+            if not chunk:
+                break
+            chunk_df = pd.DataFrame(chunk, columns=result_proxy.keys())
+            # Filter and clean each chunk here, can trade out for other cleaning pipeline for other
+            # analyses if desired
+            filtered_chunk_gdf = clean_and_filter_network_data(chunk_df)
+            chunks.append(filtered_chunk_gdf)
+            chunk_count += 1
+            # Print progress for each 10 chunks read.
+            if chunk_count % 10 == 0:
+                print(f"Fetched chunk {chunk_count}")
+
+    # Concatenate all chunks into a single DataFrame
+    df_trips_lift = pd.concat(chunks, ignore_index=True)
+    print(f"Total records fetched: {len(df_trips_lift)}")
+
+    # changing pandas df to geopandas geo df
+    df_trips_gdf = gpd.GeoDataFrame(df_trips_lift, geometry='board_location_shapely')
+
+    # Ensure shapely locations are set as geometry dtype
+    gdf_trips = df_trips_gdf.set_geometry('board_location_shapely')
+
+    return gdf_trips
 
 def clean_and_filter_network_data(trips_df):
     """
