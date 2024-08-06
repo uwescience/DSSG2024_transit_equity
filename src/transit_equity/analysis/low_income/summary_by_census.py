@@ -30,7 +30,7 @@ from shapely import wkb
 from ...census.utils import TIGER_MAIN_COLUMNS
 
 def get_transactions_geo_df(df_transactions_with_locations: pd.DataFrame, transaction_location_column: str = 'transaction_location',
-                            is_transaction_location_shaped: bool = False) -> gpd.GeoDataFrame:
+                            is_transaction_location_shaped: bool = False, transaction_crs: int = 4326,) -> gpd.GeoDataFrame:
     """
     A function to convert a DataFrame containing transactions with locations to a GeoDataFrame.
 
@@ -40,13 +40,16 @@ def get_transactions_geo_df(df_transactions_with_locations: pd.DataFrame, transa
         A DataFrame containing the transactions with their locations.
         One way to get this DataFrame is to use the `TransactionsWithLocations` class in the 
         `transit_equity.orca_ng.query.transactions_with_locations` module.
-        (Note: The CRS of the transaction locations should be EPSG:4326)
     
     transaction_location_column : str
         The column name in the DataFrame that contains the transaction location
     
     is_transaction_location_shaped : bool
         A flag to indicate if the transaction location is already a Shapely geometry object
+
+    transaction_crs : int
+        The CRS of the transaction locations.
+        Default is 4326 (EPSG:4326)
 
     Returns
     -------
@@ -61,13 +64,15 @@ def get_transactions_geo_df(df_transactions_with_locations: pd.DataFrame, transa
         df_transactions_with_locations['transaction_location_shape'] = \
             df_transactions_with_locations[transaction_location_column]
 
-    gdf_transactions = gpd.GeoDataFrame(data=df_transactions_with_locations, geometry="transaction_location_shape", crs="EPSG:4326")
+    gdf_transactions = gpd.GeoDataFrame(data=df_transactions_with_locations, geometry="transaction_location_shape", 
+                                        crs=f"EPSG:{transaction_crs}")
     return gdf_transactions
 
 # A generic function that groups transactions (of any type, but with the same schema) by census block group
 def get_transaction_counts_per_block_group(df_transactions_with_locations: str, gdf_block_group_data: gpd.GeoDataFrame,
                                            transaction_location_column = 'transaction_location', 
                                            is_transaction_location_shaped: bool = False,
+                                           transaction_crs: int = 4326,
                                            census_gdf_crs: int = 32610,
                                            count_column: str = 'txn_count') -> gpd.GeoDataFrame:
     """
@@ -97,8 +102,13 @@ def get_transaction_counts_per_block_group(df_transactions_with_locations: str, 
     is_transaction_location_shaped : bool
         A flag to indicate if the transaction location is already a Shapely geometry object
     
+    transaction_crs : int
+        The CRS of the transaction locations.
+        Default is 4326 (EPSG:4326)
+
     census_gdf_crs : int
-        The CRS of the census block group data
+        The CRS of the census block group data.
+        Default is 32610 (EPSG:32610)
     
     count_column : str
         The name of the column in the output GeoDataFrame that will contain the transaction count
@@ -122,6 +132,7 @@ def get_transaction_counts_per_block_group(df_transactions_with_locations: str, 
 def get_user_counts_per_block_group(df_transactions_with_locations: str, gdf_block_group_data: gpd.GeoDataFrame,
                                            transaction_location_column = 'transaction_location', 
                                            is_transaction_location_shaped: bool = False,
+                                           transaction_crs: int = 4326,
                                            census_gdf_crs: int = 32610,
                                            count_column: str = 'user_count') -> gpd.GeoDataFrame:
     """
@@ -150,9 +161,17 @@ def get_user_counts_per_block_group(df_transactions_with_locations: str, gdf_blo
     
     is_transaction_location_shaped : bool
         A flag to indicate if the transaction location is already a Shapely geometry object
+
+    transaction_crs : int
+        The CRS of the transaction locations.
+        Default is 4326 (EPSG:4326)
     
     census_gdf_crs : int
-        The CRS of the census block group data
+        The CRS of the census block group data.
+        Default is 32610 (EPSG:32610)
+
+    count_column : str
+        The name of the column in the output GeoDataFrame that will contain the user count
     
     Returns
     -------
