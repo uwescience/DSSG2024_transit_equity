@@ -118,7 +118,8 @@ def get_transaction_counts_per_block_group(df_transactions_with_locations: str, 
     gpd.GeoDataFrame
         A GeoDataFrame containing the number of transactions per census block group
     """
-    gdf_transactions = get_transactions_geo_df(df_transactions_with_locations, transaction_location_column, is_transaction_location_shaped)
+    gdf_transactions = get_transactions_geo_df(df_transactions_with_locations, transaction_location_column, 
+                                               is_transaction_location_shaped, transaction_crs)
     gdf_transactions = gdf_transactions.to_crs(epsg=census_gdf_crs)
 
     gdf_transactions_bg = gpd.sjoin(gdf_transactions, gdf_block_group_data, how="left", predicate="within")
@@ -178,7 +179,8 @@ def get_user_counts_per_block_group(df_transactions_with_locations: str, gdf_blo
     gpd.GeoDataFrame
         A GeoDataFrame containing the number of unique users per census block group
     """
-    gdf_transactions = get_transactions_geo_df(df_transactions_with_locations, transaction_location_column, is_transaction_location_shaped)
+    gdf_transactions = get_transactions_geo_df(df_transactions_with_locations, transaction_location_column, 
+                                               is_transaction_location_shaped, transaction_crs)
     gdf_transactions = gdf_transactions.to_crs(epsg=census_gdf_crs)
 
     gdf_transactions_bg: gpd.GeoDataFrame = gpd.sjoin(gdf_transactions, gdf_block_group_data, how="left", predicate="within")
