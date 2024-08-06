@@ -54,8 +54,6 @@ def import_hexgrid(postgres_url,
     The CRS of the GeoDataFrame is set to EPSG:32610. This was the CRS that the hexgrid was created
     in.
     """
-    # Check database urls are correct
-    print(os.getenv(postgres_url))
 
     engine = create_engine(os.getenv(postgres_url))
 

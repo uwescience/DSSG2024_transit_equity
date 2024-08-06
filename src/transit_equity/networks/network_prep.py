@@ -30,7 +30,8 @@ def get_trip_tables_by_cardtype(postgres_url_ng,
                                 boardings_table,
                                 vboardings_table,
                                 gtfs_table,
-                                user_type):
+                                user_type,
+                                chunk_size=100000):
     """
     Pull and process trips table data from the orca_ng database based on user type.
 
@@ -70,15 +71,14 @@ def get_trip_tables_by_cardtype(postgres_url_ng,
         orca_ng. I think that the new ORCA db uses letters to signify the card types, and that the 
         column name that stores the passenger types may be named differently. Double check if this 
         is true when using the updated database.
+    chunk_size : int
+        The number of rows in each chunk. Defaults to 100000.
     
     Returns
     -------
     GeoDataFrame
         A GeoDataFrame containing the trip data, with geometries set to 'board_location_shapely'.
     """
-
-    # Check database urls are correct
-    print(os.getenv(postgres_url_ng))
 
     #connect to engines
     engine_ng = create_engine(os.getenv(postgres_url_ng))
@@ -123,8 +123,7 @@ def get_trip_tables_by_cardtype(postgres_url_ng,
     )
 
     # Because the adults table is so large that it was causing memory limitation issues, read the
-    # table in chunks of 100000 rows and then concatenate them after.
-    chunk_size = 100000
+    # table in chunks of chunk_size rows and then concatenate them after.
 
 
     with engine_ng.connect() as connection:
