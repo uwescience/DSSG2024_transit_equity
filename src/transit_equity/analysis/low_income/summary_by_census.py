@@ -17,6 +17,10 @@ get_counts_per_block_in_region:
 
 TODO: Refactor the naming convention of the function parameter/variable names to have object type as suffix.
     E.g. df_transactions_with_locations -> transactions_with_locations_df
+
+TODO: It seems that the count-based functions are doing one extra functionality that should be separated out.
+    This is the conversion of the transaction locations to a GeoDataFrame. 
+    Once this is separated out, instead of df_transactions_with_locations, the function can take in a GeoDataFrame
 """
 
 import pandas as pd
