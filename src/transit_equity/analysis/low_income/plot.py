@@ -175,7 +175,8 @@ def explore_gdf(gdf: gpd.GeoDataFrame, column: str, cmap: str = 'viridis', title
 
     return m
 
-def plot_grouped_line_chart(data_df: pd.DataFrame, x: str, y: str, group: str, title: str = 'Line Chart', figsize: tuple = (10, 10)):
+def plot_grouped_line_chart(data_df: pd.DataFrame, x: str, y: str, group: str, 
+                            title: str = 'Line Chart', figsize: tuple = (10, 10)) -> go.Figure:
     """
     Plot a grouped line chart.
     This is a very specific function, and it is better used simply as a reference for creating more general functions.
@@ -195,10 +196,16 @@ def plot_grouped_line_chart(data_df: pd.DataFrame, x: str, y: str, group: str, t
         The column to group by
     
     title : str
-        The title of the plot
+        The title of the plot.
+        Currently, the title is not used.
     
     figsize : tuple
-        The size of the plot
+        The size of the plot.
+        Currently, the figsize is not used.
+    
+    Returns
+    -------
+    go.Figure
     """
     fig = go.Figure()
 
