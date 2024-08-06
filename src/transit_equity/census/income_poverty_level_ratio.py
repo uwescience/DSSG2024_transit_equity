@@ -241,7 +241,7 @@ def get_population_in_income_poverty_level_range_df(income_poverty_level_ratio_d
         'true_max_ratio': true_max_ratio
     }
 
-def get_low_income_population(income_poverty_level_ratio_df: pd.DataFrame,
+def get_low_income_population_df(income_poverty_level_ratio_df: pd.DataFrame,
                               min_ratio: int = LOW_INCOME_RANGE[0], max_ratio: int = LOW_INCOME_RANGE[1],
                               low_income_population_column: str = 'low_income_population',
                               population_column: str = 'population') -> pd.DataFrame:
