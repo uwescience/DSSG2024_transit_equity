@@ -25,6 +25,41 @@ from shapely import wkb
 
 from ...census.utils import TIGER_MAIN_COLUMNS
 
+def get_transactions_geo_df(df_transactions_with_locations: pd.DataFrame, transaction_location_column: str = 'transaction_location',
+                            is_transaction_location_shaped: bool = False) -> gpd.GeoDataFrame:
+    """
+    A function to convert a DataFrame containing transactions with locations to a GeoDataFrame.
+
+    Parameters
+    ----------
+    df_transactions_with_locations : pd.DataFrame
+        A DataFrame containing the transactions with their locations.
+        One way to get this DataFrame is to use the `TransactionsWithLocations` class in the 
+        `transit_equity.orca_ng.query.transactions_with_locations` module.
+        (Note: The CRS of the transaction locations should be EPSG:4326)
+    
+    transaction_location_column : str
+        The column name in the DataFrame that contains the transaction location
+    
+    is_transaction_location_shaped : bool
+        A flag to indicate if the transaction location is already a Shapely geometry object
+
+    Returns
+    -------
+    gpd.GeoDataFrame
+        A GeoDataFrame containing the transactions with their locations
+    """
+    # The transaction_location_column is a WKB hex string that needs to be converted to a Shapely geometry object
+    if not is_transaction_location_shaped:
+        df_transactions_with_locations['transaction_location_shape'] = \
+            df_transactions_with_locations.apply(func=lambda row: wkb.loads(bytes.fromhex(row[transaction_location_column])), axis=1) 
+    else:
+        df_transactions_with_locations['transaction_location_shape'] = \
+            df_transactions_with_locations[transaction_location_column]
+
+    gdf_transactions = gpd.GeoDataFrame(data=df_transactions_with_locations, geometry="transaction_location_shape", crs="EPSG:4326")
+    return gdf_transactions
+
 # A generic function that groups transactions (of any type, but with the same schema) by census block group
 def get_transaction_counts_per_block_group(df_transactions_with_locations: str, gdf_block_group_data: gpd.GeoDataFrame,
                                            transaction_location_column = 'transaction_location', 
@@ -69,16 +104,7 @@ def get_transaction_counts_per_block_group(df_transactions_with_locations: str, 
     gpd.GeoDataFrame
         A GeoDataFrame containing the number of transactions per census block group
     """
-
-    # The transaction_location_column is a WKB hex string that needs to be converted to a Shapely geometry object
-    if not is_transaction_location_shaped:
-        df_transactions_with_locations['transaction_location_shape'] = \
-            df_transactions_with_locations.apply(func=lambda row: wkb.loads(bytes.fromhex(row[transaction_location_column])), axis=1) 
-    else:
-        df_transactions_with_locations['transaction_location_shape'] = \
-            df_transactions_with_locations[transaction_location_column]
-
-    gdf_transactions = gpd.GeoDataFrame(data=df_transactions_with_locations, geometry="transaction_location_shape", crs="EPSG:4326")
+    gdf_transactions = get_transactions_geo_df(df_transactions_with_locations, transaction_location_column, is_transaction_location_shaped)
     gdf_transactions = gdf_transactions.to_crs(epsg=census_gdf_crs)
 
     gdf_transactions_bg = gpd.sjoin(gdf_transactions, gdf_block_group_data, how="left", predicate="within")
@@ -129,16 +155,7 @@ def get_user_counts_per_block_group(df_transactions_with_locations: str, gdf_blo
     gpd.GeoDataFrame
         A GeoDataFrame containing the number of unique users per census block group
     """
-    
-    # The transaction_location_column is a WKB hex string that needs to be converted to a Shapely geometry object
-    if not is_transaction_location_shaped:
-        df_transactions_with_locations['transaction_location_shape'] = \
-            df_transactions_with_locations.apply(func=lambda row: wkb.loads(bytes.fromhex(row[transaction_location_column])), axis=1) 
-    else:
-        df_transactions_with_locations['transaction_location_shape'] = \
-            df_transactions_with_locations[transaction_location_column]
-
-    gdf_transactions = gpd.GeoDataFrame(data=df_transactions_with_locations, geometry="transaction_location_shape", crs="EPSG:4326")
+    gdf_transactions = get_transactions_geo_df(df_transactions_with_locations, transaction_location_column, is_transaction_location_shaped)
     gdf_transactions = gdf_transactions.to_crs(epsg=census_gdf_crs)
 
     gdf_transactions_bg: gpd.GeoDataFrame = gpd.sjoin(gdf_transactions, gdf_block_group_data, how="left", predicate="within")
