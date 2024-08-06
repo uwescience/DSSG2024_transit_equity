@@ -206,7 +206,7 @@ def plot_grouped_line_chart(data_df: pd.DataFrame, x: str, y: str, group: str, t
     for key, group_df in data_df.groupby(group):
         fig.add_trace(
             go.Scatter(
-                x=group_df[x]
+                x=group_df[x],
                 y=group_df[y],
                 mode='lines',
                 line=dict(
