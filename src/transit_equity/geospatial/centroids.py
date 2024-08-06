@@ -5,65 +5,103 @@ and filter trips based on frequency.
 
 Functions:
 ----------
-1. get_hex_centroids(geo_df, hex_geo_df):
-    Calculate the centroids of hexagons in a GeoDataFrame and reproject them to match the CRS of another GeoDataFrame.
+1. import_hexgrid(postgres_url, table_name):
+    Import and convert a hex grid table from a PostgreSQL database to a GeoDataFrame.
 
-2. assign_stops_to_hex_centroids(geo_df, hex_grid_with_centroids, stop_type):
+2. get_hex_centroids(geo_df, hex_geo_df):
+    Calculate the centroids of hexagons in a GeoDataFrame and reproject them to match the CRS of 
+    another GeoDataFrame.
+
+3. assign_stops_to_hex_centroids(geo_df, hex_grid_with_centroids, stop_type):
     Assign boarding or alighting stops to hexagon centroids by performing a spatial join.
 
-3. merge_and_filter_trip_centroids_gdf(boardings_centroids, alights_centroids, trip_frequency_cutoff=0):
+4. merge_and_filter_trip_centroids_gdf(boardings_centroids,
+                                        alights_centroids, 
+                                        trip_frequency_cutoff=0):
     Merge boarding and alighting centroids, calculate trip frequencies between centroids,
     and filter the resulting GeoDataFrame based on a trip frequency cutoff.
-
-Detailed Descriptions:
-----------------------
-1. get_hex_centroids(geo_df, hex_geo_df):
-    This function takes a GeoDataFrame containing hexagon geometries and another GeoDataFrame to match the CRS.
-    It calculates the centroids of the hexagons and adds them as a new column in the hexagon GeoDataFrame.
-    
-    Parameters:
-    - geo_df (GeoDataFrame): A GeoDataFrame whose CRS will be used for reprojecting the hexagon centroids.
-    - hex_geo_df (GeoDataFrame): A GeoDataFrame containing hexagon geometries to calculate centroids for.
-
-    Returns:
-    - GeoDataFrame: A GeoDataFrame with an additional column 'centroid_location' containing the centroid geometries of the hexagons, reprojected to the CRS of `geo_df`.
-
-2. assign_stops_to_hex_centroids(geo_df, hex_grid_with_centroids, stop_type):
-    This function assigns boarding or alighting stops to hexagon centroids by performing a spatial join. It processes the stops based on the type ('board' or 'alight'), sets the correct CRS, reprojects to match the base map, and filters the resulting GeoDataFrame.
-    
-    Parameters:
-    - geo_df (GeoDataFrame): A GeoDataFrame containing stop data with geometries for boarding or alighting locations.
-    - hex_grid_with_centroids (GeoDataFrame): A GeoDataFrame containing hexagon geometries and their corresponding centroids.
-    - stop_type (str): A string indicating the type of stop to process, either 'board' for boarding stops or 'alight' for alighting stops.
-
-    Returns:
-    - GeoDataFrame: A GeoDataFrame with stop data assigned to the corresponding hexagon centroids, including the columns: 'card_id', 'location_column', 'trip_time_minutes', 'trip_frequency', and the assigned centroid column ('board_centroid' or 'alight_centroid').
-
-3. merge_and_filter_trip_centroids_gdf(boardings_centroids, alights_centroids, trip_frequency_cutoff=0):
-    This function merges boarding and alighting centroids, calculates trip frequencies between centroids, and filters the resulting GeoDataFrame based on a specified trip frequency cutoff. It ensures the geometries are set correctly, merges the data, calculates frequencies, and extracts coordinates for further analysis.
-    
-    Parameters:
-    - boardings_centroids (GeoDataFrame): A GeoDataFrame containing boarding stop data with centroids.
-    - alights_centroids (GeoDataFrame): A GeoDataFrame containing alighting stop data with centroids.
-    - trip_frequency_cutoff (int, optional): The minimum frequency of trips between centroids to include in the output. Default is 0, which includes all trips.
-
-    Returns:
-    - GeoDataFrame: A GeoDataFrame containing the merged and filtered trip data with columns: 'card_id', 'trip_time_minutes', 'board_centroid', 'alight_centroid', 'trip_centroid_frequency', 'number_boards', 'number_alights', 'board_lon', 'board_lat', 'alight_lon', and 'alight_lat'.
 """
-
+import os
 import pandas as pd
 import geopandas as gpd
+from sqlalchemy import and_, create_engine
+from sqlalchemy.orm import sessionmaker
+from transit_equity.geospatial.format_conversions import load_wkb
+from transit_equity.utils.db_helpers import get_automap_base_with_views
+
+def import_hexgrid(postgres_url,
+                   table_name):
+    """
+    Import and convert a hex grid table from a PostgreSQL database to a GeoDataFrame.
+
+    This function connects to a PostgreSQL database, retrieves a hex grid table, converts
+    the WKB geometry data to Shapely objects, and returns a GeoDataFrame.
+
+    Parameters
+    ----------
+    postgres_url : str
+        The URL for connecting to the PostgreSQL database.
+    table_name : str
+        The name of the hex grid table to be imported.
+
+    Returns
+    -------
+    gpd.GeoDataFrame
+        A GeoDataFrame containing the hex grid data with geometries set to the appropriate CRS.
+
+    Notes
+    -----
+    The CRS of the GeoDataFrame is set to EPSG:32610. This was the CRS that the hexgrid was created
+    in.
+    """
+    # Check database urls are correct
+    print(os.getenv(postgres_url))
+
+    engine = create_engine(os.getenv(postgres_url))
+
+    # Setup Session Maker and Session
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    DSSG_SCHEMA = 'dssg'
+    
+    HEX_GRID = table_name #'dssg.hexgrid_400m'
+
+    # DSSG Schema Base
+    Base_dssg = get_automap_base_with_views(engine=engine, schema=DSSG_SCHEMA)
+
+    # TODO update to new uploaded table 
+    hex_grid_400m = Base_dssg.metadata.tables[HEX_GRID]
+
+    # check hexgrid 400
+    hex_query = (session.query(hex_grid_400m.c.geom))
+
+    hex_table = pd.read_sql(hex_query.statement, engine)
+
+    #convert geom to shapely object
+    hex_table['geom'] = hex_table['geom'].apply(load_wkb)
+
+    hex_gdf = gpd.GeoDataFrame(hex_table, geometry='geom')
+
+    hex_gdf = hex_gdf.set_crs(epsg=32610)
+
+    return hex_gdf
 
 def get_hex_centroids(geo_df, hex_geo_df):
     """
-    Calculate the centroids of hexagons in a GeoDataFrame and reproject them to match the CRS of another GeoDataFrame.
+    Calculate the centroids of hexagons in a GeoDataFrame and reproject them to match the CRS of 
+    another GeoDataFrame.
 
     Parameters:
-    geo_df (GeoDataFrame): A GeoDataFrame whose CRS will be used for reprojecting the hexagon centroids. Should contain stop location data.
-    hex_geo_df (GeoDataFrame): A GeoDataFrame containing a grid of hexagon geometries to calculate centroids for.
+    geo_df (GeoDataFrame): A GeoDataFrame whose CRS will be used for reprojecting the hexagon 
+        centroids. Should contain stop location data.
+    hex_geo_df (GeoDataFrame): A GeoDataFrame containing a grid of hexagon geometries to calculate
+        centroids for.
 
     Returns:
-    GeoDataFrame: A GeoDataFrame with the hexagon multipolygon geometry and an additional column 'centroid_location' containing the centroid geometries of the hexagons, reprojected to the CRS of `geo_df`.
+    GeoDataFrame: A GeoDataFrame with the hexagon multipolygon geometry and an additional column
+    'centroid_location' containing the centroid geometries of the hexagons, reprojected to the CRS
+    of `geo_df`.
     
     Steps:
     1. Reproject `hex_geo_df` to the CRS of `geo_df`.
@@ -90,13 +128,17 @@ def assign_stops_to_hex_centroids(geo_df, hex_grid_with_centroids, stop_type):
     Assigns boarding or alighting stops to hexagon centroids by performing a spatial join.
 
     Parameters:
-    geo_df (GeoDataFrame): A GeoDataFrame containing stop data with geometries for boarding or alighting locations.
-    hex_grid_with_centroids (GeoDataFrame): A GeoDataFrame containing hexagon geometries and their corresponding centroids.
-    stop_type (str): A string indicating the type of stop to process, either 'board' for boarding stops or 'alight' for alighting stops.
+    geo_df (GeoDataFrame): A GeoDataFrame containing stop data with geometries for boarding or
+        alighting locations.
+    hex_grid_with_centroids (GeoDataFrame): A GeoDataFrame containing hexagon geometries and their
+        corresponding centroids.
+    stop_type (str): A string indicating the type of stop to process, either 'board' for boarding
+        stops or 'alight' for alighting stops.
 
     Returns:
-    GeoDataFrame: A GeoDataFrame with stop data assigned to the corresponding hexagon centroids, including the columns:
-                 'card_id', 'location_column', 'trip_time_minutes', 'trip_frequency', and the assigned centroid column ('board_centroid' or 'alight_centroid').
+    GeoDataFrame: A GeoDataFrame with stop data assigned to the corresponding hexagon centroids,
+        including the columns: 'card_id', 'location_column', 'trip_time_minutes', 'trip_frequency',
+        and the assigned centroid column ('board_centroid' or 'alight_centroid').
 
     Steps:
     1. Select the relevant columns based on the `stop_type`.
@@ -149,16 +191,19 @@ def assign_stops_to_hex_centroids(geo_df, hex_grid_with_centroids, stop_type):
     
     return gdf_boarding_poly_joined
 
-def merge_and_filter_trip_centroids_gdf(boardings_centroids, alights_centroids, trip_frequency_cutoff=0):
+def merge_and_filter_trip_centroids_gdf(boardings_centroids,
+                                        alights_centroids,
+                                        trip_frequency_cutoff=0):
     """
     Merge boarding and alighting centroids, calculate trip frequencies between centroids,
-    and filter the resulting GeoDataFrame based on a trip frequency cutoff. The trip frequency cutoff is set to 0 unless specified.
+    and filter the resulting GeoDataFrame based on a trip frequency cutoff. The trip frequency 
+    cutoff is set to 0 unless specified.
 
     Parameters:
     boardings_centroids (GeoDataFrame): A GeoDataFrame containing boarding stop data with centroids.
     alights_centroids (GeoDataFrame): A GeoDataFrame containing alighting stop data with centroids.
-    trip_frequency_cutoff (int, optional): The minimum frequency of trips between centroids to include in the output.
-                                           Default is 0, which includes all trips.
+    trip_frequency_cutoff (int, optional): The minimum frequency of trips between centroids to 
+    include in the output. Default is 0, which includes all trips.
 
     Returns:
     GeoDataFrame: A GeoDataFrame containing the merged and filtered trip data with columns:
@@ -167,17 +212,19 @@ def merge_and_filter_trip_centroids_gdf(boardings_centroids, alights_centroids, 
                   'board_lon', 'board_lat', 'alight_lon', and 'alight_lat'.
     
     Steps:
-    1. Merge the boarding and alighting GeoDataFrames on 'card_id', 'trip_time_minutes', and 'trip_frequency'.
+    1. Merge the boarding and alighting GeoDataFrames on 'card_id', 'trip_time_minutes', and
+        'trip_frequency'.
     2. Calculate the frequency of trips between each pair of centroids.
     3. Create string representations of the centroid geometries to facilitate merging.
     4. Merge the trip frequencies back onto the merged GeoDataFrame.
-    5. Clean the resulting GeoDataFrame by dropping duplicates, rows with missing values, and trips where the boarding and alighting centroids are the same.
+    5. Clean the resulting GeoDataFrame by dropping duplicates, rows with missing values, and trips
+        where the boarding and alighting centroids are the same.
     6. Add columns counting the number of times each centroid is a boarding or alighting point.
-    7. Filter the GeoDataFrame to only include trips with a frequency higher than the specified cutoff.
+    7. Filter the GeoDataFrame to only include trips with a frequency higher than the specified
+        cutoff.
     8. Set the geometry column to 'board_centroid' and reproject to latitude and longitude.
     9. Extract the coordinates for the boarding and alighting centroids.
     """
-    
     # now need to join both geo dataframes
     gdf_board_alight_merge = boardings_centroids.merge(alights_centroids,
                                                              on=['card_id', 'trip_time_minutes',
@@ -229,7 +276,8 @@ def merge_and_filter_trip_centroids_gdf(boardings_centroids, alights_centroids, 
     gdf_network_clean['alight_string'] = gdf_network_clean['alight_centroid'].astype('string')
 
     # Filter to only frequent trips as specified by trip_frequency_cutoff
-    gdf_network_clean = gdf_network_clean[gdf_network_clean['trip_centroid_frequency'] > trip_frequency_cutoff]
+    gdf_network_clean = gdf_network_clean[gdf_network_clean['trip_centroid_frequency'] > \
+                                          trip_frequency_cutoff]
 
     # now need to reset geometry for the geodataframe
     gdf_network_clean = gdf_network_clean.set_geometry('board_centroid')
