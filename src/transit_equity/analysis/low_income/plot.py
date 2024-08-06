@@ -9,6 +9,7 @@ from matplotlib.colors import rgb2hex
 from matplotlib.patches import Patch
 from geopandas.explore import _categorical_legend
 from folium.plugins import Geocoder
+import plotly.graph_objects as go
 
 def plot_multiple_histograms_by_column_group(data: pd.DataFrame, column: str = 'low_income_population', group_column: str = 'county',
                     figsize: tuple = (10, 10), title: str = 'Histogram', bins: int = 10):
@@ -173,3 +174,53 @@ def explore_gdf(gdf: gpd.GeoDataFrame, column: str, cmap: str = 'viridis', title
         Geocoder().add_to(m)
 
     return m
+
+def plot_grouped_line_chart(data_df: pd.DataFrame, x: str, y: str, group: str, 
+                            title: str = 'Line Chart', figsize: tuple = (10, 10)) -> go.Figure:
+    """
+    Plot a grouped line chart.
+    This is a very specific function, and it is better used simply as a reference for creating more general functions.
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        The data to plot
+    
+    x : str
+        The x-axis column
+    
+    y : str
+        The y-axis column
+    
+    group : str
+        The column to group by
+    
+    title : str
+        The title of the plot.
+        Currently, the title is not used.
+    
+    figsize : tuple
+        The size of the plot.
+        Currently, the figsize is not used.
+    
+    Returns
+    -------
+    go.Figure
+    """
+    fig = go.Figure()
+
+    # Plot data
+    for key, group_df in data_df.groupby(group):
+        fig.add_trace(
+            go.Scatter(
+                x=group_df[x],
+                y=group_df[y],
+                mode='lines',
+                line=dict(
+                    width=3
+                ),
+                name=key
+            )
+        )
+
+    return fig
