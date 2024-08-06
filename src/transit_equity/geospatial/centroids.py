@@ -24,7 +24,7 @@ Functions:
 import os
 import pandas as pd
 import geopandas as gpd
-from sqlalchemy import and_, create_engine
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from transit_equity.geospatial.format_conversions import load_wkb
 from transit_equity.utils.db_helpers import get_automap_base_with_views
@@ -60,29 +60,29 @@ def import_hexgrid(postgres_url,
     engine = create_engine(os.getenv(postgres_url))
 
     # Setup Session Maker and Session
-    Session = sessionmaker(bind=engine)
-    session = Session()
-
-    DSSG_SCHEMA = 'dssg'
-    
-    HEX_GRID = table_name #'dssg.hexgrid_400m'
+    session_maker = sessionmaker(bind=engine)
+    session = session_maker()
 
     # DSSG Schema Base
-    Base_dssg = get_automap_base_with_views(engine=engine, schema=DSSG_SCHEMA)
+    base_dssg = get_automap_base_with_views(engine=engine, schema='dssg')
 
-    # TODO update to new uploaded table 
-    hex_grid_400m = Base_dssg.metadata.tables[HEX_GRID]
+    # Hex grid table
+    hex_grid_400m = base_dssg.metadata.tables[table_name]
 
-    # check hexgrid 400
-    hex_query = (session.query(hex_grid_400m.c.geom))
+    # Query the hex grid table geometry
+    hex_query = session.query(hex_grid_400m.c.geom)
 
+    # read table as pandas df
     hex_table = pd.read_sql(hex_query.statement, engine)
 
     #convert geom to shapely object
     hex_table['geom'] = hex_table['geom'].apply(load_wkb)
 
+    # convert to geodataframe
     hex_gdf = gpd.GeoDataFrame(hex_table, geometry='geom')
 
+    # assign crs (this was the crs when this particular hex grid was created, if using a different
+    # hex grid, will need to update)
     hex_gdf = hex_gdf.set_crs(epsg=32610)
 
     return hex_gdf
@@ -152,7 +152,7 @@ def assign_stops_to_hex_centroids(geo_df, hex_grid_with_centroids, stop_type):
         location_column = 'board_location_shapely'
     elif stop_type == 'alight':
         location_column = 'alight_location_shapely'
-        
+
     #select relevant cols
     gdf_boarding = geo_df[['card_id', location_column, 'trip_time_minutes',
                         'trip_frequency']]
@@ -188,7 +188,7 @@ def assign_stops_to_hex_centroids(geo_df, hex_grid_with_centroids, stop_type):
     #need to drop board_centroid == 'None'
     gdf_boarding_poly_joined = \
         gdf_boarding_poly_joined[gdf_boarding_poly_joined[centroid_col_name].notnull()]
-    
+
     return gdf_boarding_poly_joined
 
 def merge_and_filter_trip_centroids_gdf(boardings_centroids,
@@ -291,5 +291,5 @@ def merge_and_filter_trip_centroids_gdf(boardings_centroids,
     gdf_network_clean['board_lat'] = gdf_network_clean.board_latlong.apply(lambda p: p.y)
     gdf_network_clean['alight_lon'] = gdf_network_clean.alight_latlong.apply(lambda p: p.x)
     gdf_network_clean['alight_lat'] = gdf_network_clean.alight_latlong.apply(lambda p: p.y)
-    
+
     return gdf_network_clean
