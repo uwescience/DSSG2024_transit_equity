@@ -17,14 +17,14 @@ Functions
 ---------
 get_income_poverty_level_ratio_df:
     A function to get the income to poverty level ratio columns from the US Census Bureau API.
-    Works at the block group level.
+    Warning: Works at the block group level.
 
 get_population_in_income_poverty_level_range_df :
     A function to get the population in the given income to poverty level ratio range.
 
 get_low_income_population_df:
     A highly specific function to get the low income population from the census data.
-    Works at the block group level.
+    Warning: Works at the block group level.
 """
 
 import pandas as pd
@@ -106,7 +106,7 @@ def get_income_poverty_level_ratio_df(census: Census,
     The income to poverty level ratio columns contain the number of people in different income to poverty level ratio ranges.
     Additionally, the total population is also present in the census data.
 
-    Currently only works at the block group level. 
+    Warning: Currently only works at the block group level. 
     TODO: Check if this function can be made more flexible in terms of granularity of the census data. 
 
     Parameters:
