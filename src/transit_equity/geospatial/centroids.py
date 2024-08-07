@@ -67,17 +67,15 @@ def import_hexgrid(postgres_url,
     # Hex grid table
     hex_grid_400m = base_dssg.metadata.tables[table_name]
 
-    # Query the hex grid table geometry
-    hex_query = session.query(hex_grid_400m.c.geom)
+    # query the geometry column 
+    hex_query = (session.query(hex_grid_400m.c.wkb_geometry))
 
-    # read table as pandas df
     hex_table = pd.read_sql(hex_query.statement, engine)
 
     #convert geom to shapely object
-    hex_table['geom'] = hex_table['geom'].apply(load_wkb)
+    hex_table['wkb_geometry'] = hex_table['wkb_geometry'].apply(load_wkb)
 
-    # convert to geodataframe
-    hex_gdf = gpd.GeoDataFrame(hex_table, geometry='geom')
+    hex_gdf = gpd.GeoDataFrame(hex_table, geometry='wkb_geometry')
 
     # assign crs (this was the crs when this particular hex grid was created, if using a different
     # hex grid, will need to update)
