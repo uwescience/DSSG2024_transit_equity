@@ -13,6 +13,9 @@ get_trip_tables_by_cardtype(postgres_url_ng, test_schema, orca_schema, trips_tab
 
 clean_and_filter_network_data(trips_df)
     Cleans and filters trip data, transforming it into a GeoDataFrame for spatial analysis.
+
+trip_frequency_filter(table, cutoff)
+    Filters trips based on the frequency of trips between origin and destination pairs.
 """
 import os
 import pandas as pd
