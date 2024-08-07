@@ -11,9 +11,12 @@ get_user_counts_per_block_group:
 
 get_all_counts_per_block_group:
     A function to get various counts per census block group.
+    Warning: This function operates at the census block group level.
+    TODO: Refactor the function to work with any census geography level.
+    One workaround is to hard-code the unnecessary columns (e.g. block group) and regenerate GEOID for the new geography level.
 
 get_counts_per_block_in_region:
-    A function to filter out count-related dataframes by the regions they belong to
+    A function to filter out count-related dataframes by the regions they belong to.
 
 TODO: Refactor the naming convention of the function parameter/variable names to have object type as suffix.
     E.g. df_transactions_with_locations -> transactions_with_locations_df
@@ -88,8 +91,6 @@ def get_transaction_counts_per_block_group(df_transactions_with_locations: str, 
         A DataFrame containing the transactions with their locations.
         One way to get this DataFrame is to use the `TransactionsWithLocations` class in the 
         `transit_equity.orca_ng.query.transactions_with_locations` module.
-        (Note: The CRS of the transaction locations should be EPSG:4326)
-        TODO: Check if it is necessary to specify the CRS of the transaction locations
     
     gdg_block_group_data : gpd.GeoDataFrame
         A GeoDataFrame containing the census block group data.
@@ -149,8 +150,6 @@ def get_user_counts_per_block_group(df_transactions_with_locations: str, gdf_blo
         A DataFrame containing the transactions with their locations.
         One way to get this DataFrame is to use the `TransactionsWithLocations` class in the 
         `transit_equity.orca_ng.query.transactions_with_locations` module.
-        (Note: The CRS of the transaction locations should be EPSG:4326)
-        TODO: Check if it is necessary to specify the CRS of the transaction locations
     
     gdg_block_group_data : gpd.GeoDataFrame
         A GeoDataFrame containing the census block group data.
@@ -212,6 +211,9 @@ def get_all_counts_per_block_group(df_transactions_with_locations: pd.DataFrame,
     - Number of low-income individuals per census block group (if low_income_population_df is provided)
     - Number of individuals per census block group (if low_income_population_df is provided)
     Additional counts can be added as needed.
+
+    Warning: Works at the census block group level. 
+    (TIGER_MAIN_COLUMNS are used to merge the counts-based GeoDataFrames)
 
     Parameters
     ----------
