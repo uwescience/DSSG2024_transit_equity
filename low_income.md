@@ -39,8 +39,35 @@ What steps did you follow?
 
 **Analyses**
 
-What approaches did you try that didn’t work?
-What analyses did you end up sticking with?
+***Preliminary Analysis***
+
+1. Check if it is necessary to consider low income proportions. 
+
+We concluded that it may not be necessary, since block groups have comparable populations, thus low_income_proportion values would have comparable denominators.
+
+I thought of investigating just a little more on that. Here is the distribution on that, along with some other stats. 
+
+Statistics:
+
+count    1545.000000
+
+mean     1459.139806
+
+std       433.057374
+
+min         0.000000
+
+25%      1160.000000
+
+50%      1424.000000
+
+75%      1693.000000
+
+max      4373.000000
+
+Name: population, dtype: float64
+
+Standard deviation = 433, thus the extreme (>2 std) left and right would differ by > 1800, but these would be rare cases, owing to the close to normal distribution.
 
 **Limitations**
 
