@@ -1,6 +1,7 @@
 ---
 layout: page
-title: Methods
+title: Low Income Home Locations
+parent: Analyses
 ---
 
 **Data**
@@ -27,3 +28,4 @@ What analyses did you end up sticking with?
 
 What are the shortcomings of your approach?
 How can your work be improved?
+
