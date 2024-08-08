@@ -4,8 +4,6 @@ title: Stop Improvements for Transfer Hotspots
 parent: Analyses
 ---
 
-# Stop Improvements for Transfer Hotspots
-
 ## Overview
 
 Bus stop shelters are incredibly vital to the public transportation experience as they allow commuters to wait for their ride in a safe and secure location. This analysis is focused on ensuring that the prioritization for the installation of bus shelters is equitable. The goal is to provide equal access to shelter at bus stops, particularly in underserved or vulnerable communities where such amenities can significantly impact residents' daily lives.
