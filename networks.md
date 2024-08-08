@@ -33,31 +33,44 @@ Additionally, we incorporated census block data and USGS National Hydrography Da
 
 Data was filtered by card type into the following groups: adult, youth, lift card (low-income riders), senior, and disabled riders. Each group was analyzed as a separate network for comparison. 
 
-The following data cleaning steps were taken to prepare the trip table for network analysis:
-    1) 
-    2)
-    3)
+The following data cleaning steps were taken to prepare the trip table for network analysis:  
+    1)  
+    2)  
+    3)  
 
 
  
 
 **Tools (aka “component specification”)**
 
-What software packages, modules, etc. did you use? 
-What are the dependencies between these and how did you render them interoperable?
+What software packages, modules, etc. did you use?  
+What are the dependencies between these and how did you render them interoperable?  
+
+To clean and filter the network data, we used the packages sqlalchemy, pandas, numpy, geopandas, and shapely. To calculate network metrics, we used networkx. For network visualization, we used folium. We also developed an open-source package available in our github repository with custom functions for each analysis.
+
+
 
 **Processes**
 
 What does your workflow or pipeline look like? 
-What steps did you follow? 
+What steps did you follow?  
+
+We imported the origin-destination trips table for April 2023 from the ORCA postgres database and loaded each table as a pandas geodataframe. We ran each network analysis separately for each of the card types: adult, youth, senior, disability, and low-income. We then assigned each stop to the centroid of a hexagonal grid overlaid on the spatial extent of the stop points to aggregate the data and improve visibility in the plots. Then, we calculated trip frequency and filtered out any origin-destination trip combinations with fewer instances than 20 that month to focus only on the most frequent trips. Next, we used networkx to create networks for each card type with nodes representing origin and destination location and edges representing trip area. We used the networkx object to calculate network metrics. Then, we used folium to create interactive maps for each card type, with and without inclusion of the downtown Seattle area to reduce overplotting of the high density-high frequency downtown stops. 
 
 **Analyses**
 
-What approaches did you try that didn’t work?
-What analyses did you end up sticking with?
+What approaches did you try that didn’t work?  
+
+Originally, we planned to pursue a multilayer network approach to directly compare the networks of different users, but this quickly became overcomplicated due to the size of the dataset. 
+
+What analyses did you end up sticking with?  
+Instead, analyzing each user type network discretely provided more easily interpretable results and visualizations without overtaxing our computers.
 
 **Limitations**
 
-What are the shortcomings of your approach?
-How can your work be improved?
+What are the shortcomings of your approach?  
+
+This approach has only been tested with one month of trip data, and even then we ran up against memory and computing limitations to complete the analysis. Additionally, we identified several issues with the data including negative trip times, impossibly long trip times, and trips that had the same start and stop location. These will be addressed in new iterations of the database, but for now were just filtered out. 
+How can your work be improved?  
+Running analysis on a more powerful computer would speed up the computation time and enable the use of larger subsets of the data. Additionally, examining how the networks change over time would yield additional valuable insight. 
 
