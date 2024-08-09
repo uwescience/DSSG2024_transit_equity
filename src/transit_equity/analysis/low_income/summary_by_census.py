@@ -287,7 +287,7 @@ def get_all_counts_per_block_group(df_transactions_with_locations: pd.DataFrame,
         gdf_low_income_population = gdf_block_group_data.merge(low_income_population_df, on='GEOID', how='right')
         # Keep only the necessary columns. May need to change this according to new requirements.
         gdf_low_income_population = gdf_low_income_population[
-            [*TIGER_MAIN_COLUMNS, low_income_population_column, population_column, 'geometry']]
+            [*merge_columns, low_income_population_column, population_column]]
     
         gdf_block_group_counts = pd.merge(gdf_block_group_counts, gdf_low_income_population, how='outer', on=merge_columns)
 
