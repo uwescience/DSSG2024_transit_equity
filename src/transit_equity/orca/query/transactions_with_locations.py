@@ -53,7 +53,7 @@ class TransactionsWithLocations:
     """
     STOP_LOCATION_TRANSFORMED_KEY = 'stop_location_transformed'
     TRANSACTION_LOCATION_KEY = 'transaction_location'
-    STOP_CRS = 4326
+    STOP_CRS = 32610
 
     def __init__(self, start_date: datetime, end_date: datetime, engine: Engine, transactions_t: Table | None = None):
         self.start_date = start_date
