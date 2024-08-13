@@ -28,6 +28,7 @@ class DSSG_SCHEMA_TABLES(Enum):
     V_TRANSACTIONS_APR2023: str = f'{DSSG_SCHEMA}.v_transactions_apr2023'
     M_TXN_IDS_APR2023: str = f'{DSSG_SCHEMA}.m_txn_ids_apr2023'
     M_TRANSACTIONS_APR2023: str = f'{DSSG_SCHEMA}.m_transactions_apr2023'
+    ST_SUBAREAS: str = f'{DSSG_SCHEMA}.st_subareas'
 
 
 class ORCA_SCHEMA_TABLES(Enum):
