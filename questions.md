@@ -12,7 +12,7 @@ We are interested broadly in identifying patterns in transit use between ORCA ca
 
 1) Are stops that are central in transit ridership networks shared across all card demographics? How do the networks vary in structure between card demographics? Is the structure of these networks reflected by the geographic layout of the transportation network?
 
-2) Can we improve our prediction for people's home locations so we can provide better services?
+2) How do transit users behave on the temporal scale? What are the types of users on the temporal scale? Do certain type of users need better service quality?
 
 3) Do hotspots of transfer have adequate shelters? Do low-income riders suffer more from not having adequate shelters? 
 
