@@ -10,8 +10,12 @@ Though ORCA fare cards have existed in some form since 2009, there have been lim
 
 We are interested broadly in identifying patterns in transit use between ORCA card user demographics that will enable us assess quality of service across all types of ORCA card users. More specifically, our analyses seek to answer several questions:  
 
-1) Are low-income riders receiving the same quality of service compared to the general population of riders?  
-2) How do ORCA users look like in terms of behavior? Do low-income riders behave differently?
-3) Can we improve our prediction for people's home locations so we can provide better services?
-4) Do hotspots of transfer have adequate shelters? Do low-income riders suffer more from not having adequate shelters?  
-5) Are stops that are central in transit ridership networks shared across all card demographics? How do the networks vary in structure between card demographics? Is the structure of these networks reflected by the geographic layout of the transportation network?  
+1) Are stops that are central in transit ridership networks shared across all card demographics? How do the networks vary in structure between card demographics? Is the structure of these networks reflected by the geographic layout of the transportation network?
+
+2) How do transit users behave on the temporal scale? What are the types of users on the temporal scale? Do certain type of users need better service quality?
+
+3) Do hotspots of transfer have adequate shelters? Do low-income riders suffer more from not having adequate shelters? 
+
+4) Are low-income riders receiving an adequate level of service across all regions in Puget Sound? Where is the service inadequate for low-income riders?
+
+5) How do ORCA users look like in terms of behavior? Do low-income riders behave differently?
