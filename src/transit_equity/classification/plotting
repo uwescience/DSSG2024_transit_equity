@@ -1,0 +1,80 @@
+
+import contextily as cx
+import matplotlib.pyplot as plt
+import geopandas as gpd
+import pandas as pd
+import geopandas as gpd
+
+def subset_plot(df, col_name, table_name):
+    """
+    This function will plot based on the subset of column names.
+    ----------------
+    Parameters:
+    df: dataframe in geopandas format, the dataframe that will be plotted,
+    col_name: string, the column that will need subdivision
+    """
+
+    for col_subset in df[col_name].unique():
+        print(col_subset)
+        subset = df[df[col_name] == col_subset ]
+        fig, ax = plt.subplots(1, 1, figsize = (20, 10))
+        ax = subset.plot(figsize=(10, 10), alpha=0.005,
+                            ax = ax,
+                            markersize=1
+                            )
+        cx.add_basemap(ax, source=cx.providers.CartoDB.Positron)
+        ax.set_title(f'{table_name} map in {col_subset}', fontdict = {'fontsize': '20', 'fontweight' : '4'})
+        plt.show()
+        
+####TODO: find right place and write up
+def create_gdf_from_df(df, lat_col, lon_col, crs = "EPSG:4326", to_crs = "EPSG:3857"):
+    """
+    Function to create a geopandas dataframe from a pandas dataframe
+    input: df: pandas dataframe
+    lat_col: str: column name for latitude
+    lon_col: str: column name for longitude
+    crs: str: coordinate reference system
+    output: gdf: geopandas dataframe
+    """
+
+
+    df['time_of_day'] = df['hour'].apply(categorize_time)
+    gdf = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df[lon_col], df[lat_col]))
+    gdf.crs = crs
+    gdf = gdf.to_crs(to_crs)
+    gdf.head(5)
+    return gdf
+
+
+####TODO: find right place and write up
+def categorize_time(hour, morning_start = 5, morning_end = 10,
+                      afternoon_start = 15, afternoon_end = 19, evening_start = 20, evening_end = 23,
+                      night_start = 0, night_end = 3):
+                    
+    """ Function to categorize the trip functions based on the hour of the day.
+    input: hour: int: hour of the day,
+    morning_start: int: start of morning hour,
+    morning_end: int: end of morning hour,
+    afternoon_start: int: start of afternoon hour,
+    afternoon_end: int: end of afternoon hour,
+    evening_start: int: start of evening hour,
+    evening_end: int: end of evening hour,
+    night_start: int: start of night hour,
+    night_end: int: end of night hour,
+    output: str: time of the day
+    """
+    if morning_start <= hour < morning_end:
+        return "Morning"
+    elif morning_end <= hour < afternoon_start:
+        return "Noon"
+    elif afternoon_start <= hour <= afternoon_end:
+        return "Afternoon"
+    elif evening_start <= hour <= evening_end:
+        return "Evening"
+    elif night_start <= hour <= night_end:
+        return "Night"
+    elif night_end <= hour < morning_start:
+        return "Late Night"
+    else:
+        return "Pre-dawn"
+
