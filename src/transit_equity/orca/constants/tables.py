@@ -25,6 +25,7 @@ class DSSG_TABLES(Enum):
     V_TRANSACTIONS_APR2023: str ='v_transactions_apr2023'
     M_TXN_IDS_APR2023: str ='m_txn_ids_apr2023'
     M_TRANSACTIONS_APR2023: str ='m_transactions_apr2023'
+    ST_SUBAREAS: str ='st_subareas'
 
 
 class ORCA_TABLES(Enum):
