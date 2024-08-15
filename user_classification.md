@@ -25,10 +25,13 @@ We initially implemented the code using SQLAlchemy. Given the large volume of da
 
 A heuristic approach to classification begins by analyzing three months of data, filtering out the least frequent users, and identifying key groups such as typical peak-time commuters, noon/afternoon commuters, and weekend users. Further analysis of the remaining data uncovered additional patterns, leading to the emergence of new categories: pre-dawn and afternoon commuters (often night shift workers), short round-trip riders, one-way commuters, and more.
 
-
-
 **Analyses**
 
+**Limitations**
+
+What are the shortcomings of your approach?
+How can your work be improved?
+=======
 Our analysis of the temporal categories suggest that the mean trip duration across all temporal categories are not equal. Specifically, the pre-dawn and afternoon riders (mostly night shift workers) have significant longer commute trips compared to typical peak commuter.
 
 Additionally, our findings reveal that LIFT card users are more often associated with peak and noon/afternoon commutes, whereas disability card users have a higher proportion of dawn and pre-dawn trips, as well as shorter round trips.
