@@ -26,8 +26,8 @@ import pandas as pd
 import geopandas as gpd
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from transit_equity.geospatial.format_conversions import load_wkb
-from transit_equity.utils.db_helpers import get_automap_base_with_views
+from ..geospatial.format_conversions import load_wkb
+from ..utils.db_helpers import get_automap_base_with_views
 
 def import_hexgrid(postgres_url,
                    table_name):
@@ -67,8 +67,8 @@ def import_hexgrid(postgres_url,
     # Hex grid table
     hex_grid_400m = base_dssg.metadata.tables[table_name]
 
-    # query the geometry column 
-    hex_query = (session.query(hex_grid_400m.c.wkb_geometry))
+    # query the geometry column
+    hex_query = session.query(hex_grid_400m.c.wkb_geometry)
 
     hex_table = pd.read_sql(hex_query.statement, engine)
 
