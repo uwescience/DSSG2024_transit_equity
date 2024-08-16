@@ -1,6 +1,6 @@
 ---
 layout: page
-title: User Classification
+title: Temporal User Classification
 parent: Analyses
 ---
 
@@ -27,11 +27,15 @@ A heuristic approach to classification begins by analyzing three months of data,
 
 **Analyses**
 
-**Limitations**
+The classification resulted in 13 smaller groups and 10 larger groups, though not all are shown here for clarity. A significant equity concern arises with the pre-dawn commuters. Although they represent a small fraction of the total, this group experiences considerably longer trip durations compared to regular peak-time commuters.
 
-What are the shortcomings of your approach?
-How can your work be improved?
-=======
+![Temporal Groups](assets/img/temporal%20groups.png)
+
+![Trip Duration Distribution Comparison](assets/img/distribution.png)
+
+
+**Implication**
+
 Our analysis of the temporal categories suggest that the mean trip duration across all temporal categories are not equal. Specifically, the pre-dawn and afternoon riders (mostly night shift workers) have significant longer commute trips compared to typical peak commuter.
 
 Additionally, our findings reveal that LIFT card users are more often associated with peak and noon/afternoon commutes, whereas disability card users have a higher proportion of dawn and pre-dawn trips, as well as shorter round trips.
