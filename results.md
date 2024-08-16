@@ -4,6 +4,7 @@ title: Results
 ---
 
 **Findings**
+
 Our findings highlight three key aspects of equity in transit:
 
 Service Quality: This encompasses providing reasonable trip durations for people to reach their destinations, as well as enhancing the quality of stops to improve the rider experience while they wait for their rides.
