@@ -43,4 +43,3 @@ Additionally, our findings reveal that LIFT card users are more often associated
 ## Limitations
 
 The major limitation of the process is that the approach is more based on experience and intuition. A future direction of the work is to classify temporal categories using machine learning techniques such as DBSCAN, k-means or hierarchical clustering to check if there are new patterns emerged from the data.
-
