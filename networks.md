@@ -67,5 +67,6 @@ Running analysis on a more powerful computer would speed up the computation time
 
 **Results**
 
-Adult trip network
+Adult trip network  
+
 <iframe src="adult_no_downtown_network.html" height="500" width="500"></iframe>
