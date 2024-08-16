@@ -22,15 +22,15 @@ Siman is a PhD student in Urban Design and Planning at the University of Washing
 
 ![Siman Ning](assets/img/Siman-and-Lucky.jpg)
 
+
 #### Ishan Saksena  
 Ishan is a Data Science graduate student at the University of Michigan, Ann Arbor, with a Bachelor’s in Computer Engineering from the University of Mumbai, India. He interned at Reliance Jio last summer, working on building their real-time recommendation engine. He’s currently focused on large language models and data-driven marketing as a data science intern at Aug X Labs, a New York-based startup. Having served as the Secretary of an animal welfare nonprofit and being an active community volunteer in Mumbai, he saw the DSSG program as the perfect combination of his two worlds. He is excited to use his technical acumen to solve real social problems.
 
 ![Ishan Saksena](assets/img/MPHOTO-StatisticsHds23484_-1.jpg)
 
-
 ### More Information
 
-If you are interested in learning more about what we did, please visit [our GitHub page](https://github.com/uwescience/DSSG2024_transit_equity). 
+If you are interested in learning more about what we did, please visit our [GitHub page](https://github.com/uwescience/DSSG2024_transit_equity). 
 
 ### Acknowledgements
 
@@ -41,6 +41,6 @@ Our sincere thanks also go to the DSSG Program staff, whose dedication made this
 We are deeply appreciative of the generous support from the Federal Highway Administration and the eScience Institute, which funded this project.
 
 Special acknowledgments go to:
-Katie Wilson, Transit Riders Union
-Anna Zivarts, Disability Rights Washington
-King County Metro
+- Katie Wilson, Transit Riders Union
+- Anna Zivarts, Disability Rights Washington
+- King County Metro
