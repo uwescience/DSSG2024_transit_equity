@@ -15,13 +15,14 @@ In the field, they perform bee and plant community surveys and collect insect sp
 Himanshu Naidu is a graduate student at the University of Washington (UDub), Seattle, pursuing a Masters of Science in Data Science. With a solid background in Computer Vision, Responsible Artificial Intelligence, and Full-Stack Software Development, Himanshu is deeply committed to leveraging data science for societal benefit, which drives his aspiration to join the Data Science for Social Good (DSSG) program. Since Fall 2023, Himanshu has been working on accessibility-oriented projects at the Taskar Center for Accessible Technology.  
 His primary focus is on developing semantic segmentation-based applications to automatically identify points of interest that influence accessibility. This work has sparked a keen interest in transit equity, which fueled his interest in contributing to the ‘Investigating Transit Equity Through ORCA Fare Card Analysis’ project at the DSSG program. In addition, he is also involved in the Responsibility in AI Systems and Experiences (RAISE) group at UDub as a student researcher. In this role, he utilizes Knowledge Graphs to address alignment issues related to Large Language Models, furthering his expertise in Responsible AI development.  
 
-<img src="assets/img/Himanshu-Naidu-2023.jpg" width= 350>
+<!-- <img src="assets/img/Himanshu-Naidu-2023.jpg" width= 350> -->
+![Himanshu Naidu](assets/img/Himanshu-Naidu-2023.jpg)
 
 
 #### Siman Ning  
 Siman is a PhD student in Urban Design and Planning at the University of Washington. She holds a master’s degree and a bachelor’s degree in Landscape Architecture. Prior to joining UW, Siman worked at Turenscape Design Institute, where she focused on identifying locations for potential green infrastructure. Her research centers on understanding the factors that influence organizational decision-making in climate mitigation and adaptation strategies. Additionally, she is interested in the interaction between human and environmental well-being. Siman is enthusiastic about joining the DSSG program for its unique opportunity to use analytical techniques to tell stories from data and create a positive societal impact.  
 
-<img src="assets/img/Siman-and-Lucky.jpg" width= 350>
+<!-- <img src="assets/img/Siman-and-Lucky.jpg" width= 350> -->
 ![Siman Ning](assets/img/Siman-and-Lucky.jpg)
 
 #### Ishan Saksena  
