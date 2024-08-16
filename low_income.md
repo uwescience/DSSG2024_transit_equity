@@ -1,15 +1,23 @@
 ---
 layout: page
-title: Low Income Card Analyses
+title: Serving Low Income Riders
 parent: Analyses
 ---
 
-**Data**
+## Overview
 
-What data sets are you using?
-What did you do to prepare the data?
+In a specific line of analyses, we were interested in how we can specifically serve low income populations better. We wanted to identify areas where reduced fare cards are not being used adequately. These could serve as potential opportunities to improve the distribution and usage of the reduced fare cards. 
 
-<code style="color: red">-- TODO</code>
+The most prominent card type analysed was the LIFT card, whose trace data is available in the ORCA database. 
+
+
+## ORCA LIFT Card
+
+The ORCA LIFT card, which provides discounted rides to low-income riders across the Puget Sound area, is the most famous of the reduced fare cards provided by ORCA. In the nearly 10 years since its inception, the LIFT program has become the largest of its kind in the nation, providing our team the unique opportunity to robustly understand the transit patterns of low-income riders in particular. This card is available for all Individuals who have an income below 200% of the Federal Poverty Level. 
+
+In spite of the major success of the LIFT program, there is still room for improvement. Currently, about 18% of the population in Puget Sound, qualifies for LIFT cards, yet only 4% of the ORCA cards are actually LIFT. This indicates that there may be low-income areas where LIFT cards have not yet been adequately distributed. On average, there is only about 1 LIFT card for every 18 individuals who are eligible for it. 
+
+
 
 **Tools (aka “component specification”)**
 
