@@ -46,20 +46,19 @@ The high-level idea is to compare low-income ridership with low-income populatio
 
 We could measure ridership of a census block group, using several different but complementary metrics, using the LIFT subset of our ORCA database. For each block group, we can measure the following:
 
-- Number of LIFT Boardings to to measure the actual usage of the reduced fare services offered by transit services in a block group. 
+- Number of total Transactions using LIFT cards to measure the overall usage of the LIFT services in a block group.
 
-- Number of Unique users who have used the LIFT cards in a block group at least once 
+- Number of initial Boardings using LIFT cards to measure the usage of the LIFT services by people who start their trips in a given block group.
 
-- Number of Unique frequent users, who have used the LIFT cards in a block group, a certain number of times. 
+- Number of Unique users who have used the LIFT cards in a block group at least once, to serve as a measure of the number of users who may need to use the transit services in the block group at least once. 
+
+- Number of Unique frequent users, who have used the LIFT cards in a block group, a certain number of times, to serve as measure of users who need to regularly utilize the transit services in the block group. 
 
 **Low-Income Population**
 
 The LIFT card is available for all Individuals who have an income below 200% of the Federal Poverty Level. The US census data provides us estimates of these low income populations for each block group. 
 
-**Processes**
-
-
-**Analyses**
+**Analysis**
 
 
 **Limitations**
