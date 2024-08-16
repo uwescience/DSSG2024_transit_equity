@@ -30,8 +30,8 @@ import geopandas as gpd
 from sqlalchemy import and_, create_engine
 from sqlalchemy.orm import sessionmaker
 import networkx as nx
-from transit_equity.geospatial.format_conversions import load_wkb
-from transit_equity.utils.db_helpers import get_automap_base_with_views
+from ..geospatial.format_conversions import load_wkb
+from ..utils.db_helpers import get_automap_base_with_views
 
 def get_trip_tables_by_cardtype(postgres_url_ng,
                                 test_schema,
