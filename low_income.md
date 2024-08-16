@@ -1,77 +1,64 @@
 ---
 layout: page
-title: Low Income Card Analyses
+title: Serving Low Income Riders
 parent: Analyses
 ---
 
-**Data**
+## Overview
 
-What data sets are you using?
-What did you do to prepare the data?
+In a specific line of analyses, we were interested in how we can specifically serve low income populations better. We wanted to identify areas where reduced fare cards are not being used adequately. These could serve as potential opportunities to improve the distribution and usage of the reduced fare cards. 
 
-<code style="color: red">-- TODO</code>
+The most prominent card type analysed was the LIFT card, whose trace data is available in the ORCA database. 
 
-**Tools (aka “component specification”)**
 
-What software packages, modules, etc. did you use? 
-What are the dependencies between these and how did you render them interoperable?
+## ORCA LIFT Card
 
-<code style="color: red">-- TODO</code>
+The ORCA LIFT card, which provides discounted rides to low-income riders across the Puget Sound area, is the most famous of the reduced fare cards provided by ORCA. In the nearly 10 years since its inception, the LIFT program has become the largest of its kind in the nation, providing our team the unique opportunity to robustly understand the transit patterns of low-income riders in particular. This card is available for all Individuals who have an income below 200% of the Federal Poverty Level. 
 
-**Problem Context**
+In spite of the major success of the LIFT program, there is still room for improvement. Currently, about **18%** of the population in Puget Sound, qualifies for LIFT cards, yet only **4%** of the ORCA cards are actually LIFT. On average, there is only about 1 LIFT card for every 18 individuals who are eligible for it. These high-level statistics indicate that there may be low-income areas where LIFT cards are not adequately utilized. 
+There could be a number of reasons for this disparity:
+- In some regions, the LIFT cards may not have been adequately distributed
+- In some low-income regions, transit service may not be adequate in general, which means that low-income individuals may not even be using any ORCA card. 
 
-The high-level idea is to compare low-income ridership with low-income populations, on an equity basis. The level of granularity we intend to use to make these comparisons is the census block group. 
 
-One left side, we could measure ridership of a census block group, either by boardings, unique users, or trips. We can measure this using the LIFT card (low-income card) details that we have in the ORCA database. 
 
-- Boardings can be used to measure the actual usage (in a way, realizations of the potential) of the services offered by transit services. 
+## Data Sources
 
-- Unique users are those who have used their LIFT cards at least once 
+- ORCA dataset
+- GTFS dataset
+- US Census Data
 
-- When we say trips, we mean estimating the number of routes (multiplied by their frequency) that go through a census block group. Thus, trips can be used to measure the expected potential of the services offered by transit services. 
 
-One the right side, we could measure low-income population in a census block group. Not just that, we could also measure other equity-based factors such as transit (or other) activity by low-income populations in a census block group, or jobs available for low-income populations in the census-block group.
+## Methods
 
-**Processes**
+### Tools
 
-What does your workflow or pipeline look like? 
-What steps did you follow? 
+The entire line of analyses was carried out using Python and PostgreSQL. While some of the queries were written directly in PostgreSQL, others were written in a flexible manner in Python (SQLAlchemy), in order to be able to work with multiple data sources. 
 
-**Analyses**
+Additional details can be found at the [Github repository](https://github.com/uwescience/DSSG2024_transit_equity). 
 
-***Preliminary Analysis***
 
-1. Check if it is necessary to consider low income proportions. 
+### Additional Problem Context
 
-We concluded that it may not be necessary, since block groups have comparable populations, thus low_income_proportion values would have comparable denominators.
+The high-level idea is to compare low-income ridership with low-income populations, in different areas. The lowest level of granularity we intend to use to make these comparisons is the census block group. 
 
-I thought of investigating just a little more on that. Here is the distribution on that, along with some other stats. 
+**Low-Income Ridership**
 
-Statistics:
+We could measure ridership of a census block group, using several different but complementary metrics, using the LIFT subset of our ORCA database. For each block group, we can measure the following:
 
-count    1545.000000
+- Number of total Transactions using LIFT cards to measure the overall usage of the LIFT services in a block group.
 
-mean     1459.139806
+- Number of initial Boardings using LIFT cards to measure the usage of the LIFT services by people who start their trips in a given block group.
 
-std       433.057374
+- Number of Unique users who have used the LIFT cards in a block group at least once, to serve as a measure of the number of users who may need to use the transit services in the block group at least once. 
 
-min         0.000000
+- Number of Unique frequent users, who have used the LIFT cards in a block group, a certain number of times, to serve as measure of users who need to regularly utilize the transit services in the block group. 
 
-25%      1160.000000
+**Low-Income Population**
 
-50%      1424.000000
+The LIFT card is available for all Individuals who have an income below 200% of the Federal Poverty Level. The US census data provides us estimates of these low income populations for each block group. 
 
-75%      1693.000000
+**Analysis**
 
-max      4373.000000
-
-Name: population, dtype: float64
-
-Standard deviation = 433, thus the extreme (>2 std) left and right would differ by > 1800, but these would be rare cases, owing to the close to normal distribution.
 
 **Limitations**
-
-What are the shortcomings of your approach?
-How can your work be improved?
-
-<code style="color: red">-- TODO</code>
