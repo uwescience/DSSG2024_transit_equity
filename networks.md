@@ -4,16 +4,16 @@ title: Trip Networks Across Card Types
 parent: Analyses
 ---
 
-The goal of this analysis is to understand the differences between trip origin and destination networks among ORCA card types. Specifically, we are interested in the following questions:  
+The goal of this analysis is to understand the differences between trip origin and destination networks between riders who use the different ORCA card reduced fare programs. Understanding the patterns of trip behavior has potential to be used to inform targeted service and stop improvements that could benefit the different demographics that ride transit using the different card types. Specifically, we are interested in the following questions:  
 
-### 1) How do the trip networks vary in structure between card demographics?  
-This question will reveal large-scale patterns of ridership across different ORCA card types. We assume that different categories of riders will have different travel behaviors which will lead to varying network structure, but this has not been confirmed analytically. Networks can vary in a multitude of ways, however for this analysis we are focusing on several metrics particularly relevant to transit:  
+### 1) How do the trip networks vary between card types?  
+Understanding and visualizing trip networks can reveal large-scale patterns of ridership across the different ORCA card types. Identifying similarities and differences between the networks could provide insight into the importance of different stops and connections in the travel patterns of users of each card type. Networks can vary in a multitude of ways, however for this analysis we are focusing on several metrics particularly relevant to transit:  
 
-A) Degree centrality (the number of trips that each stop has), which will reflect which stops are most frequently used by each group. A higher value indicates that a stop is frequented more by riders of the target demographic. This metric is computed at the stop level.  
+ A) Degree centrality (based on the number of trip arrivals and departures that each stop has), which will reflect which stops are most frequently used by users of each card type. A higher value indicates that a stop is frequented more by riders that use the same card type. This metric is computed at the stop level, for both origins and destinations independently as well as the total sum for both.  
 
-B) Closeness centrality (the average length of the shortest path between a stop and all other stops in the network), which measures how quickly a stop can be reached from other stops. A higher value indicates that more stops are more accessible from other stops in that network. This metric is computed at the stop level.  
+ B) Eigenvector centrality (based on the connections of all of the stops that are connected to a particular stop), which indicates the relationship a stop has to other stops in the network and can be used to identify stops that connect to popular stops. A higher value indicates that a particular stop is connected to more well-connected stops, representing a hub. This metric is computed at the stop level, for both origins and destinations independently as well as the total sum for both. 
 
-C) Network density (the proportion of actual origin-destination trips in the network to the total number of possible trips), which will show if different rider demographics use more direct versus more circuitous routes. A higher value indicates that a higher proportion of trips in the network are direct. This metric is computed at the whole network level.  
+C) Network density (the proportion of actual origin-destination trips in the network to the total number of possible trips), which will show if different card user types use more direct versus more circuitous routes. A fully connected network would mean that every origin stop has at least one instance of a trip that ends at every destination stop. A higher value indicates that a higher proportion of trips in the network are direct. This metric is computed at the whole network level.  
 
 D) Modularity (the strength of division of the network into clusters that see more frequent trips between stops within the module than stops outside of the cluster), which will identify whether there are distinct clusters of stops used by different rider groups. A higher value indicates that there are more distinct clusters in the network. This metric is computed at the whole network level.  
 
