@@ -29,9 +29,24 @@ We are also working on analysis to validate King County Metro’s Mobility Frame
 
 ### Recreating the KCM Priority Framework
 
-King County Metro has 5 categories of scoring for their stop improvement prioritization. Recreating this scoring in Python in a reproducible way will allow easy modification in the future and facilitate the addition of new factors when they become available. It will also make it easier to adjust the weights of different categories according to King County Metro’s current interests.
+King County Metro has 5 categories of scoring for their stop improvement prioritization, namely - Ridership, Activity Location, ESJ, Strategic Initiative and Community Request. We have successfully recreated this scoring in Python in a reproducible way, which allows easy modification in the future and facilitates the addition of new factors when they become available. It also makes it easier to adjust the weights of different categories according to King County Metro’s current interests.
 
 ### Incorporating Transfer Hotspots
 
-With the ORCA dataset and the Stop improvements dataset, we can analyze the number of transfer transactions for each stop and assess the existing amenities. Although the current KCM framework does not consider transfers, they are interested in doing so. Once we have recreated their prioritization framework, we can incorporate transfers into the framework. Analyzing Transfer Hotspots — stops with a high number of daily transfer counts — may also inform stop prioritization.
+With the ORCA dataset and the Stop improvements dataset, we analyzed the number of transfer transactions for each stop and assessed the existing amenities. Although the previous KCM framework did not consider transfers, we have suggested a new framework that does. Analyzing Transfer Hotspots — stops with a high number of daily transfer counts — can inform stop prioritization.
+
+### Incorporating Low Income Usage
+
+The ORCA dataset also contains information about whether the passenger is using a Reduced Fare Card - like the LIFT card. To make the bus stop prioritization framework more equitable, we suggest incorporating low income boardings and transfers into the scoring mechanism. 
+
+### Identifying new bus shelter locations 
+
+After recreating KCM's framework and adding 3 new metrics, we looked for stops that got a boost in ranking. While the direct inclusion of these metrics only had a modest impact on the current priority list, likely due to the fact that overall boarding size is already part of the scoring framework, there is additional restructuring and more analysis possible. 
+
+### Transfer Hotspot Tables and GIS Maps
+
+We created Transfer Hotspot Tables and Geospatial maps for agencies to have a closer look at these bus stops. By identifying bus stops that are transfer hotspots, we can help agencies better serve low income card holders, and also increase operational efficiency in general. Understanding how the current population is affected by transfers might make them aware of patterns that they could address in service changes with new stops and increased route frequency.
+
+
+
 
