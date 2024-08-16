@@ -19,12 +19,17 @@ trip_frequency_filter(table, cutoff)
 
 drop_downtown_points(points_table, downtown_polygon_path, stop_type)
     Drops the points from the downtown area. Needs to be done twice for origin-destination networks.
+
+add_stop_level_network_metrics(gdf)
+    Calculate and add stop-level network metrics (degree centrality and eigenvector centrality) 
+    to a GeoDataFrame representing a transit network.
 """
 import os
 import pandas as pd
 import geopandas as gpd
 from sqlalchemy import and_, create_engine
 from sqlalchemy.orm import sessionmaker
+import networkx as nx
 from transit_equity.geospatial.format_conversions import load_wkb
 from transit_equity.utils.db_helpers import get_automap_base_with_views
 
@@ -331,31 +336,30 @@ def trip_frequency_filter(table, cutoff=0):
     - The input DataFrame is expected to be in a specific structure. Ensure that all 
       required columns are present before using this function.
     """
-    
     # Calculate edge frequencies for each combination of origin and destination and create column
     # to match in tripsize filter df
     edge_freq = table.groupby(['board_string', 'alight_string']) \
             .size().reset_index(name='trip_frequency_post_concat')
-    
+
     # combining board and alight string to create column to match
     edge_freq['start_stop_string'] = edge_freq['board_string'] + edge_freq['alight_string']
     edge_freq = edge_freq[['trip_frequency_post_concat','start_stop_string']]
-    
+
     # # need to create a column to match in tripsize_filter_df
     table['start_stop_string'] = table['board_string'] \
             + table['alight_string']
-    
+
     # Merge edge_freq into tripsize_filter_df based on 'start_stop_string'
     merged_table = pd.merge(table, edge_freq, on='start_stop_string', how='left')
-    
+
     # now drop cols that we won't use any longer
     table_post_concat = merged_table[['card_id', 'board_location', \
                                                     'alight_location', 'board_location_shapely', \
-                                                    'alight_location_shapely', 'trip_time_minutes', \
+                                                    'alight_location_shapely', 'trip_time_minutes',\
                                                     'trip_frequency', 'board_string', \
                                                     'alight_string', 'trip_frequency_post_concat'
                                                     ]]
-    
+
     table_filter = table_post_concat[table_post_concat.trip_frequency_post_concat > cutoff]
     return table_filter
 
@@ -364,12 +368,14 @@ def drop_downtown_points(points_table, downtown_polygon_path, stop_type):
     Drops points from a GeoDataFrame if they are within the extent of a downtown polygon.
 
     This function reads a polygon shapefile representing a downtown area, performs a spatial join 
-    to identify points within the downtown polygon, and removes those points from the input GeoDataFrame.
+    to identify points within the downtown polygon, and removes those points from the input 
+    GeoDataFrame.
 
     Parameters:
     -----------
     points_table : geopandas.GeoDataFrame
-        A GeoDataFrame containing point geometries to be filtered. It must have a valid geometry column.
+        A GeoDataFrame containing point geometries to be filtered. It must have a valid geometry
+        column.
     
     downtown_polygon_path : str
         The file path to the shapefile containing the downtown polygon.
@@ -381,9 +387,12 @@ def drop_downtown_points(points_table, downtown_polygon_path, stop_type):
 
     Notes:
     ------
-    - The function ensures that the CRS (Coordinate Reference System) of the points and the polygon match.
-    - The 'index_right' column created by the spatial join is used to identify points within the downtown polygon.
-    - The function prints the number of points dropped and the number of points remaining for verification.
+    - The function ensures that the CRS (Coordinate Reference System) of the points and the polygon
+        match.
+    - The 'index_right' column created by the spatial join is used to identify points within the
+        downtown polygon.
+    - The function prints the number of points dropped and the number of points remaining for
+        verification.
 
     Example:
     --------
@@ -391,7 +400,7 @@ def drop_downtown_points(points_table, downtown_polygon_path, stop_type):
     """
     ## import downtown polygon
     downtown_polygon = gpd.read_file(downtown_polygon_path)
-    
+
     # Ensure the polygons and points are in the same CRS
     centroids_gdf = points_table.to_crs(downtown_polygon.crs)
 
@@ -408,26 +417,82 @@ def drop_downtown_points(points_table, downtown_polygon_path, stop_type):
 
     # Set correct crs
     if centroids_gdf.crs is None:
-        centroids_gdf = gdf_boarding.set_crs(downtown_polygon.crs)
+        centroids_gdf = points_table.set_crs(downtown_polygon.crs)
 
     centroids_gdf = centroids_gdf.to_crs(downtown_polygon.crs)
-    
+
     # Perform a spatial join to determine which polygon each point is contained in
-    downtown_hex_centroids = gpd.sjoin(centroids_gdf, downtown_polygon, how='left', predicate='within')
-    
+    downtown_hex_centroids = \
+        gpd.sjoin(centroids_gdf, downtown_polygon, how='left', predicate='within')
+
     # Identify points that are within the downtown polygon
     points_within_downtown = downtown_hex_centroids[~downtown_hex_centroids['index_right'].isna()]
-    
-    # Identify points that are not within the downtown polygon
-    points_outside_downtown = downtown_hex_centroids[downtown_hex_centroids['index_right'].isna()]
-    
+
     # Drop points that are within the downtown polygon from the original GeoDataFrame
-    filtered_centroids_gdf = points_table.loc[~points_table.index.isin(points_within_downtown.index)]
-    
+    filtered_centroids_gdf = \
+        points_table.loc[~points_table.index.isin(points_within_downtown.index)]
+
     # Optionally, reset the index if needed
     filtered_centroids_gdf.reset_index(drop=True, inplace=True)
-    
+
     # Print the number of points dropped and remaining
     print(f"Number of points dropped from polygon: {len(points_within_downtown)}")
     print(f"Number of points remaining: {len(filtered_centroids_gdf)}")
     return filtered_centroids_gdf
+
+def add_stop_level_network_metrics(gdf):
+    """
+    Calculate and add stop-level network metrics (degree centrality and eigenvector centrality) 
+    to a GeoDataFrame representing a transit network.
+
+    This function creates a directed graph from boarding and alighting stops, where the edges 
+    represent trips between these stops. It computes degree centrality and eigenvector centrality 
+    for both boarding and alighting stops and adds these metrics as new columns in the GeoDataFrame.
+
+    Parameters
+    ----------
+    gdf : gpd.GeoDataFrame
+        A GeoDataFrame containing trip data with columns 'board_string' and 'alight_string'
+        representing the stop IDs for boarding and alighting respectively.
+
+    Returns
+    -------
+    gpd.GeoDataFrame
+        The input GeoDataFrame with four new columns:
+        - 'centrality_board': Degree centrality of the boarding stop.
+        - 'centrality_alight': Degree centrality of the alighting stop.
+        - 'eigencentrality_board': Eigenvector centrality of the boarding stop.
+        - 'eigencentrality_alight': Eigenvector centrality of the alighting stop.
+
+    Notes
+    -----
+    - Degree centrality measures the number of connections a stop has in the network.
+    - Eigenvector centrality measures the influence of a stop based on the centrality of its
+        neighbors.
+    - Stops that do not appear in the network will have a centrality value of `None`.
+    """
+    # Create a directed graph
+    G = nx.DiGraph()
+
+    # Add edges to the graph based on trips between stops
+    for idx, row in gdf.iterrows():
+        origin = row['board_string']
+        destination = row['alight_string']
+        G.add_edge(origin, destination, color='black')
+
+    # Calculate degree centrality
+    degree_centrality = nx.degree_centrality(G)
+
+    # Calculate eigenvector centrality
+    eigenvector_centrality = nx.eigenvector_centrality(G)
+
+    # Add centrality metrics to the GeoDataFrame
+    gdf['centrality_board'] = gdf['board_string'].apply(lambda x: degree_centrality.get(x, None))
+    gdf['centrality_alight'] = gdf['alight_string'].apply(lambda x: degree_centrality.get(x, None))
+
+    gdf['eigencentrality_board'] = \
+        gdf['board_string'].apply(lambda x: eigenvector_centrality.get(x, None))
+    gdf['eigencentrality_alight'] = \
+        gdf['alight_string'].apply(lambda x: eigenvector_centrality.get(x, None))
+
+    return gdf
