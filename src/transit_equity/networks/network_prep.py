@@ -16,6 +16,9 @@ clean_and_filter_network_data(trips_df)
 
 trip_frequency_filter(table, cutoff)
     Filters trips based on the frequency of trips between origin and destination pairs.
+
+drop_downtown_points(points_table, downtown_polygon_path, stop_type)
+    Drops the points from the downtown area. Needs to be done twice for origin-destination networks.
 """
 import os
 import pandas as pd
@@ -277,3 +280,154 @@ def clean_and_filter_network_data(trips_df):
     gdf_trips = gdf_trips.to_crs('EPSG:3857')
 
     return gdf_trips
+
+def trip_frequency_filter(table, cutoff=0):
+    """
+    Filters trips based on the frequency of trips between origin and destination pairs.
+
+    This function calculates the frequency of trips between each pair of origin and 
+    destination stops, then filters out trips that have a frequency below a specified 
+    cutoff value. The result is a table with trips that meet the frequency threshold.
+
+    Parameters:
+    -----------
+    table : pandas.DataFrame
+        A DataFrame containing trip data. It must include the following columns:
+        - 'card_id'
+        - 'board_location'
+        - 'alight_location'
+        - 'board_location_shapely'
+        - 'alight_location_shapely'
+        - 'trip_time_minutes'
+        - 'trip_frequency'
+        - 'board_string'
+        - 'alight_string'
+    
+    cutoff : int
+        The minimum frequency threshold for trips to be included in the output table.
+
+    Returns:
+    --------
+    pandas.DataFrame
+        A filtered DataFrame containing only the trips that have a frequency greater than
+        the specified cutoff. The resulting DataFrame includes the following columns:
+        - 'card_id'
+        - 'board_location'
+        - 'alight_location'
+        - 'board_location_shapely'
+        - 'alight_location_shapely'
+        - 'trip_time_minutes'
+        - 'trip_frequency'
+        - 'board_string'
+        - 'alight_string'
+        - 'trip_frequency_post_concat'
+    
+    Notes:
+    ------
+    - The function assumes that the combination of 'board_string' and 'alight_string' 
+      uniquely identifies each trip's origin and destination pair.
+    - The 'trip_frequency_post_concat' column is created to represent the frequency 
+      of trips for each origin-destination pair.
+    - The input DataFrame is expected to be in a specific structure. Ensure that all 
+      required columns are present before using this function.
+    """
+    
+    # Calculate edge frequencies for each combination of origin and destination and create column
+    # to match in tripsize filter df
+    edge_freq = table.groupby(['board_string', 'alight_string']) \
+            .size().reset_index(name='trip_frequency_post_concat')
+    
+    # combining board and alight string to create column to match
+    edge_freq['start_stop_string'] = edge_freq['board_string'] + edge_freq['alight_string']
+    edge_freq = edge_freq[['trip_frequency_post_concat','start_stop_string']]
+    
+    # # need to create a column to match in tripsize_filter_df
+    table['start_stop_string'] = table['board_string'] \
+            + table['alight_string']
+    
+    # Merge edge_freq into tripsize_filter_df based on 'start_stop_string'
+    merged_table = pd.merge(table, edge_freq, on='start_stop_string', how='left')
+    
+    # now drop cols that we won't use any longer
+    table_post_concat = merged_table[['card_id', 'board_location', \
+                                                    'alight_location', 'board_location_shapely', \
+                                                    'alight_location_shapely', 'trip_time_minutes', \
+                                                    'trip_frequency', 'board_string', \
+                                                    'alight_string', 'trip_frequency_post_concat'
+                                                    ]]
+    
+    table_filter = table_post_concat[table_post_concat.trip_frequency_post_concat > cutoff]
+    return table_filter
+
+def drop_downtown_points(points_table, downtown_polygon_path, stop_type):
+    """
+    Drops points from a GeoDataFrame if they are within the extent of a downtown polygon.
+
+    This function reads a polygon shapefile representing a downtown area, performs a spatial join 
+    to identify points within the downtown polygon, and removes those points from the input GeoDataFrame.
+
+    Parameters:
+    -----------
+    points_table : geopandas.GeoDataFrame
+        A GeoDataFrame containing point geometries to be filtered. It must have a valid geometry column.
+    
+    downtown_polygon_path : str
+        The file path to the shapefile containing the downtown polygon.
+
+    Returns:
+    --------
+    geopandas.GeoDataFrame
+        A GeoDataFrame with points that are outside the downtown polygon. The index is reset.
+
+    Notes:
+    ------
+    - The function ensures that the CRS (Coordinate Reference System) of the points and the polygon match.
+    - The 'index_right' column created by the spatial join is used to identify points within the downtown polygon.
+    - The function prints the number of points dropped and the number of points remaining for verification.
+
+    Example:
+    --------
+    >>> filtered_gdf = drop_downtown_points(points_table, "/path/to/downtown_polygon.shp")
+    """
+    ## import downtown polygon
+    downtown_polygon = gpd.read_file(downtown_polygon_path)
+    
+    # Ensure the polygons and points are in the same CRS
+    centroids_gdf = points_table.to_crs(downtown_polygon.crs)
+
+    if stop_type == 'board':
+        location_column = 'board_centroid'
+    elif stop_type == 'alight':
+        location_column = 'alight_centroid'
+
+     #select relevant cols
+    centroids_gdf = centroids_gdf[[location_column]]
+
+    # Ensure shapely locations are set as geometry dtype
+    centroids_gdf = centroids_gdf.set_geometry(location_column)
+
+    # Set correct crs
+    if centroids_gdf.crs is None:
+        centroids_gdf = gdf_boarding.set_crs(downtown_polygon.crs)
+
+    centroids_gdf = centroids_gdf.to_crs(downtown_polygon.crs)
+    
+    # Perform a spatial join to determine which polygon each point is contained in
+    downtown_hex_centroids = gpd.sjoin(centroids_gdf, downtown_polygon, how='left', predicate='within')
+    
+    # Identify points that are within the downtown polygon
+    points_within_downtown = downtown_hex_centroids[~downtown_hex_centroids['index_right'].isna()]
+    
+    # Identify points that are not within the downtown polygon
+    points_outside_downtown = downtown_hex_centroids[downtown_hex_centroids['index_right'].isna()]
+    
+    # Drop points that are within the downtown polygon from the original GeoDataFrame
+    filtered_centroids_gdf = points_table.loc[~points_table.index.isin(points_within_downtown.index)]
+    
+    # Optionally, reset the index if needed
+    filtered_centroids_gdf.reset_index(drop=True, inplace=True)
+    
+    # Print the number of points dropped and remaining
+    print(f"Number of points dropped from polygon: {len(points_within_downtown)}")
+    print(f"Number of points remaining: {len(filtered_centroids_gdf)}")
+    return filtered_centroids_gdf
