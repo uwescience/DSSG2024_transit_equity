@@ -5,7 +5,9 @@ layout: default
 <img src="{{ site.url }}{{ site.baseurl }}/assets/img/eScience.png">
 
 
-# Transit Equity
+# Investigating Transit Equity Through ORCA Fare Card Analysis
+
+A 2024 Data Science for Social Good summer fellowship project at the University of Washington
 
 ## The Team
 
