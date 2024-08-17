@@ -32,7 +32,9 @@ A heuristic approach to classification begins by analyzing three months of data,
 
 The temporal classification resulted in 13 smaller groups and 10 larger groups, though not all are shown here for clarity of reading. 
 
-![Temporal Groups](assets/img/temporal%20groups.png)
+
+![Temporal Groups](assets/img/temporal_groups.png)
+
 
 ![Trip Duration Distribution Comparison](assets/img/distribution.png)
 
