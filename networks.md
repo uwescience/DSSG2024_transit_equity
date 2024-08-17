@@ -67,6 +67,22 @@ Running analysis on a more powerful computer would speed up the computation time
 
 **Results**
 
+Adult card trip network
+
+<iframe src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" height="500" width="500"></iframe>
+
+Youth card trip network
+
+<iframe src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/youth_net_no_downtown.html" height="500" width="500"></iframe>
+
+Senior card trip network
+
+<iframe src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/senior_net_no_downtown.html" height="500" width="500"></iframe>
+
 Disability card trip network  
 
 <iframe src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/disability_net_no_downtown.html" height="500" width="500"></iframe>
+
+Low-income card trip network
+
+<iframe src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/lift_net_no_downtown.html" height="500" width="500"></iframe>
