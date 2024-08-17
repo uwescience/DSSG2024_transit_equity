@@ -69,4 +69,4 @@ Running analysis on a more powerful computer would speed up the computation time
 
 Adult trip network  
 
-<iframe src="/assets/img/adult_no_downtown_network.html" height="500" width="500"></iframe>
+<iframe src="transit_equity/assets/img/adult_no_downtown_network.html" height="500" width="500"></iframe>
