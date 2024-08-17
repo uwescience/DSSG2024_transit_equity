@@ -69,4 +69,4 @@ Running analysis on a more powerful computer would speed up the computation time
 
 Disability card trip network  
 
-<iframe src="DSSG2024_transit_equity/assets/img/disability_net_no_downtown.html" height="500" width="500"></iframe>
+<iframe src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/disability_net_no_downtown.html" height="500" width="500"></iframe>
