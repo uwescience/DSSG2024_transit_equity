@@ -20,13 +20,13 @@ The goal of this analysis is to understand the differences between trip origin a
 #### 1) How do the trip networks vary between card types?  
 Understanding and visualizing trip networks can reveal large-scale patterns of ridership across the different ORCA card types. Identifying similarities and differences between the networks could provide insight into the importance of different stops and connections in the travel patterns of users of each card type. Networks can vary in a multitude of ways, however for this analysis we are focusing on several metrics particularly relevant to transit:  
 
- A) Degree centrality (based on the number of trip arrivals and departures that each stop has), which will reflect which stops are most frequently used by users of each card type. A higher value indicates that a stop is frequented more by riders that use the same card type. This metric is computed at the stop level, for both origins and destinations independently as well as the total sum for both.  
+> A) Degree centrality (based on the number of trip arrivals and departures that each stop has), which will reflect which stops are most frequently used by users of each card type. A higher value indicates that a stop is frequented more by riders that use the same card type. This metric is computed at the stop level, for both origins and destinations independently as well as the total sum for both.  
 
- B) Eigenvector centrality (based on the connections of all of the stops that are connected to a particular stop), which indicates the relationship a stop has to other stops in the network and can be used to identify stops that connect to popular stops. A higher value indicates that a particular stop is connected to more well-connected stops, representing a hub. This metric is computed at the stop level, for both origins and destinations independently as well as the total sum for both. 
+> B) Eigenvector centrality (based on the connections of all of the stops that are connected to a particular stop), which indicates the relationship a stop has to other stops in the network and can be used to identify stops that connect to popular stops. A higher value indicates that a particular stop is connected to more well-connected stops, representing a hub. This metric is computed at the stop level, for both origins and destinations independently as well as the total sum for both. 
 
-C) Network density (the proportion of actual origin-destination trips in the network to the total number of possible trips), which will show if different card user types use more direct versus more circuitous routes. A fully connected network would mean that every origin stop has at least one instance of a trip that ends at every destination stop. A higher value indicates that a higher proportion of trips in the network are direct. This metric is computed at the whole network level.  
+> C) Network density (the proportion of actual origin-destination trips in the network to the total number of possible trips), which will show if different card user types use more direct versus more circuitous routes. A fully connected network would mean that every origin stop has at least one instance of a trip that ends at every destination stop. A higher value indicates that a higher proportion of trips in the network are direct. This metric is computed at the whole network level.  
 
-D) Modularity (the strength of division of the network into clusters that see more frequent trips between stops within the module than stops outside of the cluster), which will identify whether there are distinct clusters of stops used by different rider groups. A higher value indicates that there are more distinct clusters in the network. This metric is computed at the whole network level.  
+> D) Modularity (the strength of division of the network into clusters that see more frequent trips between stops within the module than stops outside of the cluster), which will identify whether there are distinct clusters of stops used by different rider groups. A higher value indicates that there are more distinct clusters in the network. This metric is computed at the whole network level.  
 
 #### 2) Are stops that are central in transit ridership networks shared across all card demographics?  
 This question will allow us to understand whether there are universally-important stops across card demographics that could be improved to benefit all riders. Conversely, it could reveal stops that are particularly important to certain demographics that would be considered less important when considering all riders, which would provide insight to inform targeted improvements to support those demographics.  
@@ -46,11 +46,11 @@ Data was filtered by card type into the following groups: adult, youth, lift car
 
 ## **Methods**
 The following data cleaning steps were taken to prepare the trip table for network analysis:  
-    1.  Duplicated rows were dropped because some trips were duplicated erroneously in the database.  
-    2.  The absolute time difference between boarding and destination was calculated. We used the absolute time difference because some trips erroneously had a destination time that was prior to the origin time.  
-    3.  Trips with duration longer than 3 hours were dropped. This is because some trips had unreasonably long trip times due an issue with the algorithm that determines start and stop location for each trip.  
-    4.  Trip frequency for each unique origin-destination trip was calculated.  
-    5.  Duplicate trips were dropped after trip frequency was calculated.  
+> 1.  Duplicated rows were dropped because some trips were duplicated erroneously in the database.  
+> 2.  The absolute time difference between boarding and destination was calculated. We used the absolute time difference because some trips erroneously had a destination time that was prior to the origin time.  
+> 3.  Trips with duration longer than 3 hours were dropped. This is because some trips had unreasonably long trip times due an issue with the algorithm that determines start and stop location for each trip.  
+> 4.  Trip frequency for each unique origin-destination trip was calculated.  
+> 5.  Duplicate trips were dropped after trip frequency was calculated.  
 
 Each of the issues mentioned above in the cleaning steps were reported to the project leads, who maintain the database. These issues will be taken into account and corrected as the project leads prepare to release the most recent iteration of the trips table in the database.  
 
