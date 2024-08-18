@@ -109,3 +109,11 @@ Low-income card trip network vs. Adult card trip network
 
 </div>
 
+<script>
+  function centerMap(mapId) {
+    var iframe = document.getElementById(mapId);
+    iframe.contentWindow.onload = function() {
+      iframe.contentWindow.scrollTo((iframe.contentWindow.document.body.scrollWidth - iframe.clientWidth) / 2, 0);
+    };
+  }
+</script>
