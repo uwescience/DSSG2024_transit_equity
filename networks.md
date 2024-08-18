@@ -68,7 +68,7 @@ We ran each network analysis separately for each of the card types: adult, youth
     <iframe id="adultMap1" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap1')"></iframe>
 </div>
 
-Youth card trips (n=14119) compared to adult card trips (n=XXXX). In total, the youth card network included XXX unique trips, compared to XXX in the adult network. 
+Youth card trips in April 2023 (n=14119) compared to adult card trips (n=XXXX). In total, the youth card network included 407 unique trips, compared to XXX in the adult network. 
 
 #### Senior card trip network vs. Adult card trip network
 
