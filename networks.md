@@ -67,33 +67,41 @@ We imported the origin-destination trips table for April 2023 from the ORCA post
 
 **Results**
 
-Youth card trip network vs. Adult card trip network
+# Youth card trip network vs. Adult card trip network
 
 <div style="display: flex; justify-content: space-between; gap: 10px;">
     <iframe id="youthMap" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/youth_net_no_downtown.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('youthMap')"></iframe>
     <iframe id="adultMap1" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap1')"></iframe>
 </div>
 
-Senior card trip network vs. Adult card trip network
+Youth card trips (n=14119) compared to adult card trips (n=XXXX).  
+
+# Senior card trip network vs. Adult card trip network
 
 <div style="display: flex; justify-content: space-between; gap: 10px;">
     <iframe id="seniorMap" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/senior_net_no_downtown.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('seniorMap')"></iframe>
     <iframe id="adultMap2" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap2')"></iframe>
 </div>
 
-Disability card trip network  vs. Adult card trip network
+Senior card trips (n=12693) compared to adult card trips (n=XXXX).  
+
+# Disability card trip network  vs. Adult card trip network
 
 <div style="display: flex; justify-content: space-between; gap: 10px;">
     <iframe id="disabilityMap" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/disability_net_no_downtown.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('disabilityMap')"></iframe>
     <iframe id="adultMap3" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap3')"></iframe>
 </div>
 
-Low-income card trip network vs. Adult card trip network
+Disability card trips (n=4640) compared to adult card trips (n=XXXX).
+
+# Low-income card trip network vs. Adult card trip network
 
 <div style="display: flex; justify-content: space-between; gap: 10px;">
     <iframe id="lowIncomeMap" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/lift_net_no_downtown.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('lowIncomeMap')"></iframe>
     <iframe id="adultMap4" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap4')"></iframe>
 </div>
+
+Low-income card trips (n=31334) compared to adult card trips (n=XXXX).
 
 **Analyses**
 
@@ -104,5 +112,5 @@ Instead, analyzing each user type network discretely provided more easily interp
 **Limitations**
 
 This approach has only been tested with one month of trip data, and even then we ran up against memory and computing limitations to complete the analysis. Additionally, we identified several issues with the data including negative trip times, impossibly long trip times, and trips that had the same start and stop location. These will be addressed in new iterations of the database, but for now were just filtered out. 
-How can your work be improved?  
+
 Running analysis on a more powerful computer would speed up the computation time and enable the use of larger subsets of the data. Additionally, examining how the networks change over time would yield additional valuable insight. 
