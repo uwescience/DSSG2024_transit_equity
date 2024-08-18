@@ -77,7 +77,7 @@ Youth card trips in April 2023 (n=14119) compared to adult card trips (n=XXXX). 
     <iframe id="adultMap2" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap2')"></iframe>
 </div>
 
-Senior card trips (n=12693) compared to adult card trips (n=XXXX). In total, the senior card network included XXX unique trips, compared to XXX in the adult network. 
+Senior card trips (n=12693) compared to adult card trips (n=XXXX). In total, the senior card network included 323 unique trips, compared to XXX in the adult network. 
 
 #### Disability card trip network  vs. Adult card trip network
 
