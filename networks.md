@@ -82,31 +82,22 @@ Youth card trip network vs. Adult card trip network
 Senior card trip network vs. Adult card trip network
 
 <div style="display: flex; justify-content: space-between; gap: 10px;">
-
-    <iframe src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/senior_net_no_downtown.html" style="width: 48%; height: 600px; border: none;"></iframe>
-
-    <iframe src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;"></iframe>
-
+    <iframe id="seniorMap" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/senior_net_no_downtown.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('seniorMap')"></iframe>
+    <iframe id="adultMap2" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap2')"></iframe>
 </div>
 
 Disability card trip network  vs. Adult card trip network
 
 <div style="display: flex; justify-content: space-between; gap: 10px;">
-
-    <iframe src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/disability_net_no_downtown.html" style="width: 48%; height: 600px; border: none;"></iframe>
-
-    <iframe src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;"></iframe>
-
+    <iframe id="disabilityMap" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/disability_net_no_downtown.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('disabilityMap')"></iframe>
+    <iframe id="adultMap3" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap3')"></iframe>
 </div>
 
 Low-income card trip network vs. Adult card trip network
 
 <div style="display: flex; justify-content: space-between; gap: 10px;">
-
-    <iframe src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/lift_net_no_downtown.html"  style="width: 48%; height: 600px; border: none;"></iframe>
-
-    <iframe src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;"></iframe>
-
+    <iframe id="lowIncomeMap" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/lift_net_no_downtown.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('lowIncomeMap')"></iframe>
+    <iframe id="adultMap4" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap4')"></iframe>
 </div>
 
 <script>
