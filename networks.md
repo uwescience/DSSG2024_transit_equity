@@ -86,7 +86,7 @@ Senior card trips (n=12693) compared to adult card trips (n=XXXX). In total, the
     <iframe id="adultMap3" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap3')"></iframe>
 </div>
 
-Disability card trips (n=4640) compared to adult card trips (n=XXXX). In total, the disability card network included XXX unique trips, compared to XXX in the adult network. 
+Disability card trips (n=4640) compared to adult card trips (n=XXXX). In total, the disability card network included 155 unique trips, compared to XXX in the adult network. 
 
 #### Low-income card trip network vs. Adult card trip network
 
