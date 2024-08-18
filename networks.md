@@ -68,7 +68,7 @@ We ran each network analysis separately for each of the card types: adult, youth
     <iframe id="adultMap1" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap1')"></iframe>
 </div>
 
-Youth card trips (n=14119) compared to adult card trips (n=XXXX).  
+Youth card trips (n=14119) compared to adult card trips (n=XXXX). In total, the youth card network included XXX unique trips, compared to XXX in the adult network. 
 
 #### Senior card trip network vs. Adult card trip network
 
@@ -77,7 +77,7 @@ Youth card trips (n=14119) compared to adult card trips (n=XXXX).
     <iframe id="adultMap2" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap2')"></iframe>
 </div>
 
-Senior card trips (n=12693) compared to adult card trips (n=XXXX).  
+Senior card trips (n=12693) compared to adult card trips (n=XXXX). In total, the senior card network included XXX unique trips, compared to XXX in the adult network. 
 
 #### Disability card trip network  vs. Adult card trip network
 
@@ -86,7 +86,7 @@ Senior card trips (n=12693) compared to adult card trips (n=XXXX).
     <iframe id="adultMap3" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap3')"></iframe>
 </div>
 
-Disability card trips (n=4640) compared to adult card trips (n=XXXX).
+Disability card trips (n=4640) compared to adult card trips (n=XXXX). In total, the disability card network included XXX unique trips, compared to XXX in the adult network. 
 
 #### Low-income card trip network vs. Adult card trip network
 
@@ -95,7 +95,7 @@ Disability card trips (n=4640) compared to adult card trips (n=XXXX).
     <iframe id="adultMap4" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap4')"></iframe>
 </div>
 
-Low-income card trips (n=31334) compared to adult card trips (n=XXXX).
+Low-income card trips (n=31334) compared to adult card trips (n=XXXX). In total, the low-income card network included XXX unique trips, compared to XXX in the adult network. 
 
 
 ## **Limitations**
