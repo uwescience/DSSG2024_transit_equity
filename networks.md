@@ -73,15 +73,15 @@ Adult card trip network
 
 Youth card trip network vs Adult card trip network
 
-<div style="display: flex; justify-content: space-between;">
 
-    <iframe src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/youth_net_no_downtown.html" width="49%" height="600"></iframe>
+<div style="display: flex; justify-content: space-between; gap: 10px;">
 
-    <iframe src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html"  width="49%" height="600"></iframe>
+    <iframe src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/youth_net_no_downtown.html" style="width: 48%; height: 600px; border: none;"></iframe>
+
+    <iframe src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;"></iframe>
 
 </div>
 
-<iframe src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/youth_net_no_downtown.html" height="500" width="500"></iframe>
 
 Senior card trip network
 
