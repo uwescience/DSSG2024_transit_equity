@@ -4,6 +4,17 @@ title: Trip Networks Across Card Types
 parent: Analyses
 ---
 
+<script>
+  function centerMap(mapId) {
+    var iframe = document.getElementById(mapId);
+    iframe.onload = function() {
+      iframe.contentWindow.onload = function() {
+        iframe.contentWindow.scrollTo((iframe.contentWindow.document.body.scrollWidth - iframe.clientWidth) / 2, 0);
+      };
+    };
+  }
+</script>
+
 The goal of this analysis is to understand the differences between trip origin and destination networks between riders who use the different ORCA card reduced fare programs. Understanding the patterns of trip behavior has potential to be used to inform targeted service and stop improvements that could benefit the different demographics that ride transit using the different card types. Specifically, we are interested in the following questions:  
 
 ### 1) How do the trip networks vary between card types?  
@@ -56,17 +67,12 @@ We imported the origin-destination trips table for April 2023 from the ORCA post
 
 **Results**
 
-Adult card trip network
-
-<iframe src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" height="500" width="500"></iframe>
-
 Youth card trip network vs. Adult card trip network
 
 <div style="display: flex; justify-content: space-between; gap: 10px;">
     <iframe id="youthMap" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/youth_net_no_downtown.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('youthMap')"></iframe>
     <iframe id="adultMap1" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap1')"></iframe>
 </div>
-
 
 Senior card trip network vs. Adult card trip network
 
@@ -88,17 +94,6 @@ Low-income card trip network vs. Adult card trip network
     <iframe id="lowIncomeMap" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/lift_net_no_downtown.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('lowIncomeMap')"></iframe>
     <iframe id="adultMap4" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap4')"></iframe>
 </div>
-
-<script>
-  function centerMap(mapId) {
-    var iframe = document.getElementById(mapId);
-    iframe.onload = function() {
-      iframe.contentWindow.onload = function() {
-        iframe.contentWindow.scrollTo((iframe.contentWindow.document.body.scrollWidth - iframe.clientWidth) / 2, 0);
-      };
-    };
-  }
-</script>
 
 **Analyses**
 
