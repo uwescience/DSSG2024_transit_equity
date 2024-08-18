@@ -63,7 +63,7 @@ We ran each network analysis separately for each of the card types: adult, youth
 
 #### Youth card trip network vs. Adult card trip network
 
-<div style="display: flex; justify-content: center; gap: 10px;">
+<div style="display: flex; justify-content: space-between; gap: 10px;">
     <iframe id="youthMap" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/youth_net_no_downtown.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('youthMap')"></iframe>
     <iframe id="adultMap1" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap1')"></iframe>
 </div>
