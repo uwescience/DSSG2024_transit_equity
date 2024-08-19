@@ -1,0 +1,68 @@
+/* This document is to create the validation dataset for the home block group prediction
+ * The final table will contain information for 
+ * the card category, the geoid for known home block group prediction and card counts at address
+ */
+
+
+-----------create the table for insertion in dssg
+CREATE TABLE IF NOT EXISTS orca.dssg.address_for_validation (
+    card_id INTEGER PRIMARY KEY, -- REFERENCES orca.cards(card_id),
+    category TEXT NOT NULL,
+    geoid TEXT,
+    geocoding_accuracy FLOAT,
+    cards_at_address INTEGER
+);
+
+-----write the query to get addersses that 
+----- are not business related and have fewer than 3 cards per address and also geocoiding accuracy>0.9
+WITH org AS (
+    SELECT 
+        t.organization_id, 
+        t.card_id, 
+        COUNT(*) OVER (PARTITION BY t.organization_id) AS total_card_in_organization
+    FROM 
+        orca.orca.transactions t 
+    GROUP BY  
+        t.organization_id, t.card_id
+),
+base AS (
+    SELECT 
+        ccbg.geoid, 
+        ccbg.geocoding_accuracy, 
+        ccbg.cards_at_address, 
+        cards.card_id, 
+        ccf.category,  -- Assuming category comes from card_categories_final1 table
+        COUNT(*) OVER () AS total, 
+        org.organization_id
+    FROM 
+        orca.orca.card_census_block_groups ccbg 
+    JOIN 
+        orca.orca.cards cards 
+    ON 
+        ccbg.card_printed_hash = cards.printed_hash
+    LEFT JOIN 
+        org 
+    ON 
+        cards.card_id = org.card_id
+    left JOIN 
+        dssg.card_categories_final1 ccf 
+    ON
+        cards.card_id = ccf.card_id
+)
+-- Insert the selected columns into the table
+INSERT INTO orca.dssg.address_for_validation (card_id, category, geoid, geocoding_accuracy, cards_at_address)
+SELECT 
+    base.card_id, 
+    base.category,  -- category is now correctly referenced from the base CTE
+    base.geoid, 
+    base.geocoding_accuracy, 
+    base.cards_at_address
+FROM 
+    base
+WHERE 
+    base.organization_id IS NULL 
+    AND base.category IS NOT NULL 
+    AND base.cards_at_address <= 3 
+    AND base.geocoding_accuracy >= 0.9
+ON CONFLICT (card_id) DO NOTHING;
+
