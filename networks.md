@@ -68,7 +68,7 @@ We ran each network analysis separately for each of the card types: adult, youth
     <iframe id="adultMap1" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap1')"></iframe>
 </div>
 
-Youth card trips in April 2023 (n=14119) compared to adult card trips (n=XXXX). In total, the youth card network included 407 unique trips, compared to XXX in the adult network. The youth card network and adult card network do not share the same most frequent trips. 
+Youth card trips in April 2023 (n=14119) compared to adult card trips (n=1014755). In total, the youth card network included 407 unique trips, compared to 9358 in the adult network. The youth card network and adult card network do not share the same most frequent trips. 
 
 #### Senior card trip network vs. Adult card trip network
 
@@ -77,7 +77,7 @@ Youth card trips in April 2023 (n=14119) compared to adult card trips (n=XXXX). 
     <iframe id="adultMap2" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap2')"></iframe>
 </div>
 
-Senior card trips in April 2023 (n=12693) compared to adult card trips (n=XXXX). In total, the senior card network included 323 unique trips, compared to XXX in the adult network. The senior card network shows strikingly different patterns in trip frequency than the adult card network, that is less geographically-structured. The most frequent trips in the senior card network are more evenly distributed across the geographical area, whereas the most frequent trips in the adult card network are more centrally located. 
+Senior card trips in April 2023 (n=12693) compared to adult card trips (n=1014755). In total, the senior card network included 323 unique trips, compared to 9358 in the adult network. The senior card network shows strikingly different patterns in trip frequency than the adult card network, that is less geographically-structured. The most frequent trips in the senior card network are more evenly distributed across the geographical area, whereas the most frequent trips in the adult card network are more centrally located. 
 
 #### Disability card trip network  vs. Adult card trip network
 
@@ -86,7 +86,7 @@ Senior card trips in April 2023 (n=12693) compared to adult card trips (n=XXXX).
     <iframe id="adultMap3" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap3')"></iframe>
 </div>
 
-Disability card trips in April 2023 (n=4640) compared to adult card trips (n=XXXX). In total, the disability card network included 155 unique trips, compared to XXX in the adult network. The disability card network shares the same most frequent trip as in the adult card network. 
+Disability card trips in April 2023 (n=4640) compared to adult card trips (n=1014755). In total, the disability card network included 155 unique trips, compared to 9358 in the adult network. The disability card network shares the same most frequent trip as in the adult card network. 
 
 #### Low-income card trip network vs. Adult card trip network
 
@@ -95,7 +95,7 @@ Disability card trips in April 2023 (n=4640) compared to adult card trips (n=XXX
     <iframe id="adultMap4" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap4')"></iframe>
 </div>
 
-Low-income card trips in April 2023 (n=31334) compared to adult card trips (n=XXXX). In total, the low-income card network included 840 unique trips, compared to XXX in the adult network. Although some of the most frequent trips near the center of Seattle are shared between both networks, the low-income card network has a much higher proportional trip frequency relative to the adult network for trips south of Seattle and into Tacoma. These southern trips are also more frequent in the senior network relative to the adult network. 
+Low-income card trips in April 2023 (n=31334) compared to adult card trips (n=1014755). In total, the low-income card network included 840 unique trips, compared to 9358 in the adult network. Although some of the most frequent trips near the center of Seattle are shared between both networks, the low-income card network has a much higher proportional trip frequency relative to the adult network for trips south of Seattle and into Tacoma. These southern trips are also more frequent in the senior network relative to the adult network. 
 
 
 ## **Limitations**
