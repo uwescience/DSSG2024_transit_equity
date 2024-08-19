@@ -65,7 +65,7 @@ We ran each network analysis separately for each of the card types: adult, youth
 
 <div style="display: flex; justify-content: space-between; gap: 10px;">
     <iframe id="youthMap" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/youth_net_no_downtown.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('youthMap')"></iframe>
-    <iframe id="adultMap1" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_no_downtown_network.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap1')"></iframe>
+    <iframe id="adultMap1" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/map_with_colorbar.html" style="width: 48%; height: 600px; border: none;" onload="centerMap('adultMap1')"></iframe>
 </div>
 
 Youth card trips in April 2023 (n=14119) compared to adult card trips (n=1014755). In total, the youth card network included 407 unique trips, compared to 9358 in the adult network. The youth card network and adult card network do not share the same most frequent trips. 
