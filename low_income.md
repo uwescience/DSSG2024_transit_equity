@@ -4,6 +4,17 @@ title: Serving Low Income Riders
 parent: Analyses
 ---
 
+<script>
+  function centerMap(mapId) {
+    var iframe = document.getElementById(mapId);
+    iframe.onload = function() {
+      iframe.contentWindow.onload = function() {
+        iframe.contentWindow.scrollTo((iframe.contentWindow.document.body.scrollWidth - iframe.clientWidth) / 2, 0);
+      };
+    };
+  }
+</script>
+
 ## Overview
 
 In this line of analyses, we were interested in how we can specifically serve low income populations better. We wanted to identify areas where reduced fare cards are not being used adequately. These could serve as potential opportunities to improve the distribution and usage of the reduced fare cards. 
@@ -69,7 +80,7 @@ We could measure ridership of a census block group, using several different but 
 
 - Number of Unique frequent users, who have used the LIFT cards in a block group, a certain number of times, to serve as measure of users who need to regularly utilize the transit services in the block group. 
 
-For brevity, the analysis described in this page will mostly revolve around the 3rd metric (Number of Unique users), however, other metrics will be mentioned as and when required. 
+For brevity, the analysis described in this page is on King County, and will mostly revolve around the 3rd metric (Number of Unique users), however, other metrics will be mentioned as and when required. 
 
 
 ### Low-Income Population
@@ -77,9 +88,22 @@ For brevity, the analysis described in this page will mostly revolve around the 
 The LIFT card is available for all Individuals who have an income below 200% of the Federal Poverty Level. The US census data provides us estimates of these low income populations for each block group. 
 
 
-## Results
+## Analysis
 
+The following histogram is for the number of unique LIFT card users across block groups served by ORCA in King County. 
 
+The distribution is extremely skewed towards the right, with outliers having numbers several times higher than average (aroung 51,000 in the block group covering Downtown). One would also notice that a majority of the block groups have had very few LIFT card users. 
+
+![LIFT Card Users Distribution](assets/img/lift_user_low_pop_hist_labelled.png) 
+
+In the following map on the left, we see the distribution of the number of unique LIFT card users across block groups. We see similar overall trends as in the histogram: some hotspots (colored in yellow), but most of the areas without much LIFT card usage.
+
+When we compare this to the map on the right, which shows the distribution of the low income populations across block groups, we find noticeable differences in the distribution. Low income populations, are present in significant numbers all over King County. These differences do emphasize the possibility that there are low income areas with low LIFT card usage. 
+
+<div style="display: flex; justify-content: space-between; gap: 10px;">
+    <iframe id="disabilityMap" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/disability_net_no_colorbar.html" style="width: 300px; height: 400px; border: none;" onload="centerMap('disabilityMap')"></iframe>
+    <iframe id="adultMap3" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_net_no_colorbar.html" style="width: 300px; height: 400px; border: none;" onload="centerMap('adultMap3')"></iframe>
+</div>
 
 
 ## Limitations**
