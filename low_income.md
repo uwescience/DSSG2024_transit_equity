@@ -72,13 +72,13 @@ Additional details can be found in the [Github repository](https://github.com/uw
 
 We could measure ridership of a census block group, using several different but complementary metrics, using the LIFT subset of our ORCA database. For each block group, we can measure the following:
 
-- Number of total Transactions using LIFT cards to measure the overall usage of the LIFT services in a block group.
+1. Number of total Transactions using LIFT cards to measure the overall usage of the LIFT services in a block group.
 
-- Number of initial Boardings using LIFT cards to measure the usage of the LIFT services by people who start their trips in a given block group.
+2. Number of initial Boardings using LIFT cards to measure the usage of the LIFT services by people who start their trips in a given block group.
 
-- Number of Unique users who have used the LIFT cards in a block group at least once, to serve as a measure of the number of users who may need to use the transit services in the block group at least once. 
+3. Number of Unique users who have used the LIFT cards in a block group at least once, to serve as a measure of the number of users who may need to use the transit services in the block group at least once. 
 
-- Number of Unique frequent users, who have used the LIFT cards in a block group, a certain number of times, to serve as measure of users who need to regularly utilize the transit services in the block group. 
+4. Number of Unique frequent users, who have used the LIFT cards in a block group, a certain number of times, to serve as measure of users who need to regularly utilize the transit services in the block group. 
 
 For brevity, the analysis described in this page is on King County, and will mostly revolve around the 3rd metric (Number of Unique users), however, other metrics will be mentioned as and when required. Most of the statistics and plots displayed are for the year 2023. 
 
@@ -98,14 +98,14 @@ The distribution is extremely skewed towards the right, with outliers having num
 
 In the following map on the left, we see the distribution of the number of unique LIFT card users across block groups. We see similar overall trends as in the histogram: some hotspots (colored in yellow), but most of the areas without much LIFT card usage.
 
-When we compare this to the map on the right, which shows the distribution of the low income populations across block groups, we find noticeable differences in the distribution. Low income populations, are present in significant numbers all over King County. These differences do emphasize the possibility that there are low income areas with low LIFT card usage. These areas could serve as opportunities for improving LIFT card distribution.
+When we compare this to the map on the right, which shows the distribution of the low income populations across block groups, we find noticeable differences in the distribution. Low income populations, are present in significant numbers all over King County. These differences do emphasize the possibility that there are low income areas with low LIFT card usage. These areas could serve as potential opportunities for improving LIFT card distribution.
 
 <div style="display: flex; justify-content: space-between; gap: 10px;">
     <iframe id="lift_card_map" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/geomap/lift_user_counts_st.html" style="width: 350px; height: 500px; border: none;" onload="centerMap('lift_card_map')"></iframe>
-    <iframe id="low_income_map" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/low_income_pop_st.html" style="width: 350px; height: 500px; border: none;" onload="centerMap('low_income_map')"></iframe>
+    <iframe id="low_income_map" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/geomap/low_income_pop_st.html" style="width: 350px; height: 500px; border: none;" onload="centerMap('low_income_map')"></iframe>
 </div>
 
-Such areas of LIFT opportunity get revealed in the following scatter plot. We start seeing some areas of interest, highlighted here in red. These are block groups with more than 500 low-income individuals, where less than 250 unique cards have been used in the year 2023. 
+Such potential areas of LIFT opportunity get revealed in the following scatter plot. We start seeing some areas of interest, highlighted here in red. These are block groups with more than 500 low-income individuals, where less than 250 unique cards have been used in the year 2023. 
 
 There are however, some exceptions here. These block groups are within the thresholds, but they are not highlighted in red, are really close to hotspots of lift card usage, so it is possible for any of the lift card users in these areas to travel short distances to other block groups, for transit. 
 
@@ -117,3 +117,17 @@ Taking all these factors into account, the following is a map that shows such ar
 
 
 ## Limitations
+
+In the given line of analyses, we have identified the following primary limitations:
+
+1. All the metrics for Low-Income ridership are not commensurate with low-income populations for adequate comparison. 
+
+The 3rd metric (Number of Unique users) for example, is consistently an overestimate of the low-income riders, since not all the lift users who have travelled in a particular census block group, actually belong to the group. 
+
+A more appropriate metric for comparison would be an estimate for the Number of LIFT Card who actually live in a census block group. One possible future direction would be to use the ORCA database to predict these numbers for all the census block groups. 
+
+2. Not all the areas of LIFT opportunity are real opportunities. 
+
+As mentioned before, there could be a number of reasons for this disparity in low-income ridership, and this line of analysis will not be able to find which one of these reasons is applicable for an area.
+
+We believe the transit agencies would be able to more accurately answer this through their own independent research. The tools that we have provided in this project could help them narrow down areas to explore. 
