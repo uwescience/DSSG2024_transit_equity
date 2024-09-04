@@ -22,6 +22,11 @@ There could be a number of reasons for this disparity in different low-income re
 - The low-income individuals may not have a regular need for public transport, hence they may not want to go through the hassle of applying for a card. 
 
 
+## Problem Statement
+
+The high-level idea is to compare low-income ridership with low-income populations, in different areas. The lowest geography level of granularity, that we intend to use to make these comparisons, is the census block group. 
+
+
 ## Data Sources
 
 - ORCA dataset
@@ -50,11 +55,9 @@ The entire line of analyses was carried out on Python and PostgreSQL. While some
 Additional details can be found in the [Github repository](https://github.com/uwescience/DSSG2024_transit_equity). 
 
 
-### Additional Problem Context
+## Metrics
 
-The high-level idea is to compare low-income ridership with low-income populations, in different areas. The lowest geography level of granularity, that we intend to use to make these comparisons, is the census block group. 
-
-**Low-Income Ridership**
+### Low-Income Ridership
 
 We could measure ridership of a census block group, using several different but complementary metrics, using the LIFT subset of our ORCA database. For each block group, we can measure the following:
 
@@ -69,13 +72,14 @@ We could measure ridership of a census block group, using several different but 
 For brevity, the analysis described in this page will mostly revolve around the 3rd metric (Number of Unique users), however, other metrics will be mentioned as and when required. 
 
 
-**Low-Income Population**
+### Low-Income Population
 
 The LIFT card is available for all Individuals who have an income below 200% of the Federal Poverty Level. The US census data provides us estimates of these low income populations for each block group. 
 
-**Analysis**
+
+## Results
 
 
 
 
-**Limitations**
+## Limitations**
