@@ -16,6 +16,6 @@ We are interested broadly in identifying patterns in transit use between ORCA ca
 
 3) Do hotspots of transfer have adequate shelters? Do low-income riders suffer more from not having adequate shelters? 
 
-4) Are low-income riders receiving an adequate level of service across all regions in Puget Sound? Where is the service inadequate for low-income riders?
+4) Are low-income riders receiving an adequate level of service across all regions in Puget Sound? Where is the service inadequate for low-income riders? Can these areas serve as opportunities to expand distribution of low-income fare cards.
 
-5) How do ORCA users look like in terms of behavior? Do low-income riders behave differently?
+<!-- 5) How do ORCA users look like in terms of behavior? Do low-income riders behave differently? -->
