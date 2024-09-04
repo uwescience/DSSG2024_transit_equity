@@ -80,7 +80,7 @@ We could measure ridership of a census block group, using several different but 
 
 - Number of Unique frequent users, who have used the LIFT cards in a block group, a certain number of times, to serve as measure of users who need to regularly utilize the transit services in the block group. 
 
-For brevity, the analysis described in this page is on King County, and will mostly revolve around the 3rd metric (Number of Unique users), however, other metrics will be mentioned as and when required. 
+For brevity, the analysis described in this page is on King County, and will mostly revolve around the 3rd metric (Number of Unique users), however, other metrics will be mentioned as and when required. Most of the statistics and plots displayed are for the year 2023. 
 
 
 ### Low-Income Population
@@ -90,7 +90,7 @@ The LIFT card is available for all Individuals who have an income below 200% of 
 
 ## Analysis
 
-The following histogram is for the number of unique LIFT card users across block groups served by ORCA in King County. 
+The following histogram is for the number of unique LIFT card users across block groups served by ORCA in areas of King County served by ORCA, for the year 2023. 
 
 The distribution is extremely skewed towards the right, with outliers having numbers several times higher than average (aroung 51,000 in the block group covering Downtown). One would also notice that a majority of the block groups have had very few LIFT card users. 
 
@@ -98,12 +98,22 @@ The distribution is extremely skewed towards the right, with outliers having num
 
 In the following map on the left, we see the distribution of the number of unique LIFT card users across block groups. We see similar overall trends as in the histogram: some hotspots (colored in yellow), but most of the areas without much LIFT card usage.
 
-When we compare this to the map on the right, which shows the distribution of the low income populations across block groups, we find noticeable differences in the distribution. Low income populations, are present in significant numbers all over King County. These differences do emphasize the possibility that there are low income areas with low LIFT card usage. 
+When we compare this to the map on the right, which shows the distribution of the low income populations across block groups, we find noticeable differences in the distribution. Low income populations, are present in significant numbers all over King County. These differences do emphasize the possibility that there are low income areas with low LIFT card usage. These areas could serve as opportunities for improving LIFT card distribution.
 
 <div style="display: flex; justify-content: space-between; gap: 10px;">
-    <iframe id="disabilityMap" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/disability_net_no_colorbar.html" style="width: 300px; height: 400px; border: none;" onload="centerMap('disabilityMap')"></iframe>
-    <iframe id="adultMap3" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/adult_net_no_colorbar.html" style="width: 300px; height: 400px; border: none;" onload="centerMap('adultMap3')"></iframe>
+    <iframe id="lift_card_map" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/geomap/lift_user_counts_st.html" style="width: 350px; height: 500px; border: none;" onload="centerMap('lift_card_map')"></iframe>
+    <iframe id="low_income_map" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/img/low_income_pop_st.html" style="width: 350px; height: 500px; border: none;" onload="centerMap('low_income_map')"></iframe>
 </div>
 
+Such areas of LIFT opportunity get revealed in the following scatter plot. We start seeing some areas of interest, highlighted here in red. These are block groups with more than 500 low-income individuals, where less than 250 unique cards have been used in the year 2023. 
 
-## Limitations**
+There are however, some exceptions here. These block groups are within the thresholds, but they are not highlighted in red, are really close to hotspots of lift card usage, so it is possible for any of the lift card users in these areas to travel short distances to other block groups, for transit. 
+
+![LIFT Card Users vs Low Income Population Scatter Plot](assets/img/lift_user_low_pop_size_labelled.png) 
+
+Taking all these factors into account, the following is a map that shows such areas of LIFT opportunity in yellow. Further analysis into the efficacy of these specific areas for LIFT card distribution, could be beneficial.
+
+<iframe id="lift_outliers" src="https://uwescience.github.io/DSSG2024_transit_equity/assets/geomap/lift_outliers.html" style="width: 700px; height: 1000px; border: none;" onload="centerMap('lift_card_map')"></iframe>
+
+
+## Limitations
