@@ -120,14 +120,24 @@ Taking all these factors into account, the following is a map that shows such ar
 
 In the given line of analyses, we have identified the following primary limitations:
 
-1. All the metrics for Low-Income ridership are not commensurate with low-income populations for adequate comparison. 
+<ol>
+  <li> All the metrics for Low-Income ridership are not commensurate with low-income populations for adequate comparison. 
+  
+  <p>
+      The 3rd metric (Number of Unique users) for example, is consistently an overestimate of the low-income riders, since not all the lift users who have travelled in a particular census block group, actually belong to the group. 
+  </p>
+  <p>
+      A more appropriate metric for comparison would be an estimate for the Number of LIFT Card who actually live in a census block group. One possible future direction would be to use the ORCA database to predict these numbers for all the census block groups. 
+  </p>
+  </li>
 
-The 3rd metric (Number of Unique users) for example, is consistently an overestimate of the low-income riders, since not all the lift users who have travelled in a particular census block group, actually belong to the group. 
-
-A more appropriate metric for comparison would be an estimate for the Number of LIFT Card who actually live in a census block group. One possible future direction would be to use the ORCA database to predict these numbers for all the census block groups. 
-
-2. Not all the areas of LIFT opportunity are real opportunities. 
-
-As mentioned before, there could be a number of reasons for this disparity in low-income ridership, and this line of analysis will not be able to find which one of these reasons is applicable for an area.
-
-We believe the transit agencies would be able to more accurately answer this through their own independent research. The tools that we have provided in this project could help them narrow down areas to explore. 
+  <li> Not all the areas of LIFT opportunity are real opportunities. 
+  
+  <p>
+      As mentioned before, there could be a number of reasons for this disparity in low-income ridership, and this line of analysis will not be able to find which one of these reasons is applicable for an area.
+  </p>
+  <p>
+      We believe the transit agencies would be able to more accurately answer this through their own independent research. The tools that we have provided in this project could help them narrow down areas to explore. 
+  </p>
+  </li>
+</ol>
